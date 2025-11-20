@@ -15,7 +15,7 @@ The main purpose of the **Plant Farm Logger** program is to help farmers efficie
 - Fertilizer application
 - Pest control actions
 - Growth monitoring
-- Harvest dates
+
 
 This logging system aids in building a reliable history of farming practices that can later be analyzed to improve crop yield and health.
 
