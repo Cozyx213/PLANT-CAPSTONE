@@ -1,0 +1,37 @@
+# Compiled class files
+/out/
+/target/
+
+# Maven
+/pom.xml
+/pom.xml.bak
+
+# IntelliJ
+/.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Mac / Linux
+.DS_Store
+
+# Logs
+/logs/
+
+# Build scripts output
+build.log
+
+# OS generated files
+Thumbs.db
+
+# Temporary files
+*.tmp
+*~
+
+# CSV resources (keep source but ignore generated)
+/src/main/resources/*.csv
+
+# Backup files
+*.bak
+
