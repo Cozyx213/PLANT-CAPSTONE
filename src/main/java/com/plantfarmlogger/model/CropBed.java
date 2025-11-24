@@ -1,3 +1,4 @@
+package com.plantfarmlogger.model;
 
 public class CropBed{
     private Plant plantType;
