@@ -54,7 +54,7 @@ By the end of the season, the farmer will have a complete record of activities a
 
 The **Plant Farm Logger** program is a powerful tool designed to help farmers keep detailed records of their farming activities. By simplifying the process of logging and tracking plant-related tasks, it enables farmers to make informed decisions.
 
-## Quick Start (no Maven)
+## Quick Start
 
 Follow these steps to build and run the project using the included scripts.
 
@@ -65,5 +65,4 @@ chmod +x build_and_run.sh
 ```
 
 it Compiles all Java sources into `out/`:
-
 and Runs the program (runs `com.plantfarmlogger.Main`):
