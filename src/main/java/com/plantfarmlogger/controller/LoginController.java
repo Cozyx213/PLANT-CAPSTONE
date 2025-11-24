@@ -21,27 +21,29 @@ public class LoginController {
 
         // tloading users from the users.csv
         String userFile = "src/main/resources/csv/users.csv";
-            try (BufferedReader r = new BufferedReader(new FileReader(userFile))) {
 
-                String line;
+        try (BufferedReader r = new BufferedReader(new FileReader(userFile))) {
 
-                while ((line = r.readLine()) != null) {
+            String line;
 
-                    line = line.trim();
-                    System.out.println(line);
+            while ((line = r.readLine()) != null) {
 
-                    String[] parts = line.split(",");
-               
-           
-                        String u = parts[1].trim();
-                        String p = parts[5].trim();
-                        System.out.println(u+ p);
-                        if (u.equals(username) && Arrays.equals(password, p.toCharArray())) {
-                            System.out.println("log in succesfull");
-                            return true;
-                        }else{
-                            System.out.println("wrong creds lol r u hacker");
-                        }
+                line = line.trim();
+                if(line.charAt(0)=='#') continue;
+                System.out.println(line);
+                
+                String[] parts = line.split(",");
+            
+        
+                    String u = parts[0].trim();
+                    String p = parts[5].trim();
+                    System.out.println(u+ p);
+                    if (u.equals(username) && Arrays.equals(password, p.toCharArray())) {
+                        System.out.println("log in succesfull");
+                        return true;
+                    }else{
+                        System.out.println("wrong creds lol r u hacker");
+                    }
                     
                 }
             }catch(IOException e){

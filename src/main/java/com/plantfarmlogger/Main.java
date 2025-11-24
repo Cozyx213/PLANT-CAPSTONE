@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.view.MainWindow;
+import com.plantfarmlogger.controller.*;
 public class Main{
 
     public static void main(String[] args) {
@@ -16,5 +17,9 @@ public class Main{
             MainWindow w = new MainWindow();
             w.setVisible(true);
         });
+        RegisterController rc = new RegisterController();
+        String res = rc.register("jake bajenting","cozy" , "password123", "cebu", "jake farm", 19);
+        System.out.println(res);
+
     }
 }
