@@ -65,7 +65,7 @@ chmod +x build_and_run.sh
 ./build_and_run.sh
 ```
 ```bash
-powershell -ExecutionPolicy ByPass -File "c:\Users\Acer\Desktop\projects\PLANT-CAPSTONE\build_and_run.ps1"
+powershell -ExecutionPolicy ByPass -File "./PLANT-CAPSTONE\build_and_run.ps1"
 ```
 
 it Compiles all Java sources into `out/`:
