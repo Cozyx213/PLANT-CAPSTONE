@@ -64,6 +64,8 @@ Follow these steps to build and run the project using the included scripts.
 chmod +x build_and_run.sh
 ./build_and_run.sh
 ```
+-  on Windows
+
 ```bash
 powershell -ExecutionPolicy ByPass -File ".\build_and_run.ps1"
 ```
