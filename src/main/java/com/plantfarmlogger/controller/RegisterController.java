@@ -23,13 +23,13 @@ public class RegisterController{
 
                 while((line = br.readLine())!=null){
                     String[] spl = line.split(",");
-
-                    if(spl[1].equals(username)){
+                    if(spl.length<=1)continue;
+                    if(spl[0].equals(name)){
                         return "USER_EXIST";
                     }
                
                 }
-                String fin = name+","+username+","+age+","+address+","+farm+","+password;
+                String fin = name+","+username+","+age+","+address+","+farm+","+password+"\n";
                 bw.write(fin);
 
         }catch(IOException e){

@@ -18,7 +18,7 @@ public class Main{
             w.setVisible(true);
         });
         RegisterController rc = new RegisterController();
-        String res = rc.register("jake bajenting","cozy" , "password123", "cebu", "jake farm", 19);
+        String res = rc.register("jake bajenting2","cozy" , "password123", "cebu", "jake farm", 19);
         System.out.println(res);
 
     }

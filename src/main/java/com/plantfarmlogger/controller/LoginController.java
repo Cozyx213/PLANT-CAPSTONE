@@ -29,11 +29,11 @@ public class LoginController {
             while ((line = r.readLine()) != null) {
 
                 line = line.trim();
-                if(line.charAt(0)=='#') continue;
+                if(line.charAt(0)=='#' ) continue;
                 System.out.println(line);
                 
                 String[] parts = line.split(",");
-            
+                if(parts.length<=1) continue;
         
                     String u = parts[0].trim();
                     String p = parts[5].trim();
