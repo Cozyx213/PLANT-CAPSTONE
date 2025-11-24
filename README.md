@@ -64,7 +64,7 @@ Follow these steps to build and run the project using the included scripts.
 chmod +x build_and_run.sh
 ./build_and_run.sh
 ```
-````bash
+```bash
 powershell -ExecutionPolicy ByPass -File "c:\Users\Acer\Desktop\projects\PLANT-CAPSTONE\build_and_run.ps1"
 ```
 
