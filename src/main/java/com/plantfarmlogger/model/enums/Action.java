@@ -1,3 +1,5 @@
+package com.plantfarmlogger.model.enums;
+
 public enum Action {
     FERTILIZE("fertilize"),
     WATER("water"),
