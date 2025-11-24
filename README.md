@@ -62,6 +62,7 @@ Follow these steps to build and run the project using the included scripts.
 
 ```bash
 chmod +x build_and_run.sh
+./build_and_run.sh
 ```
 
 it Compiles all Java sources into `out/`:
