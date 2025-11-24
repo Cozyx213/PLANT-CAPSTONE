@@ -1,3 +1,4 @@
+package  com.plantfarmlogger.model;
 
 public class Farm {
     private String name;
