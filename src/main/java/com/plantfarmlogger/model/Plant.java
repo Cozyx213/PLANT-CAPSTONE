@@ -13,10 +13,16 @@ public class Plant implements Fertilizable, Waterable,
     }
 
     @Override
-    public void cut() {}
+    public void fertilize() {}
 
     @Override
-    public
+    public void water() {}
+
+    @Override
+    public void aerate() {}
+    
+    @Override
+    public void cut() {}
 
     public String getName() {
         return name;
