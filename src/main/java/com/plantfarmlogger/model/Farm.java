@@ -1,22 +1,25 @@
 package  com.plantfarmlogger.model;
 
+import java.util.ArrayList;
+
 public class Farm {
     private String name;
     private int size;
-    private CropBed cropBed;
+    private ArrayList<CropBed> cropBeds;
 
     public Farm(String name, int size) {
         this.name = name;
         this.size = size;
+        this.cropBeds = new ArrayList<>();
     }
 
-    public void addCropBed(CropBed cropBed){
-        this.cropBed = cropBed;
+    public void addCropBed(CropBed cropBed){cropBeds.add(cropBed);
     }
     public int getSize() {
-        return size;
+        return cropBeds.size();
     }
 
+    // getters and setters
     public String getName() {
         return name;
     }
@@ -29,8 +32,8 @@ public class Farm {
         this.size = size;
     }
 
-    public CropBed getCropBed() {
-        return cropBed;
+    public ArrayList<CropBed> getCropBeds() {
+        return cropBeds;
     }
 
     public void setCropBed(CropBed cropBed) {

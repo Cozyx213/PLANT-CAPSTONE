@@ -20,7 +20,7 @@ public class Plant implements Fertilizable, Waterable,
 
     @Override
     public void aerate() {}
-    
+
     @Override
     public void cut() {}
 
