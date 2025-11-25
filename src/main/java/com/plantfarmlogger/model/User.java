@@ -15,24 +15,56 @@ public class User {
         this.age = age;
     }
 
-    public void changeName(String newName) { this.name = newName; }
-    public void changePassword(String newPassword) { this.password = newPassword; }
-    public void changeAddress(String newAddress) { this.address = newAddress; }
+    public void changeName(String newName){
+        this.name = newName;
+    }
+    public void changePassword(String newPassword){
+        this.password = newPassword;
+    }
+    public void changeAddress(String newAddress){
+        this.address = newAddress;
+    }
 
-    // Getters and setters
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
-    public int getAge() { return age; }
-    public void setAge(int age) { this.age = age; }
 
-    @Override
-    public String toString() {
-        return "HI i am "+name;
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
