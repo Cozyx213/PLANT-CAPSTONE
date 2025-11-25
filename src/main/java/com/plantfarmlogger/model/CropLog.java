@@ -1,5 +1,7 @@
 package com.plantfarmlogger.model;
 
+import com.plantfarmlogger.model.enums;
+
 public class CropLog{
     private String name;
     private String date;
