@@ -58,13 +58,13 @@ The **Plant Farm Logger** program is a powerful tool designed to help farmers ke
 
 Follow these steps to build and run the project using the included scripts.
 
--   Make scripts executable (only needed once):
+-   On Unix-like (Linux / macOS)
 
 ```bash
 chmod +x build_and_run.sh
 ./build_and_run.sh
 ```
--  on Windows
+-  On Windows
 
 ```bash
 powershell -ExecutionPolicy ByPass -File ".\build_and_run.ps1"

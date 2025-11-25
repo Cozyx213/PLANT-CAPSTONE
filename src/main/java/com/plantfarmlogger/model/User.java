@@ -1,15 +1,13 @@
 package com.plantfarmlogger.model;
 
-public class User{
+public class User {
     private String name;
     private String username;
     private String password;
     private String address;
     private int age;
 
-    public User(String name, String username,
-                String password, String address,  
-                int age){
+    public User(String name, String username, String password, String address, int age) {
         this.name = name;
         this.username = username;
         this.password = password;
