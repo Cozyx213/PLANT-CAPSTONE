@@ -1,6 +1,6 @@
 package com.plantfarmlogger.model;
 
-import com.plantfarmlogger.model.enums;
+import com.plantfarmlogger.model.enums.Action;
 
 public class CropLog{
     private String name;
