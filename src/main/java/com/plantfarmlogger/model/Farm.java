@@ -36,7 +36,7 @@ public class Farm {
         return cropBeds;
     }
 
-    public void setCropBed(CropBed cropBed) {
+    public void setCropBed(ArrayList<CropBed> cropBeds) {
         this.cropBeds = cropBeds;
     }
 }
