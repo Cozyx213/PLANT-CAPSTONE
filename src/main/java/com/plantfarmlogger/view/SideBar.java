@@ -77,4 +77,5 @@ public class SideBar extends JFrame {
             frame.setVisible(true);
         });
     }
+
 }
