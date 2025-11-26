@@ -37,6 +37,6 @@ public class Farm {
     }
 
     public void setCropBed(CropBed cropBed) {
-        this.cropBed = cropBed;
+        this.cropBeds = cropBeds;
     }
 }

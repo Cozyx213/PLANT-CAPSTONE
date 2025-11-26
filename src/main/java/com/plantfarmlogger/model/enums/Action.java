@@ -4,11 +4,11 @@ public enum Action {
     FERTILIZE("fertilize"),
     WATER("water"),
     AERATE("aerate"),
-    CUT("cut")
+    CUT("cut");
 
     private final String value;
 
-    Action(String action){
+    Action(String value){
         this.value = value;
     }
 
