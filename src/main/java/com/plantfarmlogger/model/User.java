@@ -6,38 +6,17 @@ public class User {
     private String password;
     private String address;
     private int age;
-    private String farm;
-    public User(String name, String username, String address,String farm, int age, String password) {
+
+    public User(String name, String username, String password, String address, int age) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.address = address;
-        this.age = age; 
-        this.farm = farm;
-    //    User n = new User(name,username,address,farm,age,password);
-                
-        }
-
-    public void changeName(String newName){
-        this.name = newName;
+        this.age = age;
     }
-    public void changePassword(String newPassword){
-        this.password = newPassword;
-    }
-    public void changeAddress(String newAddress){
-        this.address = newAddress;
-    }
-
-
 
     // Getters and Setters
-    public String getFarm(){
-        return farm;
-    }
-    public void setFarm(String farm){
-        this.farm = farm;
-    }
-    
+
     public String getName() {
         return name;
     }
@@ -76,9 +55,5 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
-    }
-    @Override
-    public String toString(){
-        return name;
     }
 }
