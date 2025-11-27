@@ -2,78 +2,193 @@ package com.plantfarmlogger.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import com.plantfarmlogger.model.User;
 
+// Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
-
     private JButton addCropBed, changeName, changeAddress, changePass, logOut;
     private User user;
 
+    private static final Color BG_COLOR = new Color(113, 165, 84);
+    private static final Color BUTTON_COLOR = new Color(54, 85, 59);
+    private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
+    private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
+    private static final Color TEXT_COLOR = Color.WHITE;
+    private static final Color SUB_TEXT_COLOR = new Color(214, 223, 197);
+
+    // Constructor remains the same structure, but sets up the JPanel
     public SideBar() {
+        // 'super("LoginForm");' is for JFrame, so we remove it.
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setPreferredSize(new Dimension(260, 800));
-        setBackground(new Color(27, 115, 56));
+        // JFrame-specific calls are removed:
+        // setTitle("AniCore Lite");
+        // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // edit to get user
+        this.user = new User("John Doe", "johndoe", "123", "Cebu Institute of Technology, Cebu City", 24, "123");
+
+        // The contentPane setup is now the setup for the SideBar JPanel itself
+        // (this) refers to the SideBar JPanel
+        setLayout(new GridBagLayout());
+        setBackground(BG_COLOR);
+        setFont(Font.getFont("SansSerif"));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(15, 15, 15, 15);
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        JPanel userInfoPanel = new JPanel(new GridLayout(3, 1));
+        userInfoPanel.setSize(230, 200);
+        userInfoPanel.setOpaque(false);
+        JLabel logoLabel = new JLabel("ANICore LITE");
+        logoLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
+        logoLabel.setForeground(TEXT_COLOR);
+
+        JLabel uName = new JLabel(user.getName());
+        uName.setForeground(TEXT_COLOR);
+        uName.setFont(new Font("SansSerif", Font.BOLD, 32));
+        userInfoPanel.add(uName);
+
+        JLabel uUsername = new JLabel("@" + user.getUsername());
+        uUsername.setForeground(SUB_TEXT_COLOR);
+        uUsername.setFont(new Font("SansSerif", Font.BOLD, 12));
+        userInfoPanel.add(uUsername);
+
+        JLabel uAddress = new JLabel("<html>" + user.getAddress() + "</html>");
+        uAddress.setForeground(SUB_TEXT_COLOR);
+        uAddress.setFont(new Font("SansSerif", Font.BOLD, 12));
+        userInfoPanel.add(uAddress);
+
+        JPanel cropBeds = new JPanel();
+        cropBeds.setLayout(new BoxLayout(cropBeds, BoxLayout.Y_AXIS));
+        // You only need to set the preferred size for the viewport content
+        // if you want scrolling to occur when items exceed this size.
+        cropBeds.setMinimumSize(new Dimension(230, 100));
+        cropBeds.setPreferredSize(new Dimension(230, 100));
+        cropBeds.setOpaque(false);
+        // edit to make loop for number of crop beds
+        // edit this nalang soon to make it white with for loop (THESE SHOULD BE JBUTTONS)
+        cropBeds.add(new JLabel("Kamote 1"));
+        cropBeds.add(new JLabel("Kamote 1"));
+        cropBeds.add(new JLabel("Kamote 1"));
+        JScrollPane cropBedsList = new JScrollPane(cropBeds);
+        cropBedsList.setOpaque(false);
+        cropBedsList.getViewport().setOpaque(false);
+        // Setting the preferred size of the scroll pane itself controls its visible area
+        cropBedsList.setMinimumSize(new Dimension(230, 100));
+        cropBedsList.setPreferredSize(new Dimension(230, 100));
+        cropBedsList.setBorder(BorderFactory.createEmptyBorder());
+
+        JPanel cropsTitleRow = new JPanel(new GridLayout(1, 2));
+        cropsTitleRow.setSize(230, 100);
+        JLabel cropBedsLabel = new JLabel("Crop Beds");
+        cropBedsLabel.setForeground(SUB_TEXT_COLOR);
+        cropsTitleRow.add(cropBedsLabel);
+        cropsTitleRow.setOpaque(false);
+
+        JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
         addCropBed = new JButton("+ Add Crop Bed");
+        addCropBed.setBorderPainted(false);
+        addCropBed.setContentAreaFilled(false);
+        addCropBed.setFocusPainted(false);
+        addCropBed.setFocusable(true);
+        addCropBed.setForeground(SUB_TEXT_COLOR);
 
-        this.user = new User("John Doe", "johndoe", "123",
-                "Dela Rosa Street, Greenbelt Radissons, Metro Manila, Makati, Philippines", 24, "12234");
+        // add color shi
+        addCropBed.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addCropBed.setForeground(TEXT_COLOR);
+            }
 
-        // USER INFO
-        JPanel userInfoPanel = new JPanel();
-        userInfoPanel.setLayout(new BoxLayout(userInfoPanel, BoxLayout.Y_AXIS));
-        userInfoPanel.setBackground(getBackground());
-        userInfoPanel.setBorder(BorderFactory.createEmptyBorder(30, 20, 20, 20));
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addCropBed.setForeground(SUB_TEXT_COLOR);
+            }
+        });
 
-        JLabel nameLabel = new JLabel(user.getName());
-        nameLabel.setForeground(Color.WHITE);
-        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        buttonWrapper.add(this.addCropBed);
+        buttonWrapper.setOpaque(false);
+        addCropBed.setMaximumSize(new Dimension(20, 20));
+        cropsTitleRow.add(buttonWrapper);
 
-        JLabel usernameLabel = new JLabel("@" + user.getUsername());
-        usernameLabel.setForeground(Color.WHITE);
-
-        JLabel addressLabel = new JLabel("<html>" + user.getAddress() + "</html>");
-        addressLabel.setForeground(Color.WHITE);
-
-        userInfoPanel.add(nameLabel);
-        userInfoPanel.add(usernameLabel);
-        userInfoPanel.add(Box.createVerticalStrut(10));
-        userInfoPanel.add(addressLabel);
-
-        // CROP BEDS LIST
-        JPanel cropBedsPanel = new JPanel();
-        cropBedsPanel.setLayout(new BoxLayout(cropBedsPanel, BoxLayout.Y_AXIS));
-        cropBedsPanel.setBackground(getBackground());
-        cropBedsPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-
-        JLabel cropTitle = new JLabel("Crop Beds");
-        cropTitle.setForeground(Color.WHITE);
-        cropTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
-
-        cropBedsPanel.add(cropTitle);
-        cropBedsPanel.add(makeCropLink("Kamote 1"));
-        cropBedsPanel.add(makeCropLink("Carrot 1"));
-        cropBedsPanel.add(makeCropLink("Malunggay 1"));
-
-        cropBedsPanel.add(Box.createVerticalStrut(10));
-        cropBedsPanel.add(addCropBed);
+        JPanel cropsPanel = new JPanel();
+        cropsPanel.setLayout(new BoxLayout(cropsPanel, BoxLayout.Y_AXIS));
+        cropsPanel.add(cropsTitleRow);
+        cropsPanel.add(Box.createVerticalStrut(10));
+        cropsPanel.add(cropBedsList);
+        cropsPanel.setOpaque(false);
 
         // SETTINGS PANEL
-        changeName = new JButton("Change Name");
-        changeAddress = new JButton("Change Address");
-        changePass = new JButton("Change Password");
-        logOut = new JButton("Log Out");
+        this.changeName = new JButton("Change Name");
+        changeName.setBorderPainted(false);
+        changeName.setContentAreaFilled(false);
+        changeName.setFocusPainted(false);
+        changeName.setFocusable(true);
+        changeName.setForeground(SUB_TEXT_COLOR);
+        changeName.setHorizontalAlignment(SwingConstants.LEFT);
+
+        changeName.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                changeName.setForeground(TEXT_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                changeName.setForeground(SUB_TEXT_COLOR);
+            }
+        });
+
+        this.changePass = new JButton("Change Password");
+        changePass.setBorderPainted(false);
+        changePass.setContentAreaFilled(false);
+        changePass.setFocusPainted(false);
+        changePass.setFocusable(true);
+        changePass.setForeground(SUB_TEXT_COLOR);
+        changePass.setHorizontalAlignment(SwingConstants.LEFT);
+        changePass.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                changePass.setForeground(TEXT_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                changePass.setForeground(SUB_TEXT_COLOR);
+            }
+        });
+
+        this.changeAddress = new JButton("Change Address");
+        changeAddress.setBorderPainted(false);
+        changeAddress.setContentAreaFilled(false);
+        changeAddress.setFocusPainted(false);
+        changeAddress.setFocusable(true);
+        changeAddress.setForeground(SUB_TEXT_COLOR);
+        changeAddress.setHorizontalAlignment(SwingConstants.LEFT);
+        changeAddress.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                changeAddress.setForeground(TEXT_COLOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                changeAddress.setForeground(SUB_TEXT_COLOR);
+            }
+        });
 
         JPanel settingsPanel = new JPanel();
+        settingsPanel.setOpaque(false);
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
-        settingsPanel.setBackground(getBackground());
-        settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
+        settingsPanel.setSize(200, 500);
         JLabel settingsLabel = new JLabel("Settings");
-        settingsLabel.setForeground(Color.WHITE);
-        settingsLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-
+        settingsLabel.setForeground(SUB_TEXT_COLOR);
         settingsPanel.add(settingsLabel);
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changeName);
@@ -82,24 +197,53 @@ public class SideBar extends JPanel {
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changePass);
 
-        // FOOTER (Logout)
-        JPanel footer = new JPanel();
-        footer.setBackground(getBackground());
-        footer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        footer.add(logOut);
+        logOut = new JButton("Log Out");
+        logOut.setBorderPainted(false);
+        logOut.setContentAreaFilled(false);
+        logOut.setFocusPainted(false);
+        logOut.setFocusable(true);
+        logOut.setForeground(SUB_TEXT_COLOR);
+        logOut.setHorizontalAlignment(SwingConstants.LEFT);
+        logOut.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                logOut.setForeground(TEXT_COLOR);
+            }
 
-        // ADD ALL SECTIONS
-        add(userInfoPanel);
-        add(cropBedsPanel);
-        add(settingsPanel);
-        add(Box.createVerticalGlue());
-        add(footer);
+            @Override
+            public void mouseExited(MouseEvent e) {
+                logOut.setForeground(SUB_TEXT_COLOR);
+            }
+        });
+
+        // Add components to the SideBar JPanel (which is now the main container)
+        gbc.gridy = 0;
+        add(logoLabel, gbc);
+        gbc.gridy = 1;
+        add(userInfoPanel, gbc);
+        gbc.gridy = 2;
+        add(cropsPanel, gbc);
+        gbc.gridy = 3;
+        add(settingsPanel, gbc);
+        gbc.gridy = 4;
+        add(logOut, gbc);
     }
 
-    private JLabel makeCropLink(String name) {
-        JLabel label = new JLabel("<html><u>" + name + "</u></html>");
-        label.setForeground(Color.WHITE);
-        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return label;
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            JFrame frame = new JFrame("AniCore Lite Sidebar");
+//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//            // Create the new SideBar JPanel instance
+//            SideBar sideBarPanel = new SideBar();
+//
+//            // Add the JPanel to the JFrame's content pane
+//            frame.getContentPane().add(sideBarPanel);
+//
+//            frame.setSize(300, 800);
+//            frame.setMinimumSize(new Dimension(300, 600));
+//            frame.setVisible(true);
+//        });
+//    }
+
 }
