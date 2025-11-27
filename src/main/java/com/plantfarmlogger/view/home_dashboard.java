@@ -34,18 +34,28 @@ public class home_dashboard extends JFrame {
         mainPanel.add(title);
         mainPanel.add(countLabel);
 
-        // Add multiple crop bed cards
-        mainPanel.add(createCropCard());
-        mainPanel.add(createCropCard());
-        mainPanel.add(createCropCard());
+        // NEW JPANEL so that only crop cards area is scrollable
 
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        JPanel cropCardsPanel = new JPanel();
+        cropCardsPanel.setLayout(new BoxLayout(cropCardsPanel, BoxLayout.Y_AXIS));
+        cropCardsPanel.setOpaque(false);
+
+        // Add multiple crop bed cards
+        cropCardsPanel.add(createCropCard());
+        cropCardsPanel.add(createCropCard());
+        cropCardsPanel.add(createCropCard());
+        cropCardsPanel.add(createCropCard());
+
+        JScrollPane scrollPane = new JScrollPane(cropCardsPanel);
         scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
 
 //        add(scrollPane);
+        mainPanel.add(scrollPane);
 
         homeDashBoard.add(new SideBar());
-        homeDashBoard.add(scrollPane);
+        homeDashBoard.add(mainPanel);
 
         add(homeDashBoard);
     }
