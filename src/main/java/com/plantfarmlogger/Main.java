@@ -9,7 +9,7 @@ public class Main{
 
     public static void main(String[] args) {
 
-        User jake = new User("jake","gwapo","passwordni","moon", 19);
+        User jake = new User("jake","gwapo","passwordni","moon", 19, "12234");
         System.out.println(jake);
         System.out.println("Hello owrld QWD ");
           // show Swing UI on EDT

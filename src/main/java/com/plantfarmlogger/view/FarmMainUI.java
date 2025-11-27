@@ -1,5 +1,6 @@
 package com.plantfarmlogger.view;
 
+
 import javax.swing.*;
 import java.awt.*;
 
