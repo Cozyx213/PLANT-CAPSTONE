@@ -8,10 +8,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+
 public class UserDao implements UserDaoInter{
-	ArrayList <User> Users;
+	ArrayList <User> Users= new  ArrayList<User>();
     private final String userFile = "src/main/resources/csv/users.csv";
-       
+    public ArrayList<User> getUsers(){
+        return Users;
+    }
     void fetch(){
  
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(userFile, true));
@@ -38,8 +42,28 @@ public class UserDao implements UserDaoInter{
         }
        System.out.println( "SUCCESS");
     }
+     void saveToCSV(){
+ 
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(userFile));
+            BufferedReader br = new BufferedReader(new FileReader(userFile));
+            ){
+                for(User u : Users){
+                    bw.write(u.getName()+","+u.getUsername()+","+u.getAddress()+","+u.getFarm()+","+u.getAge()+","+u.getPassword()+"\n");
+                }
+                
+                
+              
+        }catch(IOException e){
+           System.out.println( "IO_ERROR");
+        }
+       System.out.println( "SUCCESS");
+    }
     public void save(User t){
+        if(t==null){
+            System.out.println("no user ");
+        }
         Users.add(t);
+        saveToCSV();
 
     }
     public void update(User t, String[] params){
@@ -55,8 +79,20 @@ public class UserDao implements UserDaoInter{
 
             index++;
         }
+        saveToCSV();
     }
-    public void authenticate(User t){
-        
+    public void printU(){
+        for(User u : Users){
+            System.out.println(u);
+        }
     }
+    public boolean authenticate(User t){
+        for(User u : Users){
+            if(u.getName()==t.getName() && u.getPassword() == t.getPassword()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }

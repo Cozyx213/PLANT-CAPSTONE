@@ -7,6 +7,6 @@ public interface UserDaoInter {
     void save(User t);
     void update(User t, String[] params);
     void delete(User t);
-    void authenticate(User t);
+    boolean authenticate(User t);
 
 }
