@@ -70,7 +70,7 @@ public class SideBar extends JFrame {
         this.setContentPane(contentPane);
     }
 
-    public static void main(String[] args) {
+      static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             SideBar frame = new SideBar();
             frame.setSize(230, 800);

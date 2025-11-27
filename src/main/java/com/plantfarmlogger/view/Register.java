@@ -47,8 +47,14 @@ public class Register extends JFrame {
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setOpaque(false);
 
-        addField(formPanel, "Email");
+        addField(formPanel, "Name");
         addField(formPanel, "Username");
+
+        addField(formPanel, "Age");
+        addField(formPanel, "Farm");
+
+        addField(formPanel, "Address");
+
         addPasswordField(formPanel, "Password");
         addPasswordField(formPanel, "Confirm Password");
 
@@ -123,31 +129,37 @@ public class Register extends JFrame {
             setBorder(new EmptyBorder(5, 15, 5, 15));
             setFont(new Font("SansSerif", Font.PLAIN, 14));
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             g.setColor(TEXT_FIELD_BG);
             g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
             super.paintComponent(g);
         }
+
         @Override
-        protected void paintBorder(Graphics g) {}
+        protected void paintBorder(Graphics g) {
+        }
     }
 
     static class RoundedPasswordField extends JPasswordField {
         public RoundedPasswordField(int size) {
             super(size);
             setOpaque(false);
-            setBorder(new EmptyBorder(5, 15, 5, 15));
+            setBorder(new EmptyBorder(7, 15, 7, 15));
             setFont(new Font("SansSerif", Font.PLAIN, 14));
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             g.setColor(TEXT_FIELD_BG);
             g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
             super.paintComponent(g);
         }
+
         @Override
-        protected void paintBorder(Graphics g) {}
+        protected void paintBorder(Graphics g) {
+        }
     }
 
     static class RoundedButton extends JButton {
@@ -160,17 +172,26 @@ public class Register extends JFrame {
             setForeground(Color.WHITE);
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             addMouseListener(new MouseAdapter() {
-                public void mouseEntered(MouseEvent evt) { setForeground(new Color(230, 230, 230)); }
-                public void mouseExited(MouseEvent evt) { setForeground(Color.WHITE); }
+                public void mouseEntered(MouseEvent evt) {
+                    setForeground(new Color(230, 230, 230));
+                }
+
+                public void mouseExited(MouseEvent evt) {
+                    setForeground(Color.WHITE);
+                }
             });
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            if (getModel().isPressed()) g2.setColor(BUTTON_COLOR.darker());
-            else if (getModel().isRollover()) g2.setColor(BUTTON_HOVER_COLOR);
-            else g2.setColor(BUTTON_COLOR);
+            if (getModel().isPressed())
+                g2.setColor(BUTTON_COLOR.darker());
+            else if (getModel().isRollover())
+                g2.setColor(BUTTON_HOVER_COLOR);
+            else
+                g2.setColor(BUTTON_COLOR);
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
             g2.dispose();
             super.paintComponent(g);

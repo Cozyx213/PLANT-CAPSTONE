@@ -6,14 +6,17 @@ public class User {
     private String password;
     private String address;
     private int age;
-
-    public User(String name, String username, String password, String address, int age) {
+    private String farm;
+    public User(String name, String username, String address,String farm, int age, String password) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.address = address;
-        this.age = age;
-    }
+        this.age = age; 
+        this.farm = farm;
+    //    User n = new User(name,username,address,farm,age,password);
+                
+        }
 
     public void changeName(String newName){
         this.name = newName;
@@ -28,6 +31,13 @@ public class User {
 
 
     // Getters and Setters
+    public String getFarm(){
+        return farm;
+    }
+    public void setFarm(String farm){
+        this.farm = farm;
+    }
+    
     public String getName() {
         return name;
     }

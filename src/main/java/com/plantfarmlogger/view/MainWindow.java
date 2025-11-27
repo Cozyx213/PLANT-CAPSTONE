@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class MainWindow extends JFrame {
     public MainWindow() {
-        LoginForm lf = new LoginForm();
-        lf.setVisible(true);
+        Register l = new Register();
+        l.setVisible(true);
     }
 }
