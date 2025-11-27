@@ -1,18 +1,21 @@
 package com.plantfarmlogger.view;
 
 import javax.swing.*;
-        import javax.swing.border.*;
-        import java.awt.*;
+import javax.swing.border.*;
+import java.awt.*;
 
 public class home_dashboard extends JFrame {
 
     public home_dashboard() {
         setTitle("My Farm");
-        setSize(900, 700);
+        setSize(900, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Main scrollable container
+        JPanel homeDashBoard = new JPanel();
+        homeDashBoard.setLayout(new BoxLayout(homeDashBoard, BoxLayout.X_AXIS));
+
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBackground(new Color(250, 246, 236)); // light cream background
@@ -39,7 +42,12 @@ public class home_dashboard extends JFrame {
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
 
-        add(scrollPane);
+//        add(scrollPane);
+
+        homeDashBoard.add(new SideBar());
+        homeDashBoard.add(scrollPane);
+
+        add(homeDashBoard);
     }
 
     private JPanel createCropCard() {

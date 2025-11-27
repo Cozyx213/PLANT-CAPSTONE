@@ -1,9 +1,11 @@
 package com.plantfarmlogger.view;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.*;
 
 import com.plantfarmlogger.model.User;
 
@@ -12,6 +14,7 @@ public class SideBar extends JPanel {
     private JButton addCropBed, changeName, changeAddress, changePass, logOut;
     private User user;
 
+    //DESIGN STUFF
     private static final Color BG_COLOR = new Color(113, 165, 84);
     private static final Color BUTTON_COLOR = new Color(54, 85, 59);
     private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
@@ -19,13 +22,9 @@ public class SideBar extends JPanel {
     private static final Color TEXT_COLOR = Color.WHITE;
     private static final Color SUB_TEXT_COLOR = new Color(214, 223, 197);
 
-    // Constructor remains the same structure, but sets up the JPanel
-    public SideBar() {
-        // 'super("LoginForm");' is for JFrame, so we remove it.
+    private static final Font defaultFont = new Font("SansSerif", Font.PLAIN, 16);
 
-        // JFrame-specific calls are removed:
-        // setTitle("AniCore Lite");
-        // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public SideBar() {
 
         // edit to get user
         this.user = new User("John Doe", "johndoe", "123", "Cebu Institute of Technology, Cebu City", 24, "123");
@@ -34,7 +33,9 @@ public class SideBar extends JPanel {
         // (this) refers to the SideBar JPanel
         setLayout(new GridBagLayout());
         setBackground(BG_COLOR);
+        setMaximumSize(new Dimension(300, 800));
         setFont(Font.getFont("SansSerif"));
+        setUIFont(new FontUIResource(defaultFont));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
@@ -56,26 +57,26 @@ public class SideBar extends JPanel {
 
         JLabel uUsername = new JLabel("@" + user.getUsername());
         uUsername.setForeground(SUB_TEXT_COLOR);
-        uUsername.setFont(new Font("SansSerif", Font.BOLD, 12));
+        uUsername.setFont(new Font("SansSerif", Font.BOLD, 16));
         userInfoPanel.add(uUsername);
 
         JLabel uAddress = new JLabel("<html>" + user.getAddress() + "</html>");
         uAddress.setForeground(SUB_TEXT_COLOR);
-        uAddress.setFont(new Font("SansSerif", Font.BOLD, 12));
+        uAddress.setFont(new Font("SansSerif", Font.BOLD, 16));
         userInfoPanel.add(uAddress);
 
         JPanel cropBeds = new JPanel();
         cropBeds.setLayout(new BoxLayout(cropBeds, BoxLayout.Y_AXIS));
-        // You only need to set the preferred size for the viewport content
-        // if you want scrolling to occur when items exceed this size.
         cropBeds.setMinimumSize(new Dimension(230, 100));
         cropBeds.setPreferredSize(new Dimension(230, 100));
         cropBeds.setOpaque(false);
+        cropBeds.setFont(new Font("SansSerif", Font.BOLD, 32));
         // edit to make loop for number of crop beds
         // edit this nalang soon to make it white with for loop (THESE SHOULD BE JBUTTONS)
         cropBeds.add(new JLabel("Kamote 1"));
         cropBeds.add(new JLabel("Kamote 1"));
         cropBeds.add(new JLabel("Kamote 1"));
+
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);
         cropBedsList.getViewport().setOpaque(false);
@@ -216,7 +217,6 @@ public class SideBar extends JPanel {
             }
         });
 
-        // Add components to the SideBar JPanel (which is now the main container)
         gbc.gridy = 0;
         add(logoLabel, gbc);
         gbc.gridy = 1;
@@ -227,23 +227,37 @@ public class SideBar extends JPanel {
         add(settingsPanel, gbc);
         gbc.gridy = 4;
         add(logOut, gbc);
+
     }
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            JFrame frame = new JFrame("AniCore Lite Sidebar");
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//            // Create the new SideBar JPanel instance
-//            SideBar sideBarPanel = new SideBar();
-//
-//            // Add the JPanel to the JFrame's content pane
-//            frame.getContentPane().add(sideBarPanel);
-//
-//            frame.setSize(300, 800);
-//            frame.setMinimumSize(new Dimension(300, 600));
-//            frame.setVisible(true);
-//        });
-//    }
+    public static void setUIFont(FontUIResource f){
+        Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof FontUIResource) {
+                FontUIResource originalFont = (FontUIResource) value;
+                // CORRECTED LINE: Use the original font's style, but apply the new size and family name.
+                Font newFont = new Font(f.getFontName(), originalFont.getStyle(), f.getSize());
+                UIManager.put(key, new FontUIResource(newFont));
+            }
+        }
+    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("AniCore Lite Sidebar");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            // Create the new SideBar JPanel instance
+            SideBar sideBarPanel = new SideBar();
+
+            // Add the JPanel to the JFrame's content pane
+            frame.getContentPane().add(sideBarPanel);
+
+            frame.setSize(300, 800);
+            frame.setMinimumSize(new Dimension(300, 600));
+            frame.setVisible(true);
+        });
+    }
 
 }
