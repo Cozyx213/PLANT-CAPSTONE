@@ -4,55 +4,91 @@ import javax.swing.*;
 import java.awt.*;
 import com.plantfarmlogger.model.User;
 
-public class SideBar extends JFrame {
+public class SideBar extends JPanel {
+
     private JButton addCropBed;
     private JButton changeName;
     private JButton changeAddress;
     private JButton changePass;
     private JButton logOut;
-    private JPanel contentPane;
     private User user;
 
     public SideBar() {
-        super("LoginForm");
-        addCropBed = new JButton("Add Crop Bed");
 
-        //edit to get user
-        this.user = new User("John Doe", "johndoe", "123", "Cebu Institute of Technology, Cebu City", 24);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        contentPane = new JPanel(new GridLayout(5, 1));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setPreferredSize(new Dimension(260, 800));   // sidebar width
+        setBackground(new Color(27, 115, 56));       // green background (match your UI)
 
-        JPanel userInfoPanel = new JPanel (new GridLayout(3, 1));
-        userInfoPanel.setSize(230, 200);
-        userInfoPanel.add(new JLabel(user.getName()));
-        userInfoPanel.add(new JLabel(user.getUsername()));
-        userInfoPanel.add(new JLabel("<html>" + user.getAddress() + "</html>"));
+        addCropBed = new JButton("+ Add Crop Bed");
 
-        JPanel cropBeds = new JPanel (new GridLayout(0,1));
-        cropBeds.setSize(230, 200);
-        cropBeds.add(new JLabel("Crop Beds"));
-        //edit to make loop for number of crop beds
-        cropBeds.add(new JLabel("Kamote 1"));
-        cropBeds.add(new JLabel("Kamote 1"));
-        cropBeds.add(new JLabel("Kamote 1"));
+        // sample user
+        this.user = new User("John Doe", "johndoe", "123",
+                "Dela Rosa Street, Greenbelt\nRadissons, Metro Manila, Makati, Philippines", 24);
 
-        JPanel cropsPanel = new JPanel (new BorderLayout(2, 2));
-        cropsPanel.add(cropBeds, BorderLayout.WEST);
+        // -------------------------
+        // USER INFO PANEL
+        // -------------------------
+        JPanel userInfoPanel = new JPanel();
+        userInfoPanel.setLayout(new BoxLayout(userInfoPanel, BoxLayout.Y_AXIS));
+        userInfoPanel.setBackground(getBackground());
+        userInfoPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonWrapper.add(this.addCropBed);
-        addCropBed.setMaximumSize(new Dimension(20,20));
-        cropsPanel.add(buttonWrapper, BorderLayout.EAST);
+        JLabel nameLabel = new JLabel(user.getName());
+        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
 
-        //SETTINGS PANEL
-        this.changeName = new JButton("Change Name");
-        this.changePass = new JButton("Change Password");
-        this.changeAddress = new JButton("Change Address");
+        JLabel usernameLabel = new JLabel("@" + user.getUsername());
+        usernameLabel.setForeground(Color.WHITE);
+
+        JLabel addressLabel = new JLabel("<html>" + user.getAddress() + "</html>");
+        addressLabel.setForeground(Color.WHITE);
+
+        userInfoPanel.add(nameLabel);
+        userInfoPanel.add(usernameLabel);
+        userInfoPanel.add(Box.createVerticalStrut(10));
+        userInfoPanel.add(addressLabel);
+
+        // -------------------------
+        // CROP BEDS LIST
+        // -------------------------
+        JPanel cropBedsPanel = new JPanel();
+        cropBedsPanel.setLayout(new BoxLayout(cropBedsPanel, BoxLayout.Y_AXIS));
+        cropBedsPanel.setBackground(getBackground());
+        cropBedsPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
+        JLabel cropTitle = new JLabel("Crop Beds");
+        cropTitle.setForeground(Color.WHITE);
+        cropTitle.setFont(new Font("SansSerif", Font.BOLD, 16));
+        cropBedsPanel.add(cropTitle);
+
+        // Example entries
+        cropBedsPanel.add(makeCropLink("Kamote 1"));
+        cropBedsPanel.add(makeCropLink("Carrot 1"));
+        cropBedsPanel.add(makeCropLink("Malunggay 1"));
+
+        // add crop button
+        addCropBed.setAlignmentX(Component.LEFT_ALIGNMENT);
+        cropBedsPanel.add(Box.createVerticalStrut(10));
+        cropBedsPanel.add(addCropBed);
+
+        // -------------------------
+        // SETTINGS PANEL
+        // -------------------------
+        changeName = new JButton("Change Name");
+        changePass = new JButton("Change Password");
+        changeAddress = new JButton("Change Address");
+        logOut = new JButton("Log Out");
 
         JPanel settingsPanel = new JPanel();
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
-        settingsPanel.setSize(200, 500);
-        settingsPanel.add(new JLabel("Settings"));
+        settingsPanel.setBackground(getBackground());
+        settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel settingsLabel = new JLabel("Settings");
+        settingsLabel.setForeground(Color.WHITE);
+        settingsLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        settingsPanel.add(settingsLabel);
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changeName);
         settingsPanel.add(Box.createVerticalStrut(10));
@@ -60,22 +96,24 @@ public class SideBar extends JFrame {
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changePass);
 
-        logOut = new JButton("Log Out");
+        // logout
+        logOut.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        contentPane.add(userInfoPanel);
-        contentPane.add(cropsPanel);
-        contentPane.add(settingsPanel);
-        contentPane.add(logOut);
-        //contentPane.add(buttonWrapper);
-        this.setContentPane(contentPane);
+        // -------------------------
+        // ADD ALL SECTIONS TO SIDEBAR
+        // -------------------------
+        add(userInfoPanel);
+        add(cropBedsPanel);
+        add(settingsPanel);
+        add(Box.createVerticalGlue());
+        add(logOut);
+        add(Box.createVerticalStrut(20));
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            SideBar frame = new SideBar();
-            frame.setSize(230, 800);
-            frame.setVisible(true);
-        });
+    private JLabel makeCropLink(String name) {
+        JLabel label = new JLabel("<html><u>" + name + "</u></html>");
+        label.setForeground(Color.WHITE);
+        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return label;
     }
-
 }
