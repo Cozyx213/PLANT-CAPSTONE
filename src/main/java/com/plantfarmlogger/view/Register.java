@@ -50,10 +50,6 @@ public class Register extends JFrame {
         addField(formPanel, "Name");
         addField(formPanel, "Username");
 
-        addField(formPanel, "Age");
-        addField(formPanel, "Farm");
-
-        addField(formPanel, "Address");
 
         addPasswordField(formPanel, "Password");
         addPasswordField(formPanel, "Confirm Password");

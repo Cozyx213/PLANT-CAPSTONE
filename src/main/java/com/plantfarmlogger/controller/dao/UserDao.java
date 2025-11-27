@@ -13,6 +13,14 @@ import java.util.ArrayList;
 public class UserDao implements UserDaoInter{
 	ArrayList <User> Users= new  ArrayList<User>();
     private final String userFile = "src/main/resources/csv/users.csv";
+
+
+
+
+
+    public UserDao(){
+        fetch();
+    }
     public ArrayList<User> getUsers(){
         return Users;
     }
@@ -28,9 +36,9 @@ public class UserDao implements UserDaoInter{
                     
                     String name = spl[0];
                     String username = spl[1];
-                    int age = Integer.parseInt(spl[2]);
-                    String address = spl[3];
-                    String farm = spl[4];
+                    String address = spl[2];
+                    String farm = spl[3];
+                    int age = Integer.parseInt(spl[4]);
                     String password = spl[5];
 
                     User n = new User(name,username,address,farm,age,password);
