@@ -110,10 +110,19 @@ public class SideBar extends JPanel {
         add(Box.createVerticalStrut(20));
     }
 
+<<<<<<< HEAD
     private JLabel makeCropLink(String name) {
         JLabel label = new JLabel("<html><u>" + name + "</u></html>");
         label.setForeground(Color.WHITE);
         label.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return label;
+=======
+      static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            SideBar frame = new SideBar();
+            frame.setSize(230, 800);
+            frame.setVisible(true);
+        });
+>>>>>>> ec84d0965676d945030e8c2faa7d1504c2d7abb1
     }
 }

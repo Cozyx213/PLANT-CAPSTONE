@@ -5,7 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import com.plantfarmlogger.controller.LoginController;;
 public class Login extends JFrame {
 
     private static final Color BG_COLOR = new Color(113, 165, 84);
@@ -106,6 +106,25 @@ public class Login extends JFrame {
         loginBtn.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         formPanel.add(loginBtn);
+        LoginController controller = new LoginController();
+
+
+        loginBtn.addActionListener(e ->{
+            System.out.println(userField.getText());
+            System.out.println(passField.getPassword());
+
+            String username =userField.getText();
+            char[] password = passField.getPassword();
+
+            boolean ok = controller.authenticate(username, password);
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Login successful.", "Status", JOptionPane.INFORMATION_MESSAGE);
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "Login unsuccessful.", "Status", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        });
         formPanel.add(Box.createVerticalStrut(80));
 
         gbc.gridy = 2;
