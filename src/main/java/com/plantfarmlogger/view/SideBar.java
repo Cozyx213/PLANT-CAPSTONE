@@ -1,6 +1,7 @@
 package com.plantfarmlogger.view;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -27,7 +28,7 @@ public class SideBar extends JPanel {
     public SideBar() {
 
         // edit to get user
-        this.user = new User("John Doe", "johndoe", "123", "Cebu Institute of Technology, Cebu City", 24, "123");
+        this.user = new User("John Doe", "johndoe", "Cebu Institute of Technology-University, Cebu City, Cebu, Region VII", "123", 24, "123");
 
         // The contentPane setup is now the setup for the SideBar JPanel itself
         // (this) refers to the SideBar JPanel
@@ -37,13 +38,15 @@ public class SideBar extends JPanel {
         setFont(Font.getFont("SansSerif"));
         setUIFont(new FontUIResource(defaultFont));
 
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.WEST;
 
-        JPanel userInfoPanel = new JPanel(new GridLayout(3, 1));
+        JPanel userInfoPanel = new JPanel();
+        userInfoPanel.setLayout(new BoxLayout(userInfoPanel, BoxLayout.Y_AXIS));
         userInfoPanel.setSize(230, 200);
         userInfoPanel.setOpaque(false);
         JLabel logoLabel = new JLabel("ANICore LITE");
@@ -52,11 +55,13 @@ public class SideBar extends JPanel {
 
         JLabel uName = new JLabel(user.getName());
         uName.setForeground(TEXT_COLOR);
+        uName.setBorder(new EmptyBorder(new Insets(20, 0, 5, 0)));
         uName.setFont(new Font("SansSerif", Font.BOLD, 32));
         userInfoPanel.add(uName);
 
         JLabel uUsername = new JLabel("@" + user.getUsername());
         uUsername.setForeground(SUB_TEXT_COLOR);
+        uUsername.setBorder(new EmptyBorder(new Insets(0, 0, 30, 0)));
         uUsername.setFont(new Font("SansSerif", Font.BOLD, 16));
         userInfoPanel.add(uUsername);
 
@@ -133,6 +138,7 @@ public class SideBar extends JPanel {
         changeName.setFocusable(true);
         changeName.setForeground(SUB_TEXT_COLOR);
         changeName.setHorizontalAlignment(SwingConstants.LEFT);
+        changeName.setMargin(new Insets(0, 0, 0, 0));
 
         changeName.addMouseListener(new MouseAdapter() {
             @Override
@@ -153,6 +159,7 @@ public class SideBar extends JPanel {
         changePass.setFocusable(true);
         changePass.setForeground(SUB_TEXT_COLOR);
         changePass.setHorizontalAlignment(SwingConstants.LEFT);
+        changePass.setMargin(new Insets(0, 0, 0, 0));
         changePass.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -172,6 +179,7 @@ public class SideBar extends JPanel {
         changeAddress.setFocusable(true);
         changeAddress.setForeground(SUB_TEXT_COLOR);
         changeAddress.setHorizontalAlignment(SwingConstants.LEFT);
+        changeAddress.setMargin(new Insets(0, 0, 0, 0));
         changeAddress.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -205,6 +213,7 @@ public class SideBar extends JPanel {
         logOut.setFocusable(true);
         logOut.setForeground(SUB_TEXT_COLOR);
         logOut.setHorizontalAlignment(SwingConstants.LEFT);
+        logOut.setMargin(new Insets(0, 0, 0, 0));
         logOut.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -243,21 +252,40 @@ public class SideBar extends JPanel {
             }
         }
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("AniCore Lite Sidebar");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // Create the new SideBar JPanel instance
-            SideBar sideBarPanel = new SideBar();
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Call superclass method to ensure proper painting
 
-            // Add the JPanel to the JFrame's content pane
-            frame.getContentPane().add(sideBarPanel);
+        Graphics2D g2d = (Graphics2D) g;
 
-            frame.setSize(300, 800);
-            frame.setMinimumSize(new Dimension(300, 600));
-            frame.setVisible(true);
-        });
+        // Define start and end colors
+        Color startColor = new Color(76, 139, 63); // Steel Blue
+        Color endColor = new Color(102, 177, 75); // Light Blue
+
+        // Create a vertical gradient from top to bottom
+        GradientPaint gp = new GradientPaint(0, 0, startColor, 0, getHeight(), endColor);
+
+        // Set the paint and fill the rectangle
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
     }
+
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            JFrame frame = new JFrame("AniCore Lite Sidebar");
+//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//            // Create the new SideBar JPanel instance
+//            SideBar sideBarPanel = new SideBar();
+//
+//            // Add the JPanel to the JFrame's content pane
+//            frame.getContentPane().add(sideBarPanel);
+//
+//            frame.setSize(300, 800);
+//            frame.setMinimumSize(new Dimension(300, 600));
+//            frame.setVisible(true);
+//        });
+//    }
 
 }
