@@ -4,25 +4,25 @@ public class CropBed{
     private Plant plantType;
     private String soilType;
     private String lastFertilized;
+    private String datePlanted;
     private double width;
     private double height;
     private double length;
-    private String datePlanted;
-    
+
     public CropBed(Plant plantType, String soilType, String lastFertilized,
-                   double width, double height, double length,
-                   String datePlanted){
+                   String datePlanted, double width, double height,
+                   double length) {
         this.plantType = plantType;
         this.soilType = soilType;
         this.lastFertilized = lastFertilized;
+        this.datePlanted = datePlanted;
         this.width = width;
         this.height = height;
         this.length = length;
     }
-    public void addLog(){}
-    public void editLog(){}
-    public CropLog getLog(){return null;}
-    public void getInfo(){}
+
+    public CropLog getLogs(){return null;}
+    public String getInfo(){return null;}
 
     public Plant getPlantType() {
         return plantType;
@@ -48,6 +48,14 @@ public class CropBed{
         this.lastFertilized = lastFertilized;
     }
 
+    public String getDatePlanted() {
+        return datePlanted;
+    }
+
+    public void setDatePlanted(String datePlanted) {
+        this.datePlanted = datePlanted;
+    }
+
     public double getWidth() {
         return width;
     }
@@ -70,13 +78,5 @@ public class CropBed{
 
     public void setLength(double length) {
         this.length = length;
-    }
-
-    public String getDatePlanted() {
-        return datePlanted;
-    }
-
-    public void setDatePlanted(String datePlanted) {
-        this.datePlanted = datePlanted;
     }
 }
