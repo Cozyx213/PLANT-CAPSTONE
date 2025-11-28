@@ -14,7 +14,7 @@ public class Register extends JFrame {
     private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
     private static final Color TEXT_COLOR = Color.WHITE;
 
-    public Register() {
+    public Register(AppNavigator an) {
         setTitle("AniCore Lite - Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 700);
@@ -68,11 +68,17 @@ public class Register extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         mainPanel.add(formPanel, gbc);
 
-        JLabel footerLabel = new JLabel("<html>Already have an account? <u>Log In</u></html>");
+        JButton footerLabel = new JButton("<html>Already have an account? <u>Log In</u></html>");
         footerLabel.setForeground(TEXT_COLOR);
         footerLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
         footerLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        footerLabel.setContentAreaFilled(false);
+        footerLabel.setBorderPainted(false);
+        footerLabel.setFocusPainted(false);
 
+        footerLabel.addActionListener(e ->{
+            an.showLogin();
+        });
         gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
         mainPanel.add(footerLabel, gbc);
@@ -192,9 +198,5 @@ public class Register extends JFrame {
             g2.dispose();
             super.paintComponent(g);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Register().setVisible(true));
     }
 }

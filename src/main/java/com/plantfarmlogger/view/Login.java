@@ -125,16 +125,25 @@ public class Login extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         mainPanel.add(formPanel, gbc);
 
-        JLabel footerLabel = new JLabel("No account yet? Create an account");
-        footerLabel.setForeground(TEXT_COLOR);
-        footerLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        footerLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+       
         
-        footerLabel.setText("<html>No account yet? <u>Create an account</u></html>");
-        
+        // Replace the label with a button styled as a link
+        JButton registerBtn = new JButton("<html>No account yet? <u>Create an account</u></html>");
+        registerBtn.setForeground(TEXT_COLOR);
+        registerBtn.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        registerBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        registerBtn.setContentAreaFilled(false);
+        registerBtn.setBorderPainted(false);
+        registerBtn.setFocusPainted(false);
+
+        registerBtn.addActionListener(e -> {
+            an.showRegister(); // Assumes AppNavigator has a showRegister() method
+            System.out.println("reg");
+        });
+
         gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
-        mainPanel.add(footerLabel, gbc);
+        mainPanel.add(registerBtn, gbc);
     }
 
     static class RoundedTextField extends JTextField {
