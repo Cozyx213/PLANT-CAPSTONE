@@ -1,6 +1,0 @@
-
-
-com/plantfarmlogger/model/Farm.java
-    (-) delete int size
-        cropBed is an ArrayList and already has .size()
-
