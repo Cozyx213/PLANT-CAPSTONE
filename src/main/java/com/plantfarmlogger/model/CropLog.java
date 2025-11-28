@@ -3,39 +3,30 @@ package com.plantfarmlogger.model;
 import com.plantfarmlogger.model.enums.Action;
 
 public class CropLog{
-    private String name;
+    private String notes;
     private String date;
-    private CropBed cropBed;
-
-    // suggestion: use enum HealthStatus and GrowthStatus instead
     private String healthStatus;
     private String growthStatus;
     private Action action;
-    private String address;
-    private int age;
+    private String cropBed;
+    private String farmer;
 
-    public CropLog(String name, String date, CropBed cropBed,
-                   String healthStatus, String growthStatus, Action action,
-                   String address, int age) {
-        this.name = name;
+    public CropLog(String notes, String date, String healthStatus, String growthStatus, Action action, String cropBed, String farmer) {
+        this.notes = notes;
         this.date = date;
-        this.cropBed = cropBed;
         this.healthStatus = healthStatus;
         this.growthStatus = growthStatus;
         this.action = action;
-        this.address = address;
-        this.age = age;
+        this.cropBed = cropBed;
+        this.farmer = farmer;
     }
 
-    // suggestion: delete redundant method waterPlant(), Waterable.water() already exists
-    public void waterPlant(){}
-
-    public String getName() {
-        return name;
+    public String getNotes() {
+        return notes;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getDate() {
@@ -44,14 +35,6 @@ public class CropLog{
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public CropBed getCropBed() {
-        return cropBed;
-    }
-
-    public void setCropBed(CropBed cropBed) {
-        this.cropBed = cropBed;
     }
 
     public String getHealthStatus() {
@@ -78,19 +61,19 @@ public class CropLog{
         this.action = action;
     }
 
-    public String getAddress() {
-        return address;
+    public String getCropBed() {
+        return cropBed;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCropBed(String cropBed) {
+        this.cropBed = cropBed;
     }
 
-    public int getAge() {
-        return age;
+    public String getFarmer() {
+        return farmer;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setFarmer(String farmer) {
+        this.farmer = farmer;
     }
 }
