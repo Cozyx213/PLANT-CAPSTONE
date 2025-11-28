@@ -12,11 +12,8 @@ import java.util.ArrayList;
 
 public class UserDao implements UserDaoInter{
 	ArrayList <User> Users= new  ArrayList<User>();
+
     private final String userFile = "src/main/resources/csv/users.csv";
-
-
-
-
 
     public UserDao(){
         fetch();
@@ -24,9 +21,8 @@ public class UserDao implements UserDaoInter{
     public ArrayList<User> getUsers(){
         return Users;
     }
-    void fetch(){
- 
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(userFile, true));
+    private void fetch(){
+        try(
             BufferedReader br = new BufferedReader(new FileReader(userFile));
             ){
                 String line;
@@ -37,26 +33,25 @@ public class UserDao implements UserDaoInter{
                     String name = spl[0];
                     String username = spl[1];
                     String address = spl[2];
-                    String farm = spl[3];
-                    int age = Integer.parseInt(spl[4]);
-                    String password = spl[5];
+                    int age = Integer.parseInt(spl[3]);
+                    String password = spl[4];
 
-                    User n = new User(name,username,address,farm,age,password);
+                    User n = new User(name,username,address,age,password);
                     Users.add(n);
                 }
               
         }catch(IOException e){
-           System.out.println( "IO_ERROR");
+           System.out.println( "IO_ERROR theres no file");
         }
        System.out.println( "SUCCESS");
     }
-     void saveToCSV(){
+    private void saveToCSV(){
  
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(userFile));
-            BufferedReader br = new BufferedReader(new FileReader(userFile));
+           
             ){
                 for(User u : Users){
-                    bw.write(u.getName()+","+u.getUsername()+","+u.getAddress()+","+u.getFarm()+","+u.getAge()+","+u.getPassword()+"\n");
+                    bw.write(u.getName()+","+u.getUsername()+","+u.getAddress()+","+u.getAge()+","+u.getPassword()+"\n");
                 }
                 
                 
@@ -94,13 +89,13 @@ public class UserDao implements UserDaoInter{
             System.out.println(u);
         }
     }
-    public boolean authenticate(User t){
+    public User authenticate(String username, String password){
         for(User u : Users){
-            if(u.getName()==t.getName() && u.getPassword() == t.getPassword()) {
-                return true;
+            if(u.getName().equals(username) && u.getPassword().equals(password)) {
+                return u;
             }
         }
-        return false;
+        return null;
     }
     
 }

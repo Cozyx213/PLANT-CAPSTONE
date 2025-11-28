@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 
 import com.plantfarmlogger.model.CropBed;
-import com.plantfarmlogger.model.Farm;
+
 import com.plantfarmlogger.model.Plant;
 import com.plantfarmlogger.model.User;
 
@@ -17,7 +17,7 @@ import com.plantfarmlogger.model.User;
 public class SideBar extends JPanel {
     private JButton addCropBed, changeName, changeAddress, changePass, logOut;
     private User user;
-    private Farm farm;
+
 
     //DESIGN STUFF
     private static final Color BG_COLOR = new Color(113, 165, 84);
@@ -29,22 +29,23 @@ public class SideBar extends JPanel {
 
     private static final Font defaultFont = new Font("SansSerif", Font.PLAIN, 16);
 
-    public SideBar() {
+    public SideBar(User user) {
 
         // edit to get user
-        this.user = new User("John Doe", "johndoe", "Cebu Institute of Technology-University, Cebu City, Cebu, Region VII", "123", 24, "123");
-        this.farm = new Farm("myFarm", 0);
-        farm.setCropBed(new ArrayList<>());
-        farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-        1.1, 1.2, 1.3,
-        "110125"));
-        farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-                1.1, 1.2, 1.3,
-                "110125"));
-        farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-                1.1, 1.2, 1.3,
-                "110125"));
+        // this.user = new User("John Doe", "johndoe", "Cebu Institute of Technology-University, Cebu City, Cebu, Region VII", "123", 24, "123");
+        // this.farm = new Farm("myFarm", 0);
+        // farm.setCropBed(new ArrayList<>());
+        // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
+        // 1.1, 1.2, 1.3,
+        // "110125"));
+        // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
+        //         1.1, 1.2, 1.3,
+        //         "110125"));
+        // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
+        //         1.1, 1.2, 1.3,
+        //         "110125"));
 
+        
         // The contentPane setup is now the setup for the SideBar JPanel itself
         // (this) refers to the SideBar JPanel
         setLayout(new GridBagLayout());
@@ -93,28 +94,28 @@ public class SideBar extends JPanel {
         cropBeds.setFont(new Font("SansSerif", Font.BOLD, 32));
         // edit to make loop for number of crop beds
         // edit this nalang soon to make it white with for loop (THESE SHOULD BE JBUTTONS)
-        for(CropBed i : farm.getCropBeds()){
-            JButton crop = new JButton(i.getPlantType().getName());
-            crop.setBorderPainted(false);
-            crop.setContentAreaFilled(false);
-            crop.setFocusPainted(false);
-            crop.setFocusable(true);
-            crop.setForeground(SUB_TEXT_COLOR);
+        // for(CropBed i : farm.getCropBeds()){
+        //     JButton crop = new JButton(i.getPlantType().getName());
+        //     crop.setBorderPainted(false);
+        //     crop.setContentAreaFilled(false);
+        //     crop.setFocusPainted(false);
+        //     crop.setFocusable(true);
+        //     crop.setForeground(SUB_TEXT_COLOR);
 
-            // add color shi
-            crop.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    crop.setForeground(TEXT_COLOR);
-                }
+        //     // add color shi
+        //     crop.addMouseListener(new MouseAdapter() {
+        //         @Override
+        //         public void mouseEntered(MouseEvent e) {
+        //             crop.setForeground(TEXT_COLOR);
+        //         }
 
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    crop.setForeground(SUB_TEXT_COLOR);
-                }
-            });
-            cropBeds.add(crop);
-        }
+        //         @Override
+        //         public void mouseExited(MouseEvent e) {
+        //             crop.setForeground(SUB_TEXT_COLOR);
+        //         }
+        //     });
+        //     cropBeds.add(crop);
+        // }
 
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);

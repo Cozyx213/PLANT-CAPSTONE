@@ -5,7 +5,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import com.plantfarmlogger.controller.LoginController;;
+import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.view.AppNavigator;
+import com.plantfarmlogger.controller.LoginController;
+import com.plantfarmlogger.controller.dao.UserDao;;
 public class Login extends JFrame {
 
     private static final Color BG_COLOR = new Color(113, 165, 84);
@@ -14,7 +17,7 @@ public class Login extends JFrame {
     private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
     private static final Color TEXT_COLOR = Color.WHITE;
 
-    public Login() {
+    public Login(AppNavigator an) {
         setTitle("AniCore Lite");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -86,18 +89,7 @@ public class Login extends JFrame {
         formPanel.add(passField);
         formPanel.add(Box.createVerticalStrut(5));
 
-        JLabel forgotPass = new JLabel("Forgot Password?");
-        forgotPass.setForeground(TEXT_COLOR);
-        forgotPass.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        forgotPass.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        JPanel forgotPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        forgotPanel.setOpaque(false);
-        forgotPanel.setMaximumSize(new Dimension(300, 20));
-        forgotPanel.add(forgotPass);
-
-        formPanel.add(forgotPanel);
-        formPanel.add(Box.createVerticalStrut(30));
 
         RoundedButton loginBtn = new RoundedButton("Log In");
         loginBtn.setMaximumSize(new Dimension(200, 45));
@@ -107,7 +99,7 @@ public class Login extends JFrame {
 
         formPanel.add(loginBtn);
         LoginController controller = new LoginController();
-
+        UserDao ud = new UserDao();
 
         loginBtn.addActionListener(e ->{
             System.out.println(userField.getText());
@@ -116,9 +108,11 @@ public class Login extends JFrame {
             String username =userField.getText();
             char[] password = passField.getPassword();
 
-            boolean ok = controller.authenticate(username, password);
-            if (ok) {
+            User u = ud.authenticate(username, new String(password));
+            if (u!=null) {
+
                 JOptionPane.showMessageDialog(this, "Login successful.", "Status", JOptionPane.INFORMATION_MESSAGE);
+                an.showMain(u);
                 
             } else {
                 JOptionPane.showMessageDialog(this, "Login unsuccessful.", "Status", JOptionPane.ERROR_MESSAGE);
@@ -135,9 +129,9 @@ public class Login extends JFrame {
         footerLabel.setForeground(TEXT_COLOR);
         footerLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
         footerLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+        
         footerLabel.setText("<html>No account yet? <u>Create an account</u></html>");
-
+        
         gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
         mainPanel.add(footerLabel, gbc);
@@ -221,9 +215,5 @@ public class Login extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Login().setVisible(true);
-        });
-    }
+ 
 }

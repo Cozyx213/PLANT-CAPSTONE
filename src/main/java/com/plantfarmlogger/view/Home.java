@@ -1,12 +1,13 @@
 package com.plantfarmlogger.view;
 
+
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import com.plantfarmlogger.model.User;
+public class Home extends JFrame {
 
-public class home_dashboard extends JFrame {
-
-    public home_dashboard() {
+    public Home(User u) {
         setTitle("My Farm");
         setSize(900, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +55,7 @@ public class home_dashboard extends JFrame {
 //        add(scrollPane);
         mainPanel.add(scrollPane);
 
-        homeDashBoard.add(new SideBar());
+        homeDashBoard.add(new SideBar(u));
         homeDashBoard.add(mainPanel);
 
         add(homeDashBoard);
@@ -123,9 +124,4 @@ public class home_dashboard extends JFrame {
         return wrapper;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new home_dashboard().setVisible(true);
-        });
-    }
 }
