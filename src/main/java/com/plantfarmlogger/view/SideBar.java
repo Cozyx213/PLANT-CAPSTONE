@@ -119,7 +119,8 @@ public class SideBar extends JPanel {
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);
         cropBedsList.getViewport().setOpaque(false);
-        // Setting the preferred size of the scroll pane itself controls its visible area
+        // Setting the preferred size of the scroll pane itself controls its visible
+        // area
         cropBedsList.setMinimumSize(new Dimension(230, 100));
         cropBedsList.setPreferredSize(new Dimension(230, 100));
         cropBedsList.setBorder(BorderFactory.createEmptyBorder());
@@ -305,21 +306,21 @@ public class SideBar extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            JFrame frame = new JFrame("AniCore Lite Sidebar");
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//            // Create the new SideBar JPanel instance
-//            SideBar sideBarPanel = new SideBar();
-//
-//            // Add the JPanel to the JFrame's content pane
-//            frame.getContentPane().add(sideBarPanel);
-//
-//            frame.setSize(300, 800);
-//            frame.setMinimumSize(new Dimension(300, 600));
-//            frame.setVisible(true);
-//        });
-//    }
+    // public static void main(String[] args) {
+    // SwingUtilities.invokeLater(() -> {
+    // JFrame frame = new JFrame("AniCore Lite Sidebar");
+    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //
+    // // Create the new SideBar JPanel instance
+    // SideBar sideBarPanel = new SideBar();
+    //
+    // // Add the JPanel to the JFrame's content pane
+    // frame.getContentPane().add(sideBarPanel);
+    //
+    // frame.setSize(300, 800);
+    // frame.setMinimumSize(new Dimension(300, 600));
+    // frame.setVisible(true);
+    // });
+    // }
 
 }
