@@ -1,29 +1,43 @@
 package com.plantfarmlogger.view;
 
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
-
-import com.plantfarmlogger.model.CropBed;
-
-import com.plantfarmlogger.model.Plant;
+import java.util.Enumeration;
 import com.plantfarmlogger.model.User;
 
 // Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
     private JButton addCropBed, changeName, changeAddress, changePass, logOut;
-    private User user;
 
 
     //DESIGN STUFF
     private static final Color BG_COLOR = new Color(113, 165, 84);
-    private static final Color BUTTON_COLOR = new Color(54, 85, 59);
-    private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
-    private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
+    //private static final Color BUTTON_COLOR = new Color(54, 85, 59);
+    //private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
+    //private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
     private static final Color TEXT_COLOR = Color.WHITE;
     private static final Color SUB_TEXT_COLOR = new Color(214, 223, 197);
 
