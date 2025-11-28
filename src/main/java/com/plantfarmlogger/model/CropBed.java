@@ -1,6 +1,6 @@
 package com.plantfarmlogger.model;
 
-public class CropBed{
+public class CropBed {
     private Plant plantType;
     private String soilType;
     private String lastFertilized;
@@ -10,8 +10,8 @@ public class CropBed{
     private double length;
 
     public CropBed(Plant plantType, String soilType, String lastFertilized,
-                   String datePlanted, double width, double height,
-                   double length) {
+            String datePlanted, double width, double height,
+            double length) {
         this.plantType = plantType;
         this.soilType = soilType;
         this.lastFertilized = lastFertilized;
@@ -21,8 +21,13 @@ public class CropBed{
         this.length = length;
     }
 
-    public CropLog getLogs(){return null;}
-    public String getInfo(){return null;}
+    public CropLog getLogs() {
+        return null;
+    }
+
+    public String getInfo() {
+        return null;
+    }
 
     public Plant getPlantType() {
         return plantType;

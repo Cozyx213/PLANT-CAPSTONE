@@ -6,9 +6,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.plantfarmlogger.model.User;
-import com.plantfarmlogger.view.AppNavigator;
-import com.plantfarmlogger.controller.LoginController;
+
 import com.plantfarmlogger.controller.dao.UserDao;;
+
 public class Login extends JFrame {
 
     private static final Color BG_COLOR = new Color(113, 165, 84);
@@ -20,7 +20,7 @@ public class Login extends JFrame {
     public Login(AppNavigator an) {
         setTitle("AniCore Lite");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(900, 600);
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel();
@@ -89,8 +89,6 @@ public class Login extends JFrame {
         formPanel.add(passField);
         formPanel.add(Box.createVerticalStrut(5));
 
-
-
         RoundedButton loginBtn = new RoundedButton("Log In");
         loginBtn.setMaximumSize(new Dimension(200, 45));
         loginBtn.setPreferredSize(new Dimension(200, 45));
@@ -98,26 +96,26 @@ public class Login extends JFrame {
         loginBtn.setFont(new Font("SansSerif", Font.BOLD, 16));
 
         formPanel.add(loginBtn);
-        LoginController controller = new LoginController();
+
         UserDao ud = new UserDao();
 
-        loginBtn.addActionListener(e ->{
+        loginBtn.addActionListener(e -> {
             System.out.println(userField.getText());
             System.out.println(passField.getPassword());
 
-            String username =userField.getText();
+            String username = userField.getText();
             char[] password = passField.getPassword();
 
             User u = ud.authenticate(username, new String(password));
-            if (u!=null) {
+            if (u != null) {
 
                 JOptionPane.showMessageDialog(this, "Login successful.", "Status", JOptionPane.INFORMATION_MESSAGE);
                 an.showMain(u);
-                
+
             } else {
                 JOptionPane.showMessageDialog(this, "Login unsuccessful.", "Status", JOptionPane.ERROR_MESSAGE);
             }
-            
+
         });
         formPanel.add(Box.createVerticalStrut(80));
 
@@ -125,8 +123,6 @@ public class Login extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         mainPanel.add(formPanel, gbc);
 
-       
-        
         // Replace the label with a button styled as a link
         JButton registerBtn = new JButton("<html>No account yet? <u>Create an account</u></html>");
         registerBtn.setForeground(TEXT_COLOR);
@@ -153,12 +149,14 @@ public class Login extends JFrame {
             setBorder(new EmptyBorder(5, 15, 5, 15));
             setFont(new Font("SansSerif", Font.PLAIN, 14));
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             g.setColor(TEXT_FIELD_BG);
             g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
             super.paintComponent(g);
         }
+
         @Override
         protected void paintBorder(Graphics g) {
 
@@ -172,12 +170,14 @@ public class Login extends JFrame {
             setBorder(new EmptyBorder(5, 15, 5, 15));
             setFont(new Font("SansSerif", Font.PLAIN, 14));
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             g.setColor(TEXT_FIELD_BG);
             g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
             super.paintComponent(g);
         }
+
         @Override
         protected void paintBorder(Graphics g) {
 
@@ -198,6 +198,7 @@ public class Login extends JFrame {
                 public void mouseEntered(MouseEvent evt) {
                     setForeground(new Color(230, 230, 230));
                 }
+
                 public void mouseExited(MouseEvent evt) {
                     setForeground(Color.WHITE);
                 }
@@ -224,5 +225,4 @@ public class Login extends JFrame {
         }
     }
 
- 
 }

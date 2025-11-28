@@ -58,7 +58,7 @@ The **Plant Farm Logger** program is a powerful tool designed to help farmers ke
 
 Follow these steps to build and run the project using the included scripts.
 
--   On Unix-like (Linux / macOS)
+-   On Unix-like systems (Linux / macOS)
 
 ```bash
 chmod +x build_and_run.sh

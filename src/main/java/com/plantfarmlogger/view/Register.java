@@ -17,7 +17,7 @@ public class Register extends JFrame {
     public Register(AppNavigator an) {
         setTitle("AniCore Lite - Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 700);
+        setSize(900, 600);
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
@@ -50,7 +50,6 @@ public class Register extends JFrame {
         addField(formPanel, "Name");
         addField(formPanel, "Username");
 
-
         addPasswordField(formPanel, "Password");
         addPasswordField(formPanel, "Confirm Password");
 
@@ -76,9 +75,10 @@ public class Register extends JFrame {
         footerLabel.setBorderPainted(false);
         footerLabel.setFocusPainted(false);
 
-        footerLabel.addActionListener(e ->{
+        footerLabel.addActionListener(e -> {
             an.showLogin();
         });
+
         gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
         mainPanel.add(footerLabel, gbc);

@@ -7,13 +7,13 @@ public class User {
     private String address;
     private int age;
 
-    public User(String name, String username, String address, int age, String password ) {
+    public User(String name, String username, String address, int age, String password) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.address = address;
         this.age = age;
-     
+
     }
     // User n = new User(name,username,address,farm,age,password);
     // Getters and Setters

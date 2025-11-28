@@ -1,7 +1,5 @@
 package com.plantfarmlogger.model;
 
-import com.plantfarmlogger.model.interfaces.*;
-
 public class Plant {
     private String name;
 

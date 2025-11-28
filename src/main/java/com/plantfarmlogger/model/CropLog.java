@@ -2,7 +2,7 @@ package com.plantfarmlogger.model;
 
 import com.plantfarmlogger.model.enums.Action;
 
-public class CropLog{
+public class CropLog {
     private String notes;
     private String date;
     private String healthStatus;
@@ -11,7 +11,8 @@ public class CropLog{
     private String cropBed;
     private String farmer;
 
-    public CropLog(String notes, String date, String healthStatus, String growthStatus, Action action, String cropBed, String farmer) {
+    public CropLog(String notes, String date, String healthStatus, String growthStatus, Action action, String cropBed,
+            String farmer) {
         this.notes = notes;
         this.date = date;
         this.healthStatus = healthStatus;
