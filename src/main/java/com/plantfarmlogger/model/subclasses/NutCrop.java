@@ -3,7 +3,6 @@ package com.plantfarmlogger.model.subclasses;
 import com.plantfarmlogger.model.Plant;
 import com.plantfarmlogger.model.interfaces.Prunable;
 
-import java.time.LocalDate;
 
 public class NutCrop extends Plant implements Prunable {
     public NutCrop(String name) {
@@ -11,7 +10,7 @@ public class NutCrop extends Plant implements Prunable {
     }
 
     @Override
-    public LocalDate schedulePruningDate() {
+    public String schedulePruningDate() {
         return null;
     }
 }

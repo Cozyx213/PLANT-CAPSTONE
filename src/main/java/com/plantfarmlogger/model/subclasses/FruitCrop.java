@@ -12,7 +12,7 @@ public class FruitCrop extends Plant implements Prunable, Ornamental {
     }
 
     @Override
-    public LocalDate schedulePruningDate() {
+    public String schedulePruningDate() {
         return null;
     }
 
