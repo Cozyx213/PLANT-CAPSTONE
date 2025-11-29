@@ -1,202 +1,182 @@
 package com.plantfarmlogger.view;
 
+import com.plantfarmlogger.util.UIFactory;
+
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.util.Map;
 
-public class Register extends JFrame {
+import static com.plantfarmlogger.util.UIFactory.getLexend;
 
-    private static final Color BG_COLOR = new Color(113, 165, 84);
-    private static final Color BUTTON_COLOR = new Color(54, 85, 59);
-    private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
-    private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
-    private static final Color TEXT_COLOR = Color.WHITE;
+public class Register extends JPanel {
 
-    public Register(AppNavigator an) {
-        setTitle("AniCore Lite - Register");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 600);
-        setLocationRelativeTo(null);
+    private static final Dimension FIELD_SIZE = new Dimension(280, 40);
 
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(BG_COLOR);
-        add(mainPanel);
+    private final AppNavigator navigator;
+
+    // Left Column
+    private JTextField nameField, usernameField, ageField, farmField;
+    // Right Column
+    private JTextField addressField;
+    private JPasswordField passField, confirmPassField;
+
+    public Register(AppNavigator navigator) {
+        this.navigator = navigator;
+
+        setLayout(new GridBagLayout());
+        setBackground(UIFactory.BG_COLOR_GENERAL);
 
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 0, 10, 0);
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JLabel logoLabel = new JLabel("ANICore LITE");
-        logoLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
-        logoLabel.setForeground(TEXT_COLOR);
-        gbc.gridy = 0;
-        gbc.insets = new Insets(0, 0, 20, 0);
-        mainPanel.add(logoLabel, gbc);
+        // 1. Logo
+        JLabel logo = new JLabel("ANiCore LITE");
+        logo.setFont(getLexend(Font.BOLD, 32));
+        logo.setForeground(UIFactory.TEXT_COLOR);
 
-        JLabel headerLabel = new JLabel("Create Account");
-        headerLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
-        headerLabel.setForeground(TEXT_COLOR);
+        gbc.gridy = 0;
+        add(logo, gbc);
+
+        // 2. Title
+        JLabel title = new JLabel("Create Account");
+        title.setFont(getLexend(Font.BOLD, 24));
+        title.setForeground(UIFactory.TEXT_COLOR);
+
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 30, 0);
-        mainPanel.add(headerLabel, gbc);
+        add(title, gbc);
 
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setOpaque(false);
+        // 3. Main Form Container (Two Columns)
+        JPanel columnsPanel = new JPanel(new GridLayout(1, 2, 40, 0)); // 1 row, 2 cols, 40px gap
+        columnsPanel.setOpaque(false);
 
-        addField(formPanel, "Name");
-        addField(formPanel, "Username");
+        // --- LEFT COLUMN ---
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setOpaque(false);
 
-        addPasswordField(formPanel, "Password");
-        addPasswordField(formPanel, "Confirm Password");
+        nameField = addFieldToPanel(leftPanel, "Name");
+        usernameField = addFieldToPanel(leftPanel, "Username");
+        ageField = addFieldToPanel(leftPanel, "Age");
+        farmField = addFieldToPanel(leftPanel, "Farm Name");
 
-        RoundedButton signUpBtn = new RoundedButton("Sign Up");
-        signUpBtn.setMaximumSize(new Dimension(200, 45));
-        signUpBtn.setPreferredSize(new Dimension(200, 45));
-        signUpBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        signUpBtn.setFont(new Font("SansSerif", Font.BOLD, 16));
+        // --- RIGHT COLUMN ---
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setOpaque(false);
 
-        formPanel.add(Box.createVerticalStrut(20));
-        formPanel.add(signUpBtn);
-        formPanel.add(Box.createVerticalStrut(40));
+        addressField = addFieldToPanel(rightPanel, "Address");
+        passField = (JPasswordField) addPasswordFieldToPanel(rightPanel, "Password", false);
+        confirmPassField = (JPasswordField) addPasswordFieldToPanel(rightPanel, "Confirm Password", true);
+
+        // Add dummy spacer to right panel to match height if fields are uneven
+        rightPanel.add(Box.createVerticalGlue());
+
+        columnsPanel.add(leftPanel);
+        columnsPanel.add(rightPanel);
 
         gbc.gridy = 2;
-        gbc.insets = new Insets(0, 0, 0, 0);
-        mainPanel.add(formPanel, gbc);
+        gbc.insets = new Insets(0, 0, 30, 0);
+        add(columnsPanel, gbc);
 
-        JButton footerLabel = new JButton("<html>Already have an account? <u>Log In</u></html>");
-        footerLabel.setForeground(TEXT_COLOR);
-        footerLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-        footerLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        footerLabel.setContentAreaFilled(false);
-        footerLabel.setBorderPainted(false);
-        footerLabel.setFocusPainted(false);
-
-        footerLabel.addActionListener(e -> {
-            an.showLogin();
-        });
-
+        // 4. Register Button
+        UIFactory.RoundedButton regBtn = new UIFactory.RoundedButton("Sign Up");
+        regBtn.setFont(getLexend(Font.BOLD, 16));
+        regBtn.setPreferredSize(new Dimension(220, 50));
+        regBtn.addActionListener(e -> performRegister());
         gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
-        mainPanel.add(footerLabel, gbc);
+        add(regBtn, gbc);
+
+        // 5. Back to Login Link
+        JLabel loginLink = new JLabel("Already have an account? Log In");
+        loginLink.setFont(getLexend(Font.PLAIN, 12));
+        loginLink.setForeground(UIFactory.TEXT_COLOR);
+        loginLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        // Underline effect
+        Map<TextAttribute, Object> attributes = (Map<TextAttribute, Object>) loginLink.getFont().getAttributes();
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        loginLink.setFont(loginLink.getFont().deriveFont(attributes));
+
+        loginLink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                navigator.showLogin();
+            }
+        });
+
+        gbc.gridy = 4;
+        add(loginLink, gbc);
     }
 
-    private void addField(JPanel panel, String labelText) {
+    // Helper to add label + field cleanly
+    private JTextField addFieldToPanel(JPanel panel, String labelText) {
         JLabel label = new JLabel(labelText);
-        label.setForeground(TEXT_COLOR);
-        label.setFont(new Font("SansSerif", Font.BOLD, 12));
+        label.setForeground(UIFactory.TEXT_COLOR);
+        label.setFont(getLexend(Font.BOLD, 12));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        labelPanel.setOpaque(false);
-        labelPanel.setMaximumSize(new Dimension(300, 20));
-        labelPanel.add(label);
+        JPanel labelP = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        labelP.setOpaque(false);
+        labelP.add(label);
+        labelP.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        RoundedTextField field = new RoundedTextField(20);
-        field.setMaximumSize(new Dimension(300, 40));
-        field.setPreferredSize(new Dimension(300, 40));
+        JTextField field = UIFactory.createRoundedField();
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        panel.add(labelPanel);
+        field.setPreferredSize(FIELD_SIZE);
+        field.setMaximumSize(FIELD_SIZE);
+
+        panel.add(labelP);
         panel.add(Box.createVerticalStrut(5));
         panel.add(field);
         panel.add(Box.createVerticalStrut(15));
+
+        return field;
     }
 
-    private void addPasswordField(JPanel panel, String labelText) {
+    // Helper for password fields
+    private JTextField addPasswordFieldToPanel(JPanel panel, String labelText, boolean isConfirm) {
         JLabel label = new JLabel(labelText);
-        label.setForeground(TEXT_COLOR);
-        label.setFont(new Font("SansSerif", Font.BOLD, 12));
+        label.setForeground(UIFactory.TEXT_COLOR);
+        label.setFont(getLexend(Font.BOLD, 12));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        labelPanel.setOpaque(false);
-        labelPanel.setMaximumSize(new Dimension(300, 20));
-        labelPanel.add(label);
+        JPanel labelP = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        labelP.setOpaque(false);
+        labelP.add(label);
+        labelP.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        RoundedPasswordField field = new RoundedPasswordField(20);
-        field.setMaximumSize(new Dimension(300, 40));
-        field.setPreferredSize(new Dimension(300, 40));
+        JPasswordField field = UIFactory.createRoundedPasswordField();
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
+        field.setAlignmentY(Component.TOP_ALIGNMENT);
 
-        panel.add(labelPanel);
+        field.setPreferredSize(FIELD_SIZE);
+        field.setMaximumSize(FIELD_SIZE);
+
+        panel.add(labelP);
         panel.add(Box.createVerticalStrut(5));
         panel.add(field);
-        panel.add(Box.createVerticalStrut(15));
+        // Add extra space if it's not the last field
+        if (!isConfirm) panel.add(Box.createVerticalStrut(15));
+
+        return field;
     }
 
-    static class RoundedTextField extends JTextField {
-        public RoundedTextField(int size) {
-            super(size);
-            setOpaque(false);
-            setBorder(new EmptyBorder(5, 15, 5, 15));
-            setFont(new Font("SansSerif", Font.PLAIN, 14));
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            g.setColor(TEXT_FIELD_BG);
-            g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
-            super.paintComponent(g);
-        }
-
-        @Override
-        protected void paintBorder(Graphics g) {
-        }
-    }
-
-    static class RoundedPasswordField extends JPasswordField {
-        public RoundedPasswordField(int size) {
-            super(size);
-            setOpaque(false);
-            setBorder(new EmptyBorder(7, 15, 7, 15));
-            setFont(new Font("SansSerif", Font.PLAIN, 14));
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            g.setColor(TEXT_FIELD_BG);
-            g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 30, 30);
-            super.paintComponent(g);
-        }
-
-        @Override
-        protected void paintBorder(Graphics g) {
-        }
-    }
-
-    static class RoundedButton extends JButton {
-        public RoundedButton(String text) {
-            super(text);
-            setOpaque(false);
-            setContentAreaFilled(false);
-            setBorderPainted(false);
-            setFocusPainted(false);
-            setForeground(Color.WHITE);
-            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            addMouseListener(new MouseAdapter() {
-                public void mouseEntered(MouseEvent evt) {
-                    setForeground(new Color(230, 230, 230));
-                }
-
-                public void mouseExited(MouseEvent evt) {
-                    setForeground(Color.WHITE);
-                }
-            });
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            if (getModel().isPressed())
-                g2.setColor(BUTTON_COLOR.darker());
-            else if (getModel().isRollover())
-                g2.setColor(BUTTON_HOVER_COLOR);
-            else
-                g2.setColor(BUTTON_COLOR);
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
-            g2.dispose();
-            super.paintComponent(g);
+    private void performRegister() {
+        // Basic validation placeholder
+        if(nameField.getText().isEmpty() || new String(passField.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Account Created! Please Login.");
+            navigator.showLogin();
         }
     }
 }

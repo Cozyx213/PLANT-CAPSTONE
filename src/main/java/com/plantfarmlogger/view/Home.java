@@ -1,127 +1,134 @@
 package com.plantfarmlogger.view;
 
+import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.view.components.BaseDashboardView;
+import com.plantfarmlogger.view.components.CropCardPanel;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import com.plantfarmlogger.model.User;
-public class Home extends JFrame {
+import java.util.ArrayList;
 
-    public Home(User u) {
-        setTitle("My Farm");
-        setSize(900, 800);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+public class Home extends BaseDashboardView {
 
-        // Main scrollable container
-        JPanel homeDashBoard = new JPanel();
-        homeDashBoard.setLayout(new BoxLayout(homeDashBoard, BoxLayout.X_AXIS));
+    private JPanel cardsContainer;
+    private JLabel countLabel;
+    private int cropBedCount = 0;
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(250, 246, 236)); // light cream background
+    // State Management
+    private boolean isCreating = false; // Prevents multiple "Add" clicks
+    private ArrayList<CropCardPanel> cropList;
 
-        // Title section
+    public Home(User user) {
+        super(user);
+        this.cropList = new ArrayList<>();
+    }
+
+    @Override
+    protected JPanel createContentPanel() {
+        JPanel content = new JPanel(new BorderLayout());
+        content.setBackground(UIFactory.BG_COLOR);
+
+        // --- Header ---
+        JPanel header = new JPanel(new BorderLayout());
+        header.setBackground(UIFactory.BG_COLOR);
+        header.setBorder(new EmptyBorder(40, 40, 20, 40));
+
+        JPanel titleBlock = new JPanel();
+        titleBlock.setLayout(new BoxLayout(titleBlock, BoxLayout.Y_AXIS));
+        titleBlock.setOpaque(false);
+
         JLabel title = new JLabel("My Farm");
-        title.setFont(new Font("SansSerif", Font.BOLD, 36));
-        title.setForeground(new Color(20, 100, 40));
-        title.setBorder(BorderFactory.createEmptyBorder(20, 20, 5, 20));
+        title.setFont(UIFactory.getLexend(Font.BOLD, 36));
+        title.setForeground(UIFactory.BUTTON_COLOR);
 
-        JLabel countLabel = new JLabel("Number of Crop Beds: 3");
-        countLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        countLabel.setForeground(new Color(40, 100, 40));
-        countLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
+        countLabel = new JLabel("Number of Crop Beds: 0");
+        countLabel.setFont(UIFactory.getLexend(Font.PLAIN, 14));
+        countLabel.setForeground(UIFactory.TEXT_DARK);
 
-        mainPanel.add(title);
-        mainPanel.add(countLabel);
+        titleBlock.add(title);
+        titleBlock.add(Box.createVerticalStrut(5));
+        titleBlock.add(countLabel);
 
-        // NEW JPANEL so that only crop cards area is scrollable
+        JButton addBtn = UIFactory.createPrimaryButton("Add Cropbed");
+        addBtn.addActionListener(e -> addNewCropCard());
 
-        JPanel cropCardsPanel = new JPanel();
-        cropCardsPanel.setLayout(new BoxLayout(cropCardsPanel, BoxLayout.Y_AXIS));
-        cropCardsPanel.setOpaque(false);
+        header.add(titleBlock, BorderLayout.WEST);
+        header.add(addBtn, BorderLayout.EAST);
 
-        // Add multiple crop bed cards
-        cropCardsPanel.add(createCropCard());
-        cropCardsPanel.add(createCropCard());
-        cropCardsPanel.add(createCropCard());
-        cropCardsPanel.add(createCropCard());
+        content.add(header, BorderLayout.NORTH);
 
-        JScrollPane scrollPane = new JScrollPane(cropCardsPanel);
-        scrollPane.setBorder(null);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
+        // --- List Container ---
+        cardsContainer = new JPanel();
+        cardsContainer.setLayout(new BoxLayout(cardsContainer, BoxLayout.Y_AXIS));
+        cardsContainer.setBackground(UIFactory.BG_COLOR);
+        cardsContainer.setBorder(new EmptyBorder(0, 40, 40, 40));
 
-//        add(scrollPane);
-        mainPanel.add(scrollPane);
+        // Important: Use glue to push everything up, keeping sizes consistent
+        cardsContainer.add(Box.createVerticalGlue());
 
-        homeDashBoard.add(new SideBar(u));
-        homeDashBoard.add(mainPanel);
+        JScrollPane scroll = new JScrollPane(cardsContainer);
+        scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+        content.add(scroll, BorderLayout.CENTER);
 
-        add(homeDashBoard);
+        return content;
     }
 
-    private JPanel createCropCard() {
-        JPanel card = new JPanel();
-        card.setLayout(new BorderLayout());
-        card.setMaximumSize(new Dimension(850, 210));
-        card.setBackground(new Color(232, 247, 217)); // light green
-        card.setBorder(new EmptyBorder(20, 20, 20, 20));
+    private void addNewCropCard() {
+        if (isCreating) {
+            JOptionPane.showMessageDialog(this, "Please save or cancel the current Crop Bed first.");
+            return;
+        }
 
-        // name, username, age, farm, address, password, confirm password
+        isCreating = true; // Lock creation
 
-        JPanel content = new JPanel();
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        content.setOpaque(false);
+        // Define callbacks for the new card
 
-        JLabel title = new JLabel("Kamote 1");
-        title.setFont(new Font("SansSerif", Font.BOLD, 28));
-        title.setForeground(new Color(20, 100, 40));
+        // 1. On Save: Unlock creation, update count
+        Runnable onSave = () -> {
+            isCreating = false;
+            cropBedCount++;
+            countLabel.setText("Number of Crop Beds: " + cropBedCount);
+            refreshLayout();
+        };
 
-        JLabel plantType = new JLabel("Plant Type");
-        JLabel datePlanted = new JLabel("Date Planted: May 1, 2025");
+        // 2. On Cancel: Unlock creation, remove the card from UI
+        // We need a reference to the card, but we can't reference it before creation.
+        // So we create a wrapper for the action.
+        final CropCardPanel[] ref = new CropCardPanel[1];
 
-        JLabel soilType = new JLabel("Soil Type: Loam");
-        JLabel size = new JLabel("Size: W x H x L");
-        JLabel fertilizerDate = new JLabel("Last fertilized: October 26, 2025");
+        Runnable onCancel = () -> {
+            isCreating = false;
+            if (ref[0] != null) {
+                cardsContainer.remove(ref[0]);
+                // We also need to remove the strut (gap) we added.
+                // Since we added at index 0 and 1, removing index 0 puts the strut at 0.
+                // It's safer to just refresh the whole container or handle index carefully.
+                // For simplicity, we remove the specific component ref[0].
+                // The strut remains but it's just space. For a cleaner removal, we can remove the next component too.
+                refreshLayout();
+            }
+        };
 
-        Font infoFont = new Font("SansSerif", Font.PLAIN, 18);
-        plantType.setFont(infoFont);
-        datePlanted.setFont(infoFont);
-        soilType.setFont(infoFont);
-        size.setFont(infoFont);
-        fertilizerDate.setFont(infoFont);
+        CropCardPanel newCard = new CropCardPanel(onSave, onCancel);
+        ref[0] = newCard; // Set reference for the cancel action
 
-        content.add(title);
-        content.add(Box.createVerticalStrut(10));
-        content.add(plantType);
-        content.add(datePlanted);
-        content.add(Box.createVerticalStrut(10));
-        content.add(soilType);
-        content.add(size);
-        content.add(fertilizerDate);
+        cropList.add(newCard);
 
-        JButton viewBtn = new JButton("View Logs");
-        viewBtn.setFont(new Font("SansSerif", Font.BOLD, 18));
-        viewBtn.setBackground(new Color(20, 100, 40));
-        viewBtn.setForeground(Color.WHITE);
-        viewBtn.setFocusPainted(false);
-        viewBtn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        // Add to UI: Index 0 (Top)
+        cardsContainer.add(newCard, 0);
+        cardsContainer.add(Box.createVerticalStrut(20), 1); // Spacer
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.setOpaque(false);
-        buttonPanel.add(viewBtn);
+        refreshLayout();
 
-        card.add(content, BorderLayout.WEST);
-        card.add(buttonPanel, BorderLayout.EAST);
-
-
-        JPanel wrapper = new JPanel(new BorderLayout());
-        wrapper.setOpaque(false);
-        wrapper.setBorder(new EmptyBorder(15, 20, 15, 20));
-        wrapper.add(card);
-
-        return wrapper;
+        // Scroll to top
+        SwingUtilities.invokeLater(() -> ((JScrollPane)cardsContainer.getParent().getParent()).getVerticalScrollBar().setValue(0));
     }
 
+    private void refreshLayout() {
+        cardsContainer.revalidate();
+        cardsContainer.repaint();
+    }
 }
