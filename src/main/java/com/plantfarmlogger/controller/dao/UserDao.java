@@ -42,9 +42,9 @@ public class UserDao implements UserDaoInter {
             }
 
         } catch (IOException e) {
-            System.out.println("IO_ERROR theres no file");
+            System.out.println("IO_ERROR theres no file "+userFile);
         }
-        System.out.println("SUCCESS");
+         System.out.println("OPEnEd " + userFile);
     }
 
     private void saveToCSV() {

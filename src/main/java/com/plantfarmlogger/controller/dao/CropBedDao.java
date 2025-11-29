@@ -1,106 +1,121 @@
-// package com.plantfarmlogger.controller.dao;
+package com.plantfarmlogger.controller.dao;
 
-// import com.plantfarmlogger.model.CropBed;
-// import com.plantfarmlogger.model.interfaces.CropBedDaoInter;
-// import java.io.BufferedReader;
-// import java.io.BufferedWriter;
-// import java.io.FileReader;
-// import java.io.FileWriter;
-// import java.io.IOException;
-// import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
-// public class CropBedDao implements CropBedDaoInter {
-//     ArrayList<CropBed> CropBeds = new ArrayList<CropBed>();
+import com.plantfarmlogger.model.CropBed;
+import com.plantfarmlogger.model.interfaces.CropBedDaoInter;
 
-//     private final String userFile = "src/main/resources/csv/cropbeds.csv";
+//    ArrayList<CropBed> getCropBeds();
+//     void create(CropBed t);
+//     void delete(CropBed t);
+public class CropBedDao implements CropBedDaoInter {
+    ArrayList<CropBed> CropBeds = new ArrayList<CropBed>();
 
-//     public CropBedDao() {
-//         fetch();
-//     }
+    private final String cropBedFile = "src/main/resources/csv/cropbeds.csv";
 
-//     public ArrayList<CropBed> getCropBeds() {
-//         return CropBeds;
-//     }
+    public CropBedDao() {
+        fetch();
+    }
 
-//     private void fetch() {
-//         try (
-//                 BufferedReader br = new BufferedReader(new FileReader(userFile));) {
-//             String line;
+    public ArrayList<CropBed> getCropBeds() {
+        return CropBeds;
+    }
 
-//             while ((line = br.readLine()) != null) {
-//                 String[] spl = line.split(",");
+    // private String plantType;
+    // private String soilType;
+    // private String lastFertilized;
+    // private String datePlanted;
+    // private double width;
+    // private double height;
+    // private double length;
+    private void fetch() {
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(cropBedFile));) {
+            String line;
 
-//                 String name = spl[0];
-//                 String username = spl[1];
-//                 String address = spl[2];
-//                 int age = Integer.parseInt(spl[3]);
-//                 String password = spl[4];
+            while ((line = br.readLine()) != null) {
+                String[] spl = line.split(",");
+                String plantType = spl[0];
+                String soilType = spl[1];
+                String lastFertilized = spl[2];
+                String datePlanted = spl[3];
 
-//                 User n = new User(name, username, address, age, password);
-//                 Users.add(n);
-//             }
+                double width = Double.parseDouble(spl[4]);
+                double height = Double.parseDouble(spl[5]);
+                double length = Double.parseDouble(spl[6]);
 
-//         } catch (IOException e) {
-//             System.out.println("IO_ERROR theres no file");
-//         }
-//         System.out.println("SUCCESS");
-//     }
+                CropBed n = new CropBed(plantType,soilType, lastFertilized, datePlanted, width, height, length);
+                CropBeds.add(n);
+            }
 
-//     private void saveToCSV() {
+        } catch (IOException e) {
+            System.out.println("IO_ERROR theres no file "+cropBedFile );
+        }
+        System.out.println("SUCCESS");
+    }
+    // private Plant plantType;
+    // private String soilType;
+    // private String lastFertilized;
+    // private String datePlanted;
+    // private double width;
+    // private double height;
+    // private double length;
 
-//         try (BufferedWriter bw = new BufferedWriter(new FileWriter(userFile));
+    private void saveToCSV() {
 
-//         ) {
-//             for (User u : Users) {
-//                 bw.write(u.getName() + "," + u.getUsername() + "," + u.getAddress() + "," + u.getAge() + ","
-//                         + u.getPassword() + "\n");
-//             }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(cropBedFile));
 
-//         } catch (IOException e) {
-//             System.out.println("IO_ERROR");
-//         }
-//         System.out.println("SUCCESS");
-//     }
+        ) {
+            for (CropBed c : CropBeds) {
+                bw.write(String.join(",", c.getPlantType(),
+                        c.getSoilType(),
+                        c.getLastFertilized(),
+                        c.getDatePlanted(),
+                        String.valueOf(c.getWidth()),
+                        String.valueOf(c.getHeight()),
+                        String.valueOf(c.getLength())));
+                bw.newLine();
+            }
 
-//     public void save(User t) {
-//         if (t == null) {
-//             System.out.println("no user ");
-//         }
-//         Users.add(t);
-//         saveToCSV();
+        } catch (IOException e) {
+            System.out.println("IO_ERROR");
+        }
+        System.out.println("OPEnEd " + cropBedFile);
+    }
 
-//     }
+    public void create(CropBed t) {
+        if (t == null) {
+            System.out.println("no user ");
+        }
+        CropBeds.add(t);
+        saveToCSV();
 
-//     public void update(User t, String[] params) {
+    }
 
-//     }
+  
 
-//     public void delete(User t) {
-//         int index = 0;
-//         for (User u : Users) {
+    public void delete(CropBed t) {
+        int index = 0;
+        for (CropBed u : CropBeds) {
 
-//             if (u.getName().equals(t.getName())) {
-//                 Users.remove(index);
-//             }
+            if (t == u) {
+                CropBeds.remove(index);
+            }
 
-//             index++;
-//         }
-//         saveToCSV();
-//     }
+            index++;
+        }
+        saveToCSV();
+    }
 
-//     public void printU() {
-//         for (User u : Users) {
-//             System.out.println(u);
-//         }
-//     }
+    public void printU() {
+        for (CropBed c : CropBeds) {
+            System.out.println(c);
+        }
+    }
 
-//     public User authenticate(String username, String password) {
-//         for (User u : Users) {
-//             if (u.getName().equals(username) && u.getPassword().equals(password)) {
-//                 return u;
-//             }
-//         }
-//         return null;
-//     }
-
-// }
+}

@@ -1,18 +1,15 @@
 package com.plantfarmlogger.model;
-
-import java.time.LocalDate;
-
 public class CropBed {
-    private Plant plantType;
+    private String plantType;
     private String soilType;
     private String lastFertilized;
-    private LocalDate datePlanted;
+    private String datePlanted;
     private double width;
     private double height;
     private double length;
 
-    public CropBed(Plant plantType, String soilType, String lastFertilized,
-            LocalDate datePlanted, double width, double height,
+    public CropBed(String plantType, String soilType, String lastFertilized,
+            String datePlanted, double width, double height,
             double length) {
         this.plantType = plantType;
         this.soilType = soilType;
@@ -31,11 +28,11 @@ public class CropBed {
         return null;
     }
 
-    public Plant getPlantType() {
+    public String getPlantType() {
         return plantType;
     }
 
-    public void setPlantType(Plant plantType) {
+    public void setPlantType(String plantType) {
         this.plantType = plantType;
     }
 
@@ -55,11 +52,11 @@ public class CropBed {
         this.lastFertilized = lastFertilized;
     }
 
-    public LocalDate getDatePlanted() {
+    public String getDatePlanted() {
         return datePlanted;
     }
 
-    public void setDatePlanted(LocalDate datePlanted) {
+    public void setDatePlanted(String datePlanted) {
         this.datePlanted = datePlanted;
     }
 
