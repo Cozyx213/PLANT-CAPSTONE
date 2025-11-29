@@ -3,16 +3,17 @@ CropBed.java:
 CropLog.java:
 	implement methods and use DAO
 Plant.java subclasses:
-	create:
-		RootCrop
-		LeafCrop
-		FruitCrop
-		FlowerCrop
-		VineCrop
-		BulbCrop
-		NutCrop
-		HerbCrop
+    implement algorithm:
+        RootCrop - estimateMass()
+        LeafCrop - schedulePruningDate()
+        FruitCrop - getAestheticFeatures(), schedulePruningdate()
+        FlowerCrop - getAestheticFeatures(), schedulePruningdate()
+        VineCrop - schedulePruningDate(), validateWeight()
+        BulbCrop - getActiveCompounds(), estimateMass()
+        NutCrop - schedulePruningDate()
+        HerbCrop - getActiveCompounds()
 
 Diagram:
     1. Interfaces:
         a. Prunable - use LocalDate class
+    2. SubClasses - color code interface implementations
