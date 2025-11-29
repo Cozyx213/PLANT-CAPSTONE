@@ -1,15 +1,7 @@
 CropBed.java:
 	implement methods and use DAO
 CropLog.java:
-	change healthStatus and growthStatus to enums
 	implement methods and use DAO
-interfaces:
-	create:
-		Prunable
-		TrellisSupportable
-		Medicinal
-		Ornamental
-		Subterranean
 Plant.java subclasses:
 	create:
 		RootCrop
@@ -20,5 +12,7 @@ Plant.java subclasses:
 		BulbCrop
 		NutCrop
 		HerbCrop
-	
-	
+
+Diagram:
+    1. Interfaces:
+        a. Prunable - use LocalDate class
