@@ -1,20 +1,22 @@
 package com.plantfarmlogger.model;
 
 import com.plantfarmlogger.model.enums.Action;
+import com.plantfarmlogger.model.enums.GrowthStatus;
+import com.plantfarmlogger.model.enums.HealthStatus;
 
 import java.time.LocalDate;
 
 public class CropLog {
     private String notes;
     private LocalDate date;
-    private String healthStatus;
-    private String growthStatus;
+    private HealthStatus healthStatus;
+    private GrowthStatus growthStatus;
     private Action action;
     private String cropBed;
     private String farmer;
 
-    public CropLog(String notes, LocalDate date, String healthStatus,
-                   String growthStatus, Action action, String cropBed,
+    public CropLog(String notes, LocalDate date, HealthStatus healthStatus,
+                   GrowthStatus growthStatus, Action action, String cropBed,
             String farmer) {
         this.notes = notes;
         this.date = date;
@@ -41,19 +43,19 @@ public class CropLog {
         this.date = date;
     }
 
-    public String getHealthStatus() {
+    public HealthStatus getHealthStatus() {
         return healthStatus;
     }
 
-    public void setHealthStatus(String healthStatus) {
+    public void setHealthStatus(HealthStatus healthStatus) {
         this.healthStatus = healthStatus;
     }
 
-    public String getGrowthStatus() {
+    public GrowthStatus getGrowthStatus() {
         return growthStatus;
     }
 
-    public void setGrowthStatus(String growthStatus) {
+    public void setGrowthStatus(GrowthStatus growthStatus) {
         this.growthStatus = growthStatus;
     }
 
