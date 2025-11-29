@@ -2,16 +2,19 @@ package com.plantfarmlogger.model;
 
 import com.plantfarmlogger.model.enums.Action;
 
+import java.time.LocalDate;
+
 public class CropLog {
     private String notes;
-    private String date;
+    private LocalDate date;
     private String healthStatus;
     private String growthStatus;
     private Action action;
     private String cropBed;
     private String farmer;
 
-    public CropLog(String notes, String date, String healthStatus, String growthStatus, Action action, String cropBed,
+    public CropLog(String notes, LocalDate date, String healthStatus,
+                   String growthStatus, Action action, String cropBed,
             String farmer) {
         this.notes = notes;
         this.date = date;
@@ -30,11 +33,11 @@ public class CropLog {
         this.notes = notes;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
