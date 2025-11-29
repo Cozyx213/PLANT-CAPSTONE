@@ -1,4 +1,4 @@
-package com.plantfarmlogger.view;
+package com.plantfarmlogger.view.components;
 
 
 import javax.swing.BorderFactory;
@@ -106,6 +106,8 @@ public class SideBar extends JPanel {
         cropBeds.setPreferredSize(new Dimension(230, 100));
         cropBeds.setOpaque(false);
         cropBeds.setFont(new Font("SansSerif", Font.BOLD, 32));
+
+
         // edit to make loop for number of crop beds
         // edit this nalang soon to make it white with for loop (THESE SHOULD BE JBUTTONS)
         // for(CropBed i : farm.getCropBeds()){
