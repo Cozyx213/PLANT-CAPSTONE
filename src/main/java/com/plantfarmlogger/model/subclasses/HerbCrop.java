@@ -13,7 +13,7 @@ public class HerbCrop extends Plant implements Prunable, Medicinal {
     }
 
     @Override
-    public LocalDate schedulePruningDate() {
+    public String schedulePruningDate() {
         return null;
     }
 
