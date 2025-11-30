@@ -1,41 +1,50 @@
 package com.plantfarmlogger.view;
 
 import com.plantfarmlogger.model.User;
-
 import javax.swing.*;
+import java.awt.*;
 
 public class AppNavigator {
-    private JFrame current;
+
+    private final JPanel mainPanel;
+    private final CardLayout cardLayout;
+
+    private static final String VIEW_LOGIN = "LOGIN";
+    private static final String VIEW_REGISTER = "REGISTER";
+    private static final String VIEW_HOME = "HOME";
+    private static final String VIEW_CROPLOGS = "CROPLOGS";
+
+    public AppNavigator(JPanel mainPanel, CardLayout cardLayout) {
+        this.mainPanel = mainPanel;
+        this.cardLayout = cardLayout;
+    }
 
     public void showLogin() {
-        // SwingUtilities.invokeLater(() -> {
-        disposeCurrent();
-        Login login = new Login(this);
-        current = login;
-        login.setVisible(true);
-        // });
+        Login view = new Login(this);
+        mainPanel.add(view, VIEW_LOGIN);
+        cardLayout.show(mainPanel, VIEW_LOGIN);
     }
 
     public void showRegister() {
-        disposeCurrent();
-        Register reg = new Register(this);
-        current = reg;
-        reg.setVisible(true);
-
+        Register view = new Register(this);
+        mainPanel.add(view, VIEW_REGISTER);
+        cardLayout.show(mainPanel, VIEW_REGISTER);
     }
 
-    public void showMain(User u) {
-        disposeCurrent();
-        Home main = new Home(u);
-        current = main;
-        main.setVisible(true);
-
+    public void showHome(User user) {
+        Home view = new Home(user);
+        mainPanel.add(view, VIEW_HOME);
+        cardLayout.show(mainPanel, VIEW_HOME);
     }
 
-    private void disposeCurrent() {
-        if (current != null) {
-            current.dispose();
-            current = null;
-        }
+    public void showCropLogs(User user) {
+        CropLog view = new CropLog(user);
+        mainPanel.add(view, VIEW_CROPLOGS);
+        cardLayout.show(mainPanel, VIEW_CROPLOGS);
+    }
+
+    public void logout() {
+        // Simply redirect to login
+        showLogin();
     }
 }
