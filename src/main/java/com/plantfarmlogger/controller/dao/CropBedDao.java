@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import com.plantfarmlogger.model.CropBed;
 import com.plantfarmlogger.model.interfaces.CropBedDaoInter;
 
-//    ArrayList<CropBed> getCropBeds();
-//     void create(CropBed t);
-//     void delete(CropBed t);
 public class CropBedDao implements CropBedDaoInter {
     ArrayList<CropBed> CropBeds = new ArrayList<CropBed>();
 
@@ -26,13 +23,6 @@ public class CropBedDao implements CropBedDaoInter {
         return CropBeds;
     }
 
-    // private String plantType;
-    // private String soilType;
-    // private String lastFertilized;
-    // private String datePlanted;
-    // private double width;
-    // private double height;
-    // private double length;
     private void fetch() {
         try (
                 BufferedReader br = new BufferedReader(new FileReader(cropBedFile));) {
@@ -49,22 +39,15 @@ public class CropBedDao implements CropBedDaoInter {
                 double height = Double.parseDouble(spl[5]);
                 double length = Double.parseDouble(spl[6]);
 
-                CropBed n = new CropBed(plantType,soilType, lastFertilized, datePlanted, width, height, length);
+                CropBed n = new CropBed(plantType, soilType, lastFertilized, datePlanted, width, height, length);
                 CropBeds.add(n);
             }
 
         } catch (IOException e) {
-            System.out.println("IO_ERROR theres no file "+cropBedFile );
+            System.out.println("IO_ERROR theres no file " + cropBedFile);
         }
         System.out.println("SUCCESS");
     }
-    // private Plant plantType;
-    // private String soilType;
-    // private String lastFertilized;
-    // private String datePlanted;
-    // private double width;
-    // private double height;
-    // private double length;
 
     private void saveToCSV() {
 
@@ -96,8 +79,6 @@ public class CropBedDao implements CropBedDaoInter {
         saveToCSV();
 
     }
-
-  
 
     public void delete(CropBed t) {
         int index = 0;

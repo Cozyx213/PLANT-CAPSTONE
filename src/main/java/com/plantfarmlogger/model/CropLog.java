@@ -1,22 +1,20 @@
 package com.plantfarmlogger.model;
 
-import com.plantfarmlogger.model.enums.Action;
+import java.time.LocalDate;
+
 import com.plantfarmlogger.model.enums.GrowthStatus;
 import com.plantfarmlogger.model.enums.HealthStatus;
 
-import java.time.LocalDate;
-
 public class CropLog {
     private String notes;
-    private LocalDate date;
+    private String date;
     private HealthStatus healthStatus;
     private GrowthStatus growthStatus;
-    private Action action;
+    private String action;
     private String cropBed;
     private String farmer;
-
-    public CropLog(String notes, LocalDate date, HealthStatus healthStatus,
-                   GrowthStatus growthStatus, Action action, String cropBed,
+    public CropLog(String notes, String date, HealthStatus healthStatus,
+            GrowthStatus growthStatus, String action, String cropBed,
             String farmer) {
         this.notes = notes;
         this.date = date;
@@ -27,6 +25,13 @@ public class CropLog {
         this.farmer = farmer;
     }
 
+    public CropLog(String notes, HealthStatus healthStatus,
+            GrowthStatus growthStatus, String action, String cropBed,
+            String farmer) {
+        this(notes, LocalDate.now().toString(), healthStatus, growthStatus, action, cropBed, farmer);
+
+    }
+
     public String getNotes() {
         return notes;
     }
@@ -35,11 +40,11 @@ public class CropLog {
         this.notes = notes;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -59,11 +64,11 @@ public class CropLog {
         this.growthStatus = growthStatus;
     }
 
-    public Action getAction() {
+    public String getAction() {
         return action;
     }
 
-    public void setAction(Action action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
