@@ -1,17 +1,20 @@
 package com.plantfarmlogger.model;
 
-import com.plantfarmlogger.model.enums.Action;
+import java.time.LocalDate;
+
+import com.plantfarmlogger.model.enums.GrowthStatus;
+import com.plantfarmlogger.model.enums.HealthStatus;
 
 public class CropLog {
     private String notes;
     private String date;
-    private String healthStatus;
-    private String growthStatus;
-    private Action action;
+    private HealthStatus healthStatus;
+    private GrowthStatus growthStatus;
+    private String action;
     private String cropBed;
     private String farmer;
-
-    public CropLog(String notes, String date, String healthStatus, String growthStatus, Action action, String cropBed,
+    public CropLog(String notes, String date, HealthStatus healthStatus,
+            GrowthStatus growthStatus, String action, String cropBed,
             String farmer) {
         this.notes = notes;
         this.date = date;
@@ -20,6 +23,13 @@ public class CropLog {
         this.action = action;
         this.cropBed = cropBed;
         this.farmer = farmer;
+    }
+
+    public CropLog(String notes, HealthStatus healthStatus,
+            GrowthStatus growthStatus, String action, String cropBed,
+            String farmer) {
+        this(notes, LocalDate.now().toString(), healthStatus, growthStatus, action, cropBed, farmer);
+
     }
 
     public String getNotes() {
@@ -38,27 +48,27 @@ public class CropLog {
         this.date = date;
     }
 
-    public String getHealthStatus() {
+    public HealthStatus getHealthStatus() {
         return healthStatus;
     }
 
-    public void setHealthStatus(String healthStatus) {
+    public void setHealthStatus(HealthStatus healthStatus) {
         this.healthStatus = healthStatus;
     }
 
-    public String getGrowthStatus() {
+    public GrowthStatus getGrowthStatus() {
         return growthStatus;
     }
 
-    public void setGrowthStatus(String growthStatus) {
+    public void setGrowthStatus(GrowthStatus growthStatus) {
         this.growthStatus = growthStatus;
     }
 
-    public Action getAction() {
+    public String getAction() {
         return action;
     }
 
-    public void setAction(Action action) {
+    public void setAction(String action) {
         this.action = action;
     }
 
