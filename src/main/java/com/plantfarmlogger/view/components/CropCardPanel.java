@@ -58,16 +58,16 @@ public class CropCardPanel extends JPanel {
         cropNameField = UIFields.createStyledField("e.g. Tomato Bed 1");
 
         // 2. Other Inputs
-        plantTypeField = UIFactory.createStyledField("Enter Plant Type");
-        datePlantedField = UIFactory.createDateField("Date Planted");
+        plantTypeField = UIFields.createStyledField("Enter Plant Type");
+        datePlantedField = UIFields.createDateField("Date Planted");
 
         String[] soils = {"Loam", "Clay", "Sandy", "Silt", "Peat"};
         soilCombo = new JComboBox<>(soils);
         soilCombo.setFont(UIFont.lexend(Font.PLAIN, 14));
         soilCombo.setBackground(Color.WHITE);
 
-        sizeField = UIFactory.createStyledField("Enter Size");
-        fertField = UIFactory.createDateField("Last Fertilized");
+        sizeField = UIFields.createStyledField("Enter Size");
+        fertField = UIFields.createDateField("Last Fertilized");
 
         // --- Layout Placement ---
 
@@ -106,7 +106,7 @@ public class CropCardPanel extends JPanel {
             if (onCancelCallback != null) onCancelCallback.run();
         });
 
-        JButton saveBtn = UIFactory.createPrimaryButton("Save");
+        JButton saveBtn = UIButtons.createPrimaryButton("Save");
         saveBtn.setPreferredSize(new Dimension(100, 35)); // Smaller button
         saveBtn.addActionListener(e -> attemptSave());
 
@@ -131,11 +131,11 @@ public class CropCardPanel extends JPanel {
 
         // Use stored data to create labels
         JLabel nameLbl = new JLabel(this.cropName);
-        nameLbl.setFont(UIFactory.getLexend(Font.BOLD, 24));
+        nameLbl.setFont(UIFont.lexend(Font.BOLD, 24));
         nameLbl.setForeground(UIColors.TEXT_DARK);
 
         JLabel typeLbl = new JLabel(this.plantType);
-        typeLbl.setFont(UIFactory.getLexend(Font.PLAIN, 16));
+        typeLbl.setFont(UIFont.lexend(Font.PLAIN, 16));
         typeLbl.setForeground(new Color(60, 100, 60)); // Darker green for subtitle
 
         JLabel dateLbl = new JLabel("Date Planted: " + this.datePlanted);
@@ -143,7 +143,7 @@ public class CropCardPanel extends JPanel {
         JLabel sizeLbl = new JLabel("Size: " + (this.size.isEmpty() ? "N/A" : this.size));
         JLabel fertLbl = new JLabel("Last Fertilized: " + (this.lastFertilized == null ? "Never" : this.lastFertilized));
 
-        Font detailFont = UIFactory.getLexend(Font.PLAIN, 14);
+        Font detailFont = UIFont.lexend(Font.PLAIN, 14);
         for(JLabel l : new JLabel[]{dateLbl, soilLbl, sizeLbl, fertLbl}) {
             l.setFont(detailFont);
             l.setForeground(UIColors.TEXT_DARK);
@@ -157,7 +157,7 @@ public class CropCardPanel extends JPanel {
         gbc.gridy = 5; p.add(sizeLbl, gbc);
         gbc.gridy = 6; p.add(fertLbl, gbc);
 
-        JButton viewLogsBtn = UIFactory.createPrimaryButton("View Logs");
+        JButton viewLogsBtn = UIButtons.createPrimaryButton("View Logs");
         gbc.gridx = 1; gbc.gridy = 5; gbc.gridheight = 2;
         gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.SOUTHEAST;
