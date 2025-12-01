@@ -2,7 +2,7 @@ package com.plantfarmlogger.view;
 
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIColors;
-import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.util.*;
 import com.plantfarmlogger.view.components.BaseDashboardView;
 import com.plantfarmlogger.view.components.LogCardPanel;
 
@@ -44,11 +44,11 @@ public class CropLog extends BaseDashboardView {
         titleBlock.setOpaque(false);
 
         JLabel title = new JLabel(cropName);
-        title.setFont(UIFactory.getLexend(Font.BOLD, 36));
+        title.setFont(UIFont.lexend(Font.BOLD, 36));
         title.setForeground(UIColors.BUTTON_COLOR);
 
         countLabel = new JLabel("Number of Crop Logs: 0");
-        countLabel.setFont(UIFactory.getLexend(Font.PLAIN, 14));
+        countLabel.setFont(UIFont.lexend(Font.PLAIN, 14));
         countLabel.setForeground(UIColors.TEXT_DARK);
 
         titleBlock.add(title);
@@ -56,7 +56,7 @@ public class CropLog extends BaseDashboardView {
         titleBlock.add(countLabel);
 
         // Add Log Button
-        UIFactory.RoundedButton addBtn = new UIFactory.RoundedButton("Add Log");
+        JButton addBtn = UIButtons.createRoundedButton("Add Log");
         addBtn.setPreferredSize(new Dimension(140, 40));
         addBtn.addActionListener(e -> {
             // In a real app, this would open a dialog or input form

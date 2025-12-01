@@ -1,7 +1,7 @@
 package com.plantfarmlogger.view.components;
 
 import com.plantfarmlogger.util.UIColors;
-import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.util.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -37,7 +37,7 @@ public class LogCardPanel extends JPanel {
 
         // 1. Date (Title)
         JLabel dateLbl = new JLabel(date);
-        dateLbl.setFont(UIFactory.getLexend(Font.BOLD, 22));
+        dateLbl.setFont(UIFont.lexend(Font.BOLD, 22));
         dateLbl.setForeground(UIColors.BUTTON_COLOR); // Dark Green
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 1.0;
@@ -45,7 +45,7 @@ public class LogCardPanel extends JPanel {
 
         // 2. Age (Subtitle)
         JLabel ageLbl = new JLabel(age);
-        ageLbl.setFont(UIFactory.getLexend(Font.PLAIN, 14));
+        ageLbl.setFont(UIFont.lexend(Font.PLAIN, 14));
         ageLbl.setForeground(new Color(100, 120, 100)); // Muted Green
 
         gbc.gridy = 1;
@@ -68,9 +68,9 @@ public class LogCardPanel extends JPanel {
         add(detailsPanel, gbc);
 
         // 4. Edit Button (Right Aligned)
-        UIFactory.RoundedButton editBtn = new UIFactory.RoundedButton("Edit");
+        JButton editBtn = UIButtons.createRoundedButton("Edit");
         editBtn.setPreferredSize(new Dimension(120, 40)); // Smaller button
-        editBtn.setFont(UIFactory.getLexend(Font.BOLD, 14));
+        editBtn.setFont(UIFont.lexend(Font.BOLD, 14));
 
         gbc.gridx = 1; gbc.gridy = 2;
         gbc.weightx = 0;
@@ -83,11 +83,11 @@ public class LogCardPanel extends JPanel {
         p.setOpaque(false);
 
         JLabel l = new JLabel(label);
-        l.setFont(UIFactory.getLexend(Font.PLAIN, 14));
+        l.setFont(UIFont.lexend(Font.PLAIN, 14));
         l.setForeground(new Color(60, 80, 60));
 
         JLabel v = new JLabel(value);
-        v.setFont(UIFactory.getLexend(Font.PLAIN, 14));
+        v.setFont(UIFont.lexend(Font.PLAIN, 14));
         v.setForeground(UIColors.TEXT_DARK);
 
         p.add(l);

@@ -2,7 +2,7 @@ package com.plantfarmlogger.view.components;
 
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIColors;
-import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.util.*;
 
 import javax.swing.*;
 import java.awt.*;
