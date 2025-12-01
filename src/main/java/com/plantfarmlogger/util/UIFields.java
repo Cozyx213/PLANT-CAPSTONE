@@ -1,4 +1,77 @@
 package com.plantfarmlogger.util;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
+
 public class UIFields {
+
+    private static final Dimension FIELD_SIZE = new Dimension(280, 40);
+
+    public static JTextField createRoundedField() {
+        JTextField field = new JTextField() {
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                UIRenderer.paintRoundedBackground(g, this);
+                super.paintComponent(g);
+            }
+        };
+
+        setupRoundedDefaults(field);
+        return field;
+    }
+
+    public static JPasswordField createRoundedPasswordField() {
+        JPasswordField field = new JPasswordField() {
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                UIRenderer.paintRoundedBackground(g, this);
+                super.paintComponent(g);
+            }
+        };
+
+        setupRoundedDefaults(field);
+        return field;
+    }
+
+    public static JTextField createUnderlineField(String placeholder) {
+        JTextField tf = new JTextField(placeholder);
+        tf.setBorder(new MatteBorder(0, 0, 1, 0, UIColors.TEXT_DARK));
+        tf.setOpaque(false);
+        tf.setForeground(Color.GRAY);
+        tf.setFont(UIFont.lexend(Font.PLAIN, 14));
+
+        tf.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (tf.getText().equals(placeholder)) {
+                    tf.setText("");
+                    tf.setForeground(UIColors.TEXT_DARK);
+                }
+            }
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (tf.getText().isEmpty()) {
+                    tf.setText(placeholder);
+                    tf.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        return tf;
+    }
+
+    private static void setupRoundedDefaults(JTextField field) {
+        field.setOpaque(false);
+        field.setBorder(new EmptyBorder(5, 15, 5, 15));
+        field.setBackground(UIColors.TEXT_FIELD_BG);
+        field.setForeground(UIColors.TEXT_DARK);
+        field.setFont(UIFont.lexend(Font.PLAIN, 16));
+        field.setPreferredSize(FIELD_SIZE);
+        field.setMaximumSize(FIELD_SIZE);
+    }
+
+    private UIFields() {}
 }
