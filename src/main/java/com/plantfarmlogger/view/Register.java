@@ -1,6 +1,6 @@
 package com.plantfarmlogger.view;
 
-import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
-import static com.plantfarmlogger.util.UIFactory.getLexend;
+
 
 public class Register extends JPanel {
 
@@ -27,7 +27,7 @@ public class Register extends JPanel {
         this.navigator = navigator;
 
         setLayout(new GridBagLayout());
-        setBackground(UIFactory.BG_COLOR_GENERAL);
+        setBackground(UIColors.BG_COLOR_GENERAL);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 0, 10, 0);
@@ -37,16 +37,16 @@ public class Register extends JPanel {
 
         // 1. Logo
         JLabel logo = new JLabel("ANiCore LITE");
-        logo.setFont(getLexend(Font.BOLD, 32));
-        logo.setForeground(UIFactory.TEXT_COLOR);
+        logo.setFont(UIFont.lexend(Font.BOLD, 32));
+        logo.setForeground(UIColors.TEXT_COLOR);
 
         gbc.gridy = 0;
         add(logo, gbc);
 
         // 2. Title
         JLabel title = new JLabel("Create Account");
-        title.setFont(getLexend(Font.BOLD, 24));
-        title.setForeground(UIFactory.TEXT_COLOR);
+        title.setFont(UIFont.lexend(Font.BOLD, 24));
+        title.setForeground(UIColors.TEXT_COLOR);
 
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 30, 0);
@@ -86,8 +86,8 @@ public class Register extends JPanel {
         add(columnsPanel, gbc);
 
         // 4. Register Button
-        UIFactory.RoundedButton regBtn = new UIFactory.RoundedButton("Sign Up");
-        regBtn.setFont(getLexend(Font.BOLD, 16));
+        JButton regBtn = UIButtons.createRoundedButton("Sign Up");
+        regBtn.setFont(UIFont.lexend(Font.BOLD, 16));
         regBtn.setPreferredSize(new Dimension(220, 50));
         regBtn.addActionListener(e -> performRegister());
         gbc.gridy = 3;
@@ -96,8 +96,8 @@ public class Register extends JPanel {
 
         // 5. Back to Login Link
         JLabel loginLink = new JLabel("Already have an account? Log In");
-        loginLink.setFont(getLexend(Font.PLAIN, 12));
-        loginLink.setForeground(UIFactory.TEXT_COLOR);
+        loginLink.setFont(UIFont.lexend(Font.PLAIN, 12));
+        loginLink.setForeground(UIColors.TEXT_COLOR);
         loginLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         // Underline effect
@@ -119,8 +119,8 @@ public class Register extends JPanel {
     // Helper to add label + field cleanly
     private JTextField addFieldToPanel(JPanel panel, String labelText) {
         JLabel label = new JLabel(labelText);
-        label.setForeground(UIFactory.TEXT_COLOR);
-        label.setFont(getLexend(Font.BOLD, 12));
+        label.setForeground(UIColors.TEXT_COLOR);
+        label.setFont(UIFont.lexend(Font.BOLD, 12));
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JPanel labelP = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -128,7 +128,7 @@ public class Register extends JPanel {
         labelP.add(label);
         labelP.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JTextField field = UIFactory.createRoundedField();
+        JTextField field = UIFields.createRoundedField();
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         field.setPreferredSize(FIELD_SIZE);
@@ -145,8 +145,8 @@ public class Register extends JPanel {
     // Helper for password fields
     private JTextField addPasswordFieldToPanel(JPanel panel, String labelText, boolean isConfirm) {
         JLabel label = new JLabel(labelText);
-        label.setForeground(UIFactory.TEXT_COLOR);
-        label.setFont(getLexend(Font.BOLD, 12));
+        label.setForeground(UIColors.TEXT_COLOR);
+        label.setFont(UIFont.lexend(Font.BOLD, 12));
         label.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JPanel labelP = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -154,7 +154,7 @@ public class Register extends JPanel {
         labelP.add(label);
         labelP.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JPasswordField field = UIFactory.createRoundedPasswordField();
+        JPasswordField field = UIFields.createRoundedPasswordField();
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
         field.setAlignmentY(Component.TOP_ALIGNMENT);
 

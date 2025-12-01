@@ -1,7 +1,9 @@
 package com.plantfarmlogger.view;
 
 import com.plantfarmlogger.model.User;
-import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.util.UIButtons;
+import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.view.components.BaseDashboardView;
 import com.plantfarmlogger.view.components.CropCardPanel;
 
@@ -28,11 +30,11 @@ public class Home extends BaseDashboardView {
     @Override
     protected JPanel createContentPanel() {
         JPanel content = new JPanel(new BorderLayout());
-        content.setBackground(UIFactory.BG_COLOR);
+        content.setBackground(UIColors.BG_COLOR);
 
         // --- Header ---
         JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(UIFactory.BG_COLOR);
+        header.setBackground(UIColors.BG_COLOR);
         header.setBorder(new EmptyBorder(40, 40, 20, 40));
 
         JPanel titleBlock = new JPanel();
@@ -40,18 +42,18 @@ public class Home extends BaseDashboardView {
         titleBlock.setOpaque(false);
 
         JLabel title = new JLabel("My Farm");
-        title.setFont(UIFactory.getLexend(Font.BOLD, 36));
-        title.setForeground(UIFactory.BUTTON_COLOR);
+        title.setFont(UIFont.lexend(Font.BOLD, 36));
+        title.setForeground(UIColors.BUTTON_COLOR);
 
         countLabel = new JLabel("Number of Crop Beds: 0");
-        countLabel.setFont(UIFactory.getLexend(Font.PLAIN, 14));
-        countLabel.setForeground(UIFactory.TEXT_DARK);
+        countLabel.setFont(UIFont.lexend(Font.PLAIN, 14));
+        countLabel.setForeground(UIColors.TEXT_DARK);
 
         titleBlock.add(title);
         titleBlock.add(Box.createVerticalStrut(5));
         titleBlock.add(countLabel);
 
-        JButton addBtn = UIFactory.createPrimaryButton("Add Cropbed");
+        JButton addBtn = UIButtons.createPrimaryButton("Add Cropbed");
         addBtn.addActionListener(e -> addNewCropCard());
 
         header.add(titleBlock, BorderLayout.WEST);
@@ -62,7 +64,7 @@ public class Home extends BaseDashboardView {
         // --- List Container ---
         cardsContainer = new JPanel();
         cardsContainer.setLayout(new BoxLayout(cardsContainer, BoxLayout.Y_AXIS));
-        cardsContainer.setBackground(UIFactory.BG_COLOR);
+        cardsContainer.setBackground(UIColors.BG_COLOR);
         cardsContainer.setBorder(new EmptyBorder(0, 40, 40, 40));
 
         // Important: Use glue to push everything up, keeping sizes consistent
