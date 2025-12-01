@@ -1,6 +1,7 @@
 package com.plantfarmlogger.view;
 
 import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFactory;
 import com.plantfarmlogger.view.components.BaseDashboardView;
 import com.plantfarmlogger.view.components.LogCardPanel;
@@ -30,11 +31,11 @@ public class CropLog extends BaseDashboardView {
     @Override
     protected JPanel createContentPanel() {
         JPanel content = new JPanel(new BorderLayout());
-        content.setBackground(UIFactory.BG_COLOR);
+        content.setBackground(UIColors.BG_COLOR);
 
         // --- 1. Header Section ---
         JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(UIFactory.BG_COLOR);
+        header.setBackground(UIColors.BG_COLOR);
         header.setBorder(new EmptyBorder(40, 40, 20, 40));
 
         // Title Block
@@ -44,11 +45,11 @@ public class CropLog extends BaseDashboardView {
 
         JLabel title = new JLabel(cropName);
         title.setFont(UIFactory.getLexend(Font.BOLD, 36));
-        title.setForeground(UIFactory.BUTTON_COLOR);
+        title.setForeground(UIColors.BUTTON_COLOR);
 
         countLabel = new JLabel("Number of Crop Logs: 0");
         countLabel.setFont(UIFactory.getLexend(Font.PLAIN, 14));
-        countLabel.setForeground(UIFactory.TEXT_DARK);
+        countLabel.setForeground(UIColors.TEXT_DARK);
 
         titleBlock.add(title);
         titleBlock.add(Box.createVerticalStrut(5));
@@ -70,7 +71,7 @@ public class CropLog extends BaseDashboardView {
         // --- 2. Scrollable List Section ---
         logsContainer = new JPanel();
         logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
-        logsContainer.setBackground(UIFactory.BG_COLOR);
+        logsContainer.setBackground(UIColors.BG_COLOR);
         logsContainer.setBorder(new EmptyBorder(0, 40, 40, 40));
 
         logsContainer.add(Box.createVerticalGlue()); // Push items to top

@@ -1,6 +1,7 @@
 package com.plantfarmlogger.view.components;
 
-import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.util.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,7 +28,7 @@ public class CropCardPanel extends JPanel {
         this.onCancelCallback = onCancelCallback;
 
         setLayout(new CardLayout());
-        setBackground(UIFactory.BG_COLOR);
+        setBackground(UIColors.BG_COLOR);
 
         // Strict Size Enforcement: width expands, height fixed
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 350));
@@ -40,7 +41,7 @@ public class CropCardPanel extends JPanel {
 
     private JPanel createInputPanel() {
         JPanel p = new JPanel(new GridBagLayout());
-        p.setBackground(UIFactory.CARD_COLOR);
+        p.setBackground(UIColors.CARD_COLOR);
         p.setBorder(new EmptyBorder(20, 25, 20, 25));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -50,10 +51,11 @@ public class CropCardPanel extends JPanel {
 
         // 1. Header (Crop Name Input)
         JLabel titleLabel = new JLabel("Enter Crop Name");
-        titleLabel.setFont(UIFactory.getLexend(Font.BOLD, 18));
-        titleLabel.setForeground(UIFactory.TEXT_DARK);
+        titleLabel.setFont(UIFont.lexend(Font.BOLD, 18));
+        titleLabel.setForeground(UIColors.TEXT_DARK);
 
-        cropNameField = UIFactory.createStyledField("e.g. Tomato Bed 1");
+        // not sure what method this is supposed to be? please fix
+        cropNameField = UIFields.createStyledField("e.g. Tomato Bed 1");
 
         // 2. Other Inputs
         plantTypeField = UIFactory.createStyledField("Enter Plant Type");
@@ -61,7 +63,7 @@ public class CropCardPanel extends JPanel {
 
         String[] soils = {"Loam", "Clay", "Sandy", "Silt", "Peat"};
         soilCombo = new JComboBox<>(soils);
-        soilCombo.setFont(UIFactory.getLexend(Font.PLAIN, 14));
+        soilCombo.setFont(UIFont.lexend(Font.PLAIN, 14));
         soilCombo.setBackground(Color.WHITE);
 
         sizeField = UIFactory.createStyledField("Enter Size");
@@ -85,7 +87,7 @@ public class CropCardPanel extends JPanel {
         JPanel soilPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         soilPanel.setOpaque(false);
         JLabel soilLbl = new JLabel("Soil Type: ");
-        soilLbl.setFont(UIFactory.getLexend(Font.PLAIN, 14));
+        soilLbl.setFont(UIFont.lexend(Font.PLAIN, 14));
         soilPanel.add(soilLbl);
         soilPanel.add(soilCombo);
 
@@ -99,7 +101,7 @@ public class CropCardPanel extends JPanel {
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.setOpaque(false);
 
-        JButton cancelBtn = UIFactory.createTextButton("Cancel");
+        JButton cancelBtn = UIButtons.createTextButton("Cancel");
         cancelBtn.addActionListener(e -> {
             if (onCancelCallback != null) onCancelCallback.run();
         });
@@ -120,7 +122,7 @@ public class CropCardPanel extends JPanel {
 
     private JPanel createViewPanel() {
         JPanel p = new JPanel(new GridBagLayout());
-        p.setBackground(UIFactory.CARD_COLOR);
+        p.setBackground(UIColors.CARD_COLOR);
         p.setBorder(new EmptyBorder(20, 25, 20, 25));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -130,7 +132,7 @@ public class CropCardPanel extends JPanel {
         // Use stored data to create labels
         JLabel nameLbl = new JLabel(this.cropName);
         nameLbl.setFont(UIFactory.getLexend(Font.BOLD, 24));
-        nameLbl.setForeground(UIFactory.TEXT_DARK);
+        nameLbl.setForeground(UIColors.TEXT_DARK);
 
         JLabel typeLbl = new JLabel(this.plantType);
         typeLbl.setFont(UIFactory.getLexend(Font.PLAIN, 16));
@@ -144,7 +146,7 @@ public class CropCardPanel extends JPanel {
         Font detailFont = UIFactory.getLexend(Font.PLAIN, 14);
         for(JLabel l : new JLabel[]{dateLbl, soilLbl, sizeLbl, fertLbl}) {
             l.setFont(detailFont);
-            l.setForeground(UIFactory.TEXT_DARK);
+            l.setForeground(UIColors.TEXT_DARK);
         }
 
         gbc.gridx = 0; gbc.gridy = 0; p.add(nameLbl, gbc);

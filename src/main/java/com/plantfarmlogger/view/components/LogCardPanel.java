@@ -1,5 +1,6 @@
 package com.plantfarmlogger.view.components;
 
+import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFactory;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class LogCardPanel extends JPanel {
         this.actions = actions;
 
         setLayout(new GridBagLayout());
-        setBackground(UIFactory.CARD_COLOR); // Light Green
+        setBackground(UIColors.CARD_COLOR); // Light Green
 
         // Fixed height for consistency, width expands
         setPreferredSize(new Dimension(0, 180));
@@ -37,7 +38,7 @@ public class LogCardPanel extends JPanel {
         // 1. Date (Title)
         JLabel dateLbl = new JLabel(date);
         dateLbl.setFont(UIFactory.getLexend(Font.BOLD, 22));
-        dateLbl.setForeground(UIFactory.BUTTON_COLOR); // Dark Green
+        dateLbl.setForeground(UIColors.BUTTON_COLOR); // Dark Green
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 1.0;
         add(dateLbl, gbc);
@@ -87,7 +88,7 @@ public class LogCardPanel extends JPanel {
 
         JLabel v = new JLabel(value);
         v.setFont(UIFactory.getLexend(Font.PLAIN, 14));
-        v.setForeground(UIFactory.TEXT_DARK);
+        v.setForeground(UIColors.TEXT_DARK);
 
         p.add(l);
         p.add(v);

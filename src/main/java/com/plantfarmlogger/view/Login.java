@@ -2,7 +2,8 @@ package com.plantfarmlogger.view;
 
 import com.plantfarmlogger.controller.dao.UserDao;
 import com.plantfarmlogger.model.User;
-import com.plantfarmlogger.util.UIFactory;
+import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
-
-import static com.plantfarmlogger.util.UIFactory.getLexend;
 
 public class Login extends JPanel {
 
@@ -23,7 +22,7 @@ public class Login extends JPanel {
         this.navigator = navigator;
 
         setLayout(new GridBagLayout());
-        setBackground(UIFactory.BG_COLOR_GENERAL); // Use Factory Color
+        setBackground(UIColors.BG_COLOR_GENERAL); // Use Factory Color
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 0, 5, 0);
@@ -33,7 +32,7 @@ public class Login extends JPanel {
 
         // 1. Logo
         JLabel logoLabel = new JLabel("ANiCore LITE");
-        logoLabel.setFont(UIFactory.getLexend(Font.BOLD, 32));
+        logoLabel.setFont(UIFont.lexend(Font.BOLD, 32));
         logoLabel.setForeground(Color.WHITE);
 
         gbc.gridy = 0;
@@ -42,7 +41,7 @@ public class Login extends JPanel {
 
         // 2. Header
         JLabel loginHeader = new JLabel("Log In");
-        loginHeader.setFont(UIFactory.getLexend(Font.BOLD, 28));
+        loginHeader.setFont(UIFont.lexend(Font.BOLD, 28));
         loginHeader.setForeground(Color.WHITE);
 
         gbc.gridy = 1;
@@ -57,14 +56,14 @@ public class Login extends JPanel {
         // Username
         JLabel userLabel = new JLabel("Username");
         userLabel.setForeground(Color.WHITE);
-        userLabel.setFont(UIFactory.getLexend(Font.BOLD, 12));
+        userLabel.setFont(UIFont.lexend(Font.BOLD, 12));
 
         JPanel userLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         userLabelPanel.setOpaque(false);
         userLabelPanel.setMaximumSize(new Dimension(300, 20));
         userLabelPanel.add(userLabel);
 
-        userField = UIFactory.createRoundedField();
+        userField = UIFields.createRoundedField();
         // Enforce size consistency
         userField.setMaximumSize(new Dimension(300, 40));
         userField.setPreferredSize(new Dimension(300, 40));
@@ -77,14 +76,14 @@ public class Login extends JPanel {
         // Password
         JLabel passLabel = new JLabel("Password");
         passLabel.setForeground(Color.WHITE);
-        passLabel.setFont(UIFactory.getLexend(Font.BOLD, 12));
+        passLabel.setFont(UIFont.lexend(Font.BOLD, 12));
 
         JPanel passLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         passLabelPanel.setOpaque(false);
         passLabelPanel.setMaximumSize(new Dimension(300, 20));
         passLabelPanel.add(passLabel);
 
-        passField = UIFactory.createRoundedPasswordField();
+        passField = UIFields.createRoundedPasswordField();
         passField.setMaximumSize(new Dimension(300, 40));
         passField.setPreferredSize(new Dimension(300, 40));
 
@@ -94,9 +93,9 @@ public class Login extends JPanel {
         formPanel.add(Box.createVerticalStrut(30)); // Gap before button
 
         // Login Button
-        UIFactory.RoundedButton loginBtn = new UIFactory.RoundedButton("Log In");
+        JButton loginBtn = UIButtons.createRoundedButton("Log In");
         loginBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loginBtn.setFont(getLexend(Font.BOLD, 16));
+        loginBtn.setFont(UIFont.lexend(Font.BOLD, 16));
         loginBtn.setPreferredSize(new Dimension(220, 50));
         // Override size for login specifically if needed, or keep factory default
         loginBtn.setMaximumSize(new Dimension(200, 45));
@@ -116,11 +115,11 @@ public class Login extends JPanel {
         linkPanel.setOpaque(false);
 
         JLabel noAccountLbl = new JLabel("No account yet?");
-        noAccountLbl.setFont(UIFactory.getLexend(Font.PLAIN, 12));
+        noAccountLbl.setFont(UIFont.lexend(Font.PLAIN, 12));
         noAccountLbl.setForeground(Color.WHITE);
 
         JLabel createAccountLbl = new JLabel("Create an account");
-        createAccountLbl.setFont(UIFactory.getLexend(Font.PLAIN, 12));
+        createAccountLbl.setFont(UIFont.lexend(Font.PLAIN, 12));
         createAccountLbl.setForeground(Color.WHITE);
         createAccountLbl.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
