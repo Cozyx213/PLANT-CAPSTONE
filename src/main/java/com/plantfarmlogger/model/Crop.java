@@ -3,7 +3,7 @@ package com.plantfarmlogger.model;
 import java.time.LocalDate;
 
 public class Crop {
-    private String name;
+    private String identification;
     private String plantType;
     private String soilType;
     private String lastFertilized;
@@ -91,5 +91,13 @@ public class Crop {
 
     public void setLength(double length) {
         this.length = length;
+    }
+
+    public String getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(String identification) {
+        this.identification = identification;
     }
 }
