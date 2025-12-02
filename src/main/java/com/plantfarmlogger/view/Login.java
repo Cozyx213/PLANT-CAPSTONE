@@ -101,7 +101,7 @@ public class Login extends JPanel {
         loginBtn.setMaximumSize(new Dimension(200, 45));
         loginBtn.setPreferredSize(new Dimension(200, 45));
 
-        loginBtn.addActionListener(_ -> performLogin());
+        loginBtn.addActionListener(_e -> performLogin());
 
         formPanel.add(loginBtn);
         formPanel.add(Box.createVerticalStrut(30)); // Gap before link
@@ -153,7 +153,7 @@ public class Login extends JPanel {
             JOptionPane.showMessageDialog(this, "Login successful.", "Status", JOptionPane.INFORMATION_MESSAGE);
             navigator.showHome(u); // Using showHome from AppNavigator
         } else {
-            JOptionPane.showMessageDialog(this, "Login unsuccessful.", "Status", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Login unsuccessful1.", "Status", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

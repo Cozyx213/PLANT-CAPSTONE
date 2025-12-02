@@ -1,9 +1,13 @@
 package com.plantfarmlogger.util;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
 
 public class UIButtons {
 
@@ -24,6 +28,28 @@ public class UIButtons {
         btn.setBorderPainted(false);
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        return btn;
+    }
+
+    public static JButton createTextButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setFont(UIFont.lexend(Font.PLAIN, 14));
+        btn.setForeground(UIColors.TEXT_DARK);
+        btn.setBackground(null);
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                btn.setForeground(UIColors.BUTTON_COLOR);
+            }
+
+            public void mouseExited(MouseEvent e) {
+                btn.setForeground(UIColors.TEXT_DARK);
+            }
+        });
         return btn;
     }
 
@@ -61,5 +87,6 @@ public class UIButtons {
         }
     }
 
-    private UIButtons() {}
+    private UIButtons() {
+    }
 }

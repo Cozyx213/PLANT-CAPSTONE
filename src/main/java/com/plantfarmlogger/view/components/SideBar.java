@@ -1,17 +1,5 @@
 package com.plantfarmlogger.view.components;
 
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.FontUIResource;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,40 +14,52 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FontUIResource;
+
 import com.plantfarmlogger.model.User;
 
 // Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
     private JButton addCropBed, changeName, changeAddress, changePass, logOut;
 
-
-    //DESIGN STUFF
+    // DESIGN STUFF
     private static final Color BG_COLOR = new Color(113, 165, 84);
-    //private static final Color BUTTON_COLOR = new Color(54, 85, 59);
-    //private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
-    //private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
+    // private static final Color BUTTON_COLOR = new Color(54, 85, 59);
+    // private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
+    // private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
     private static final Color TEXT_COLOR = Color.WHITE;
     private static final Color SUB_TEXT_COLOR = new Color(214, 223, 197);
 
     private static final Font defaultFont = new Font("SansSerif", Font.PLAIN, 16);
 
-    public SideBar(User user) {
+    public SideBar(User user, Runnable onLogout) {
 
         // edit to get user
-        // this.user = new User("John Doe", "johndoe", "Cebu Institute of Technology-University, Cebu City, Cebu, Region VII", "123", 24, "123");
+        // this.user = new User("John Doe", "johndoe", "Cebu Institute of
+        // Technology-University, Cebu City, Cebu, Region VII", "123", 24, "123");
         // this.farm = new Farm("myFarm", 0);
         // farm.setCropBed(new ArrayList<>());
         // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
         // 1.1, 1.2, 1.3,
         // "110125"));
         // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-        //         1.1, 1.2, 1.3,
-        //         "110125"));
+        // 1.1, 1.2, 1.3,
+        // "110125"));
         // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-        //         1.1, 1.2, 1.3,
-        //         "110125"));
+        // 1.1, 1.2, 1.3,
+        // "110125"));
 
-        
         // The contentPane setup is now the setup for the SideBar JPanel itself
         // (this) refers to the SideBar JPanel
         setLayout(new GridBagLayout());
@@ -67,7 +67,6 @@ public class SideBar extends JPanel {
         setMaximumSize(new Dimension(300, 800));
         setFont(Font.getFont("SansSerif"));
         setUIFont(new FontUIResource(defaultFont));
-
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
@@ -107,30 +106,30 @@ public class SideBar extends JPanel {
         cropBeds.setOpaque(false);
         cropBeds.setFont(new Font("SansSerif", Font.BOLD, 32));
 
-
         // edit to make loop for number of crop beds
-        // edit this nalang soon to make it white with for loop (THESE SHOULD BE JBUTTONS)
+        // edit this nalang soon to make it white with for loop (THESE SHOULD BE
+        // JBUTTONS)
         // for(CropBed i : farm.getCropBeds()){
-        //     JButton crop = new JButton(i.getPlantType().getName());
-        //     crop.setBorderPainted(false);
-        //     crop.setContentAreaFilled(false);
-        //     crop.setFocusPainted(false);
-        //     crop.setFocusable(true);
-        //     crop.setForeground(SUB_TEXT_COLOR);
+        // JButton crop = new JButton(i.getPlantType().getName());
+        // crop.setBorderPainted(false);
+        // crop.setContentAreaFilled(false);
+        // crop.setFocusPainted(false);
+        // crop.setFocusable(true);
+        // crop.setForeground(SUB_TEXT_COLOR);
 
-        //     // add color shi
-        //     crop.addMouseListener(new MouseAdapter() {
-        //         @Override
-        //         public void mouseEntered(MouseEvent e) {
-        //             crop.setForeground(TEXT_COLOR);
-        //         }
+        // // add color shi
+        // crop.addMouseListener(new MouseAdapter() {
+        // @Override
+        // public void mouseEntered(MouseEvent e) {
+        // crop.setForeground(TEXT_COLOR);
+        // }
 
-        //         @Override
-        //         public void mouseExited(MouseEvent e) {
-        //             crop.setForeground(SUB_TEXT_COLOR);
-        //         }
-        //     });
-        //     cropBeds.add(crop);
+        // @Override
+        // public void mouseExited(MouseEvent e) {
+        // crop.setForeground(SUB_TEXT_COLOR);
+        // }
+        // });
+        // cropBeds.add(crop);
         // }
 
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
@@ -276,6 +275,13 @@ public class SideBar extends JPanel {
             public void mouseExited(MouseEvent e) {
                 logOut.setForeground(SUB_TEXT_COLOR);
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (onLogout != null) {
+                    onLogout.run();
+                }
+            }
         });
 
         gbc.gridy = 0;
@@ -291,14 +297,15 @@ public class SideBar extends JPanel {
 
     }
 
-    public static void setUIFont(FontUIResource f){
+    public static void setUIFont(FontUIResource f) {
         Enumeration<Object> keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
             if (value instanceof FontUIResource) {
                 FontUIResource originalFont = (FontUIResource) value;
-                // CORRECTED LINE: Use the original font's style, but apply the new size and family name.
+                // CORRECTED LINE: Use the original font's style, but apply the new size and
+                // family name.
                 Font newFont = new Font(f.getFontName(), originalFont.getStyle(), f.getSize());
                 UIManager.put(key, new FontUIResource(newFont));
             }

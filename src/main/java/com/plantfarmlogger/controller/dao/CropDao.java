@@ -29,7 +29,12 @@ public class CropDao implements CropDaoInter {
             String line;
 
             while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty())
+                    continue;
                 String[] spl = line.split(",");
+                if (spl.length < 8)
+                    continue;
+
                 String identification = spl[0];
                 String plantType = spl[1];
                 String soilType = spl[2];
@@ -40,7 +45,8 @@ public class CropDao implements CropDaoInter {
                 double height = Double.parseDouble(spl[6]);
                 double length = Double.parseDouble(spl[7]);
 
-                Crop n = new Crop(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
+                Crop n = new Crop(identification, plantType, soilType, lastFertilized, datePlanted, width, height,
+                        length);
                 Crops.add(n);
             }
 
@@ -77,6 +83,7 @@ public class CropDao implements CropDaoInter {
     public void create(Crop t) {
         if (t == null) {
             System.out.println("no user ");
+            return;
         }
         Crops.add(t);
         saveToCSV();
@@ -84,16 +91,10 @@ public class CropDao implements CropDaoInter {
     }
 
     public void delete(Crop t) {
-        int index = 0;
-        for (Crop u : Crops) {
-
-            if (t == u) {
-                Crops.remove(index);
-            }
-
-            index++;
+        if (t != null) {
+            Crops.remove(t);
+            saveToCSV();
         }
-        saveToCSV();
     }
 
     public void printU() {

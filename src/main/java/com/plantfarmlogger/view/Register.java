@@ -1,15 +1,34 @@
 package com.plantfarmlogger.view;
 
-import com.plantfarmlogger.util.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
+import com.plantfarmlogger.controller.dao.UserDao;
+import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.util.UIButtons;
+import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.util.UIFields;
+import com.plantfarmlogger.util.UIFont;
 
 public class Register extends JPanel {
 
@@ -18,7 +37,7 @@ public class Register extends JPanel {
     private final AppNavigator navigator;
 
     // Left Column
-    private JTextField nameField, usernameField, ageField, farmField;
+    private JTextField nameField, usernameField, ageField;
     // Right Column
     private JTextField addressField;
     private JPasswordField passField, confirmPassField;
@@ -64,8 +83,7 @@ public class Register extends JPanel {
         nameField = addFieldToPanel(leftPanel, "Name");
         usernameField = addFieldToPanel(leftPanel, "Username");
         ageField = addFieldToPanel(leftPanel, "Age");
-        farmField = addFieldToPanel(leftPanel, "Farm Name");
-
+      
         // --- RIGHT COLUMN ---
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
@@ -165,18 +183,43 @@ public class Register extends JPanel {
         panel.add(Box.createVerticalStrut(5));
         panel.add(field);
         // Add extra space if it's not the last field
-        if (!isConfirm) panel.add(Box.createVerticalStrut(15));
+        if (!isConfirm)
+            panel.add(Box.createVerticalStrut(15));
 
         return field;
     }
 
     private void performRegister() {
-        // Basic validation placeholder
-        if(nameField.getText().isEmpty() || new String(passField.getPassword()).isEmpty()) {
+        String name = nameField.getText();
+        String username = usernameField.getText();
+        String ageStr = ageField.getText();
+        String address = addressField.getText();
+        String pass = new String(passField.getPassword());
+        String confirmPass = new String(confirmPassField.getPassword());
+
+        if (name.isEmpty() || username.isEmpty() || ageStr.isEmpty() || address.isEmpty() || pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Account Created! Please Login.");
-            navigator.showLogin();
+            return;
         }
+
+        if (!pass.equals(confirmPass)) {
+            JOptionPane.showMessageDialog(this, "Passwords do not match.");
+            return;
+        }
+
+        int age;
+        try {
+            age = Integer.parseInt(ageStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Age.");
+            return;
+        }
+
+        User newUser = new User(name, username, address, age, pass);
+        UserDao dao = new UserDao();
+        dao.create(newUser);
+
+        JOptionPane.showMessageDialog(this, "Account Created! Please Login.");
+        navigator.showLogin();
     }
 }

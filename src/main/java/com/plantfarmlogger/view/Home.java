@@ -1,16 +1,25 @@
 package com.plantfarmlogger.view;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.util.ArrayList;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.view.components.BaseDashboardView;
 import com.plantfarmlogger.view.components.CropCardPanel;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.ArrayList;
 
 public class Home extends BaseDashboardView {
 
@@ -22,8 +31,8 @@ public class Home extends BaseDashboardView {
     private boolean isCreating = false; // Prevents multiple "Add" clicks
     private ArrayList<CropCardPanel> cropList;
 
-    public Home(User user) {
-        super(user);
+    public Home(User user, Runnable onLogout) {
+        super(user, onLogout);
         this.cropList = new ArrayList<>();
     }
 
@@ -109,7 +118,8 @@ public class Home extends BaseDashboardView {
                 // Since we added at index 0 and 1, removing index 0 puts the strut at 0.
                 // It's safer to just refresh the whole container or handle index carefully.
                 // For simplicity, we remove the specific component ref[0].
-                // The strut remains but it's just space. For a cleaner removal, we can remove the next component too.
+                // The strut remains but it's just space. For a cleaner removal, we can remove
+                // the next component too.
                 refreshLayout();
             }
         };
@@ -126,7 +136,8 @@ public class Home extends BaseDashboardView {
         refreshLayout();
 
         // Scroll to top
-        SwingUtilities.invokeLater(() -> ((JScrollPane)cardsContainer.getParent().getParent()).getVerticalScrollBar().setValue(0));
+        SwingUtilities.invokeLater(
+                () -> ((JScrollPane) cardsContainer.getParent().getParent()).getVerticalScrollBar().setValue(0));
     }
 
     private void refreshLayout() {

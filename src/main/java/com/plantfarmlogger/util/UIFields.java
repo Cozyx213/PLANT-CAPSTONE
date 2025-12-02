@@ -63,6 +63,14 @@ public class UIFields {
         return tf;
     }
 
+    public static JTextField createStyledField(String placeholder) {
+        return createUnderlineField(placeholder);
+    }
+
+    public static JTextField createDateField(String placeholder) {
+        return createUnderlineField(placeholder + " (YYYY-MM-DD)");
+    }
+
     private static void setupRoundedDefaults(JTextField field) {
         field.setOpaque(false);
         field.setBorder(new EmptyBorder(5, 15, 5, 15));
@@ -73,5 +81,6 @@ public class UIFields {
         field.setMaximumSize(FIELD_SIZE);
     }
 
-    private UIFields() {}
+    private UIFields() {
+    }
 }

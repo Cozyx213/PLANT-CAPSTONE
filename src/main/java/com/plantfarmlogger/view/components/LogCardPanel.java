@@ -9,7 +9,6 @@ import java.awt.*;
 
 public class LogCardPanel extends JPanel {
 
-    // Data
     private String date, age, health, growth, actions;
 
     public LogCardPanel(String date, String age, String health, String growth, String actions) {
@@ -20,9 +19,7 @@ public class LogCardPanel extends JPanel {
         this.actions = actions;
 
         setLayout(new GridBagLayout());
-        setBackground(UIColors.CARD_COLOR); // Light Green
 
-        // Fixed height for consistency, width expands
         setPreferredSize(new Dimension(0, 180));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
         setBorder(new EmptyBorder(20, 25, 20, 25));
@@ -35,24 +32,18 @@ public class LogCardPanel extends JPanel {
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // 1. Date (Title)
         JLabel dateLbl = new JLabel(date);
         dateLbl.setFont(UIFont.lexend(Font.BOLD, 22));
-        dateLbl.setForeground(UIColors.BUTTON_COLOR); // Dark Green
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 1.0;
         add(dateLbl, gbc);
 
-        // 2. Age (Subtitle)
         JLabel ageLbl = new JLabel(age);
         ageLbl.setFont(UIFont.lexend(Font.PLAIN, 14));
-        ageLbl.setForeground(new Color(100, 120, 100)); // Muted Green
 
         gbc.gridy = 1;
-        gbc.insets = new Insets(0, 0, 20, 0); // Spacing below title
         add(ageLbl, gbc);
 
-        // 3. Status Details
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.setOpaque(false);
@@ -67,9 +58,7 @@ public class LogCardPanel extends JPanel {
         gbc.insets = new Insets(0, 0, 0, 0);
         add(detailsPanel, gbc);
 
-        // 4. Edit Button (Right Aligned)
         JButton editBtn = UIButtons.createRoundedButton("Edit");
-        editBtn.setPreferredSize(new Dimension(120, 40)); // Smaller button
         editBtn.setFont(UIFont.lexend(Font.BOLD, 14));
 
         gbc.gridx = 1; gbc.gridy = 2;

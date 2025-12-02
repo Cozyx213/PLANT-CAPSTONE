@@ -1,8 +1,10 @@
 package com.plantfarmlogger.view;
 
+import java.awt.CardLayout;
+
+import javax.swing.JPanel;
+
 import com.plantfarmlogger.model.User;
-import javax.swing.*;
-import java.awt.*;
 
 public class AppNavigator {
 
@@ -32,19 +34,18 @@ public class AppNavigator {
     }
 
     public void showHome(User user) {
-        Home view = new Home(user);
+        Home view = new Home(user, this::logout);
         mainPanel.add(view, VIEW_HOME);
         cardLayout.show(mainPanel, VIEW_HOME);
     }
 
     public void showCropLogs(User user) {
-        CropLog view = new CropLog(user);
+        CropLog view = new CropLog(user, this::logout);
         mainPanel.add(view, VIEW_CROPLOGS);
         cardLayout.show(mainPanel, VIEW_CROPLOGS);
     }
 
     public void logout() {
-        // Simply redirect to login
         showLogin();
     }
 }

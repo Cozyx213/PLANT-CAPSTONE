@@ -18,8 +18,8 @@ public class CropLog extends BaseDashboardView {
     private ArrayList<LogCardPanel> logList; // The ArrayList Concept reused
     private String cropName = "Tomato"; // Dynamically passed in real app
 
-    public CropLog(User user) {
-        super(user);
+    public CropLog(User user, Runnable onLogout) {
+        super(user, onLogout);
         this.logList = new ArrayList<>();
 
         // Add Dummy Data for demonstration

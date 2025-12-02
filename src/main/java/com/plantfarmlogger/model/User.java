@@ -15,8 +15,6 @@ public class User {
         this.age = age;
 
     }
-    // User n = new User(name,username,address,farm,age,password);
-    // Getters and Setters
 
     public String getName() {
         return name;

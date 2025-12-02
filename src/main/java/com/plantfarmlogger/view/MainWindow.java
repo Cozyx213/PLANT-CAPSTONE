@@ -10,26 +10,21 @@ public class MainWindow extends JFrame {
     private final AppNavigator navigator;
 
     public MainWindow() {
-        // 1. Frame Setup
+    
         setTitle("AniCore Lite");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1280, 720);
-        setLocationRelativeTo(null); // Center on screen
+        setLocationRelativeTo(null); 
         setResizable(true);
 
-        // 2. Layout Setup
+   
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         add(mainPanel);
 
-        // 3. Initialize Navigator
-        // We pass the panel and layout so the navigator can control them
+   
         navigator = new AppNavigator(mainPanel, cardLayout);
-
-        // 4. Start Application
         navigator.showLogin();
-
-        // Add inside MainWindow.java
     }
 
     public AppNavigator getNavigator() {
