@@ -10,7 +10,7 @@ public class CropBed {
     private double width;
     private double height;
     private double length;
-      public CropBed(String plantType, String soilType, String lastFertilized,
+    public CropBed(String plantType, String soilType, String lastFertilized,
           String datePlanted, double width, double height,
             double length) {
     
