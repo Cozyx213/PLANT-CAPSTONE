@@ -44,7 +44,6 @@ public class AppNavigator {
     }
 
     public void logout() {
-        // Simply redirect to login
         showLogin();
     }
 }
