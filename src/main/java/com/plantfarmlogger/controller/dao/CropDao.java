@@ -7,19 +7,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.plantfarmlogger.model.CropBed;
-import com.plantfarmlogger.model.interfaces.CropBedDaoInter;
+import com.plantfarmlogger.model.Crop;
+import com.plantfarmlogger.model.interfaces.CropDaoInter;
 
-public class CropBedDao implements CropBedDaoInter {
-    ArrayList<CropBed> CropBeds = new ArrayList<CropBed>();
+public class CropDao implements CropDaoInter {
+    ArrayList<Crop> CropBeds = new ArrayList<Crop>();
 
     private final String cropBedFile = "src/main/resources/csv/cropbeds.csv";
 
-    public CropBedDao() {
+    public CropDao() {
         fetch();
     }
 
-    public ArrayList<CropBed> getCropBeds() {
+    public ArrayList<Crop> getCropBeds() {
         return CropBeds;
     }
 
@@ -39,7 +39,7 @@ public class CropBedDao implements CropBedDaoInter {
                 double height = Double.parseDouble(spl[5]);
                 double length = Double.parseDouble(spl[6]);
 
-                CropBed n = new CropBed(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+                Crop n = new Crop(plantType, soilType, lastFertilized, datePlanted, width, height, length);
                 CropBeds.add(n);
             }
 
@@ -54,7 +54,7 @@ public class CropBedDao implements CropBedDaoInter {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(cropBedFile));
 
         ) {
-            for (CropBed c : CropBeds) {
+            for (Crop c : CropBeds) {
                 bw.write(String.join(",", c.getPlantType(),
                         c.getSoilType(),
                         c.getLastFertilized(),
@@ -71,7 +71,7 @@ public class CropBedDao implements CropBedDaoInter {
         System.out.println("OPEnEd " + cropBedFile);
     }
 
-    public void create(CropBed t) {
+    public void create(Crop t) {
         if (t == null) {
             System.out.println("no user ");
         }
@@ -80,9 +80,9 @@ public class CropBedDao implements CropBedDaoInter {
 
     }
 
-    public void delete(CropBed t) {
+    public void delete(Crop t) {
         int index = 0;
-        for (CropBed u : CropBeds) {
+        for (Crop u : CropBeds) {
 
             if (t == u) {
                 CropBeds.remove(index);
@@ -94,7 +94,7 @@ public class CropBedDao implements CropBedDaoInter {
     }
 
     public void printU() {
-        for (CropBed c : CropBeds) {
+        for (Crop c : CropBeds) {
             System.out.println(c);
         }
     }
