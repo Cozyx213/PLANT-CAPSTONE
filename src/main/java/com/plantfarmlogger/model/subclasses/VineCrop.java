@@ -1,13 +1,14 @@
 package com.plantfarmlogger.model.subclasses;
 
-import com.plantfarmlogger.model.Plant;
+import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.interfaces.Prunable;
 import com.plantfarmlogger.model.interfaces.TrellisSupportable;
 
 
-public class VineCrop extends Plant implements Prunable, TrellisSupportable {
-    public VineCrop(String name) {
-        super(name);
+public class VineCrop extends Crop implements Prunable, TrellisSupportable {
+
+    public VineCrop(String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
+        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
 
     @Override
