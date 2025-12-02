@@ -1,5 +1,9 @@
 CropBed.java:
-	implement methods and use DAO
+    resolve all usages
+    implement methods and use DAO
+Plant.java:
+    resolve all usages
+    merge with Crop
 CropLog.java:
 	implement methods and use DAO
 Plant.java subclasses:

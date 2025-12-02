@@ -2,11 +2,11 @@ package com.plantfarmlogger.model.interfaces;
 
 import java.util.ArrayList;
 
-import com.plantfarmlogger.model.CropBed;
+import com.plantfarmlogger.model.Crop;
 
 public interface CropBedDaoInter {
-    ArrayList<CropBed> getCropBeds();
-    void create(CropBed t);
-    void delete(CropBed t);
+    ArrayList<Crop> getCropBeds();
+    void create(Crop t);
+    void delete(Crop t);
 
 }
