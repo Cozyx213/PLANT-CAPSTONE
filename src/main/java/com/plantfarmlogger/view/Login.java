@@ -2,8 +2,11 @@ package com.plantfarmlogger.view;
 
 import com.plantfarmlogger.controller.dao.UserDao;
 import com.plantfarmlogger.model.User;
+
+import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
-import com.plantfarmlogger.util.*;
+import com.plantfarmlogger.util.UIFields;
+import com.plantfarmlogger.util.UIFont;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
+
 
 public class Login extends JPanel {
 
@@ -22,7 +26,7 @@ public class Login extends JPanel {
         this.navigator = navigator;
 
         setLayout(new GridBagLayout());
-        setBackground(UIColors.BG_COLOR_GENERAL); // Use Factory Color
+        setBackground(UIColors.BG_COLOR_GENERAL);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 0, 5, 0);
@@ -30,7 +34,6 @@ public class Login extends JPanel {
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // 1. Logo
         JLabel logoLabel = new JLabel("ANiCore LITE");
         logoLabel.setFont(UIFont.lexend(Font.BOLD, 32));
         logoLabel.setForeground(Color.WHITE);
@@ -39,7 +42,6 @@ public class Login extends JPanel {
         gbc.insets = new Insets(0, 0, 40, 0);
         add(logoLabel, gbc);
 
-        // 2. Header
         JLabel loginHeader = new JLabel("Log In");
         loginHeader.setFont(UIFont.lexend(Font.BOLD, 28));
         loginHeader.setForeground(Color.WHITE);
@@ -48,12 +50,10 @@ public class Login extends JPanel {
         gbc.insets = new Insets(0, 0, 30, 0);
         add(loginHeader, gbc);
 
-        // 3. Form Container
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setOpaque(false);
 
-        // Username
         JLabel userLabel = new JLabel("Username");
         userLabel.setForeground(Color.WHITE);
         userLabel.setFont(UIFont.lexend(Font.BOLD, 12));
@@ -64,7 +64,7 @@ public class Login extends JPanel {
         userLabelPanel.add(userLabel);
 
         userField = UIFields.createRoundedField();
-        // Enforce size consistency
+
         userField.setMaximumSize(new Dimension(300, 40));
         userField.setPreferredSize(new Dimension(300, 40));
 
@@ -73,7 +73,6 @@ public class Login extends JPanel {
         formPanel.add(userField);
         formPanel.add(Box.createVerticalStrut(15));
 
-        // Password
         JLabel passLabel = new JLabel("Password");
         passLabel.setForeground(Color.WHITE);
         passLabel.setFont(UIFont.lexend(Font.BOLD, 12));
@@ -90,27 +89,25 @@ public class Login extends JPanel {
         formPanel.add(passLabelPanel);
         formPanel.add(Box.createVerticalStrut(5));
         formPanel.add(passField);
-        formPanel.add(Box.createVerticalStrut(30)); // Gap before button
+        formPanel.add(Box.createVerticalStrut(30));
 
-        // Login Button
         JButton loginBtn = UIButtons.createRoundedButton("Log In");
         loginBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginBtn.setFont(UIFont.lexend(Font.BOLD, 16));
         loginBtn.setPreferredSize(new Dimension(220, 50));
-        // Override size for login specifically if needed, or keep factory default
+
         loginBtn.setMaximumSize(new Dimension(200, 45));
         loginBtn.setPreferredSize(new Dimension(200, 45));
 
         loginBtn.addActionListener(_ -> performLogin());
 
         formPanel.add(loginBtn);
-        formPanel.add(Box.createVerticalStrut(30)); // Gap before link
+        formPanel.add(Box.createVerticalStrut(30));
 
         gbc.gridy = 2;
         gbc.insets = new Insets(0, 0, 0, 0);
         add(formPanel, gbc);
 
-        // 4. Register Link (No HTML)
         JPanel linkPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         linkPanel.setOpaque(false);
 
@@ -151,7 +148,8 @@ public class Login extends JPanel {
 
         if (u != null) {
             JOptionPane.showMessageDialog(this, "Login successful.", "Status", JOptionPane.INFORMATION_MESSAGE);
-            navigator.showHome(u); // Using showHome from AppNavigator
+            navigator.showHome(u);
+
         } else {
             JOptionPane.showMessageDialog(this, "Login unsuccessful.", "Status", JOptionPane.ERROR_MESSAGE);
         }

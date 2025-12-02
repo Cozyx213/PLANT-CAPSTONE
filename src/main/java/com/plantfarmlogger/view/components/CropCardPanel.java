@@ -11,15 +11,12 @@ import java.time.format.DateTimeParseException;
 
 public class CropCardPanel extends JPanel {
 
-    // Data Fields
     private String cropName, plantType, soilType, size;
     private LocalDate datePlanted, lastFertilized;
 
-    // UI Inputs
     private JTextField cropNameField, plantTypeField, datePlantedField, sizeField, fertField;
     private JComboBox<String> soilCombo;
 
-    // Callbacks
     private Runnable onSaveCallback;
     private Runnable onCancelCallback;
 
@@ -30,7 +27,6 @@ public class CropCardPanel extends JPanel {
         setLayout(new CardLayout());
         setBackground(UIColors.BG_COLOR);
 
-        // Strict Size Enforcement: width expands, height fixed
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 350));
         setPreferredSize(new Dimension(0, 350));
 
@@ -49,15 +45,12 @@ public class CropCardPanel extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // 1. Header (Crop Name Input)
         JLabel titleLabel = new JLabel("Enter Crop Name");
         titleLabel.setFont(UIFont.lexend(Font.BOLD, 18));
         titleLabel.setForeground(UIColors.TEXT_DARK);
 
-        // not sure what method this is supposed to be? please fix
         cropNameField = UIFields.createStyledField("e.g. Tomato Bed 1");
 
-        // 2. Other Inputs
         plantTypeField = UIFields.createStyledField("Enter Plant Type");
         datePlantedField = UIFields.createDateField("Date Planted");
 
@@ -69,21 +62,15 @@ public class CropCardPanel extends JPanel {
         sizeField = UIFields.createStyledField("Enter Size");
         fertField = UIFields.createDateField("Last Fertilized");
 
-        // --- Layout Placement ---
-
-        // Row 0: Header & Crop Name
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 1.0;
         p.add(titleLabel, gbc);
 
         gbc.gridy = 1;
         p.add(cropNameField, gbc);
 
-        // Row 2: Plant Type & Date (Side by side if space permits, or stacked)
-        // Stacking for simplicity and robustness
         gbc.gridy = 2; p.add(plantTypeField, gbc);
         gbc.gridy = 3; p.add(datePlantedField, gbc);
 
-        // Row 3: Soil
         JPanel soilPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         soilPanel.setOpaque(false);
         JLabel soilLbl = new JLabel("Soil Type: ");
@@ -93,11 +80,9 @@ public class CropCardPanel extends JPanel {
 
         gbc.gridy = 4; p.add(soilPanel, gbc);
 
-        // Row 4: Size & Fert
         gbc.gridy = 5; p.add(sizeField, gbc);
         gbc.gridy = 6; p.add(fertField, gbc);
 
-        // Row 7: Buttons (Save & Cancel)
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnPanel.setOpaque(false);
 
@@ -107,7 +92,8 @@ public class CropCardPanel extends JPanel {
         });
 
         JButton saveBtn = UIButtons.createPrimaryButton("Save");
-        saveBtn.setPreferredSize(new Dimension(100, 35)); // Smaller button
+        saveBtn.setPreferredSize(new Dimension(100, 35));
+
         saveBtn.addActionListener(e -> attemptSave());
 
         btnPanel.add(cancelBtn);
@@ -129,14 +115,13 @@ public class CropCardPanel extends JPanel {
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.insets = new Insets(2, 0, 2, 0);
 
-        // Use stored data to create labels
         JLabel nameLbl = new JLabel(this.cropName);
         nameLbl.setFont(UIFont.lexend(Font.BOLD, 24));
         nameLbl.setForeground(UIColors.TEXT_DARK);
 
         JLabel typeLbl = new JLabel(this.plantType);
         typeLbl.setFont(UIFont.lexend(Font.PLAIN, 16));
-        typeLbl.setForeground(new Color(60, 100, 60)); // Darker green for subtitle
+        typeLbl.setForeground(new Color(60, 100, 60));
 
         JLabel dateLbl = new JLabel("Date Planted: " + this.datePlanted);
         JLabel soilLbl = new JLabel("Soil Type: " + this.soilType);
@@ -172,15 +157,13 @@ public class CropCardPanel extends JPanel {
         String dateRaw = datePlantedField.getText();
         String fertRaw = fertField.getText();
 
-        // 1. Validation for Required Fields
         if (isPlaceholder(nameRaw) || isPlaceholder(typeRaw) || isPlaceholder(dateRaw)) {
             JOptionPane.showMessageDialog(this, "Please fill in Name, Plant Type, and Date Planted.");
             return;
         }
 
-        // 2. Parse Dates
         try {
-            // Flexible parser? For now strict YYYY-MM-DD as requested "aesthetic" inputs usually imply standard formats
+
             this.datePlanted = LocalDate.parse(dateRaw);
 
             if (!isPlaceholder(fertRaw) && !fertRaw.isEmpty()) {
@@ -194,20 +177,17 @@ public class CropCardPanel extends JPanel {
             return;
         }
 
-        // 3. Store Data
         this.cropName = nameRaw;
         this.plantType = typeRaw;
         this.soilType = (String) soilCombo.getSelectedItem();
         this.size = isPlaceholder(sizeField.getText()) ? "" : sizeField.getText();
 
-        // 4. Switch View
         add(createViewPanel(), "VIEW");
 
         resizePanel(260);
 
         ((CardLayout) getLayout()).show(this, "VIEW");
 
-        // 5. Notify Parent
         if (onSaveCallback != null) onSaveCallback.run();
     }
 
@@ -218,7 +198,8 @@ public class CropCardPanel extends JPanel {
     private void resizePanel(int height) {
         setPreferredSize(new Dimension(0, height));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, height));
-        revalidate(); // Recalculate layout
+        revalidate();
+
         repaint();
     }
 }

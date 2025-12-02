@@ -9,7 +9,6 @@ public class UIButtons {
 
     public static JButton createPrimaryButton(String text) {
         JButton btn = new JButton(text) {
-
             @Override
             protected void paintComponent(Graphics g) {
                 UIRenderer.paintRoundedButton(g, this, 15);
@@ -17,7 +16,7 @@ public class UIButtons {
         };
 
         btn.setFont(UIFont.lexend(Font.PLAIN, 16));
-        btn.setForeground(Color.WHITE);
+        btn.setForeground(UIColors.TEXT_COLOR);
         btn.setBackground(UIColors.BUTTON_COLOR);
         btn.setOpaque(false);
         btn.setContentAreaFilled(false);
@@ -59,6 +58,17 @@ public class UIButtons {
             UIRenderer.paintDynamicButton(g, this);
             super.paintComponent(g);
         }
+    }
+
+    public static JButton createTextButton(String text) {
+        JButton btn = new JButton(text);
+        btn.setFont(UIFont.lexend(Font.PLAIN, 14));
+        btn.setForeground(UIColors.TEXT_DARK);
+        btn.setBackground(new Color(0,0,0,0));
+        btn.setOpaque(false);
+        btn.setBorder(null);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return btn;
     }
 
     private UIButtons() {}
