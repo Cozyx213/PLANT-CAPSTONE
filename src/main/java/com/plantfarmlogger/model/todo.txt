@@ -4,7 +4,6 @@ CropLog.java:
 	implement methods and use DAO
 Plant.java subclasses:
     implement algorithm:
-        RootCrop - estimateMass()
         LeafCrop - schedulePruningDate()
         FruitCrop - getAestheticFeatures(), schedulePruningdate()
         FlowerCrop - getAestheticFeatures(), schedulePruningdate()
