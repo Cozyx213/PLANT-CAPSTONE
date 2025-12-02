@@ -2,7 +2,8 @@ package com.plantfarmlogger.model;
 
 import java.time.LocalDate;
 
-public class CropBed {
+public class Crop {
+    private String identification;
     private String plantType;
     private String soilType;
     private String lastFertilized;
@@ -10,10 +11,10 @@ public class CropBed {
     private double width;
     private double height;
     private double length;
-    public CropBed(String plantType, String soilType, String lastFertilized,
-          String datePlanted, double width, double height,
-            double length) {
-    
+    public Crop(String identification, String plantType, String soilType, String lastFertilized,
+                String datePlanted, double width, double height,
+                double length) {
+        this.identification = identification;
         this.plantType = plantType;
         this.soilType = soilType;
         this.lastFertilized = lastFertilized;
@@ -22,10 +23,10 @@ public class CropBed {
         this.height = height;
         this.length = length;
     }
-     public CropBed(String plantType, String soilType, String lastFertilized,
-          double width, double height,
-            double length) {
-            this(plantType, soilType,LocalDate.now().toString(), lastFertilized, width, height, length);
+     public Crop(String identification, String plantType, String soilType, String lastFertilized,
+                 double width, double height,
+                 double length) {
+            this(identification, plantType, soilType,LocalDate.now().toString(), lastFertilized, width, height, length);
      
     }
     public CropLog getLogs() {
@@ -90,5 +91,13 @@ public class CropBed {
 
     public void setLength(double length) {
         this.length = length;
+    }
+
+    public String getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(String identification) {
+        this.identification = identification;
     }
 }
