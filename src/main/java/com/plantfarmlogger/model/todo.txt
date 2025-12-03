@@ -5,7 +5,7 @@ CropLog.java:
 Plant.java subclasses:
     implement algorithm:
         FruitCrop - getAestheticFeatures()
-        FlowerCrop - getAestheticFeatures(), schedulePruningdate()
+        FlowerCrop - getAestheticFeatures()
         VineCrop - schedulePruningDate(), validateWeight()
         BulbCrop - getActiveCompounds(), estimateMass()
         NutCrop - schedulePruningDate()
