@@ -1,72 +1,40 @@
 package com.plantfarmlogger.view.components;
 
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+
+import java.io.File;
 import java.util.Enumeration;
 import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.util.UIButtons;
+import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.util.UIFont;
+import com.plantfarmlogger.view.Home;
+import com.plantfarmlogger.view.MainWindow;
 
 // Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
-    private JButton addCropBed, changeName, changeAddress, changePass, logOut;
-
-
-    //DESIGN STUFF
-    private static final Color BG_COLOR = new Color(113, 165, 84);
-    //private static final Color BUTTON_COLOR = new Color(54, 85, 59);
-    //private static final Color BUTTON_HOVER_COLOR = new Color(64, 95, 69);
-    //private static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
-    private static final Color TEXT_COLOR = Color.WHITE;
-    private static final Color SUB_TEXT_COLOR = new Color(214, 223, 197);
-
-    private static final Font defaultFont = new Font("SansSerif", Font.PLAIN, 16);
+    private final JButton addCropBed;
+    private final JButton changeName;
+    private final JButton changeAddress;
+    private final JButton changePass;
+    private final JButton logOut;
 
     public SideBar(User user) {
+        java.net.URL imageUrl = getClass().getResource("src/main/java/resources/logo.png");
+        System.out.println(System.getProperty("user.dir"));
+        System.out.println(new File(".").getAbsolutePath());
 
-        // edit to get user
-        // this.user = new User("John Doe", "johndoe", "Cebu Institute of Technology-University, Cebu City, Cebu, Region VII", "123", 24, "123");
-        // this.farm = new Farm("myFarm", 0);
-        // farm.setCropBed(new ArrayList<>());
-        // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-        // 1.1, 1.2, 1.3,
-        // "110125"));
-        // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-        //         1.1, 1.2, 1.3,
-        //         "110125"));
-        // farm.addCropBed(new CropBed(new Plant("Tree", 1), "Loamy", "120125",
-        //         1.1, 1.2, 1.3,
-        //         "110125"));
-
-        
         // The contentPane setup is now the setup for the SideBar JPanel itself
         // (this) refers to the SideBar JPanel
         setLayout(new GridBagLayout());
-        setBackground(BG_COLOR);
-        setMaximumSize(new Dimension(300, 800));
-        setFont(Font.getFont("SansSerif"));
-        setUIFont(new FontUIResource(defaultFont));
+        setBackground(UIColors.BG_COLOR_GENERAL);
+        setMaximumSize(new Dimension(400, 720));
+        setMinimumSize(new Dimension(400, 720));
+        setFont(UIFont.lexend(Font.BOLD, 20));
 
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -79,25 +47,38 @@ public class SideBar extends JPanel {
         userInfoPanel.setLayout(new BoxLayout(userInfoPanel, BoxLayout.Y_AXIS));
         userInfoPanel.setSize(230, 200);
         userInfoPanel.setOpaque(false);
-        JLabel logoLabel = new JLabel("ANICore LITE");
-        logoLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
-        logoLabel.setForeground(TEXT_COLOR);
+
+        JLabel logoLabel = new JLabel("ANiCore LITE");
+        if (imageUrl != null) {
+            ImageIcon logoIcon = new ImageIcon(imageUrl);
+            Image image = logoIcon.getImage();
+            Image scaledLogoImage = image.getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+            ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
+            logoLabel = new JLabel(scaledLogoIcon);
+        } else {
+            System.err.println("Error: Image resource not found at /files/logo.png");
+            logoLabel.setForeground(UIColors.BG_COLOR);
+            logoLabel.setFont(UIFont.lexend(Font.BOLD, 26));
+        }
+
+//        JLabel logoLabel = new JLabel("ANICore LITE");
+//        logoLabel.setForeground(TEXT_COLOR);
 
         JLabel uName = new JLabel(user.getName());
-        uName.setForeground(TEXT_COLOR);
+        uName.setForeground(UIColors.TEXT_COLOR);
         uName.setBorder(new EmptyBorder(new Insets(20, 0, 5, 0)));
-        uName.setFont(new Font("SansSerif", Font.BOLD, 32));
+        uName.setFont(UIFont.lexend(Font.BOLD, 20));
         userInfoPanel.add(uName);
 
         JLabel uUsername = new JLabel("@" + user.getUsername());
-        uUsername.setForeground(SUB_TEXT_COLOR);
+        uUsername.setForeground(UIColors.SUB_TEXT_COLOR);
         uUsername.setBorder(new EmptyBorder(new Insets(0, 0, 30, 0)));
-        uUsername.setFont(new Font("SansSerif", Font.BOLD, 16));
+        uUsername.setFont(UIFont.lexend(Font.BOLD, 20));
         userInfoPanel.add(uUsername);
 
         JLabel uAddress = new JLabel("<html>" + user.getAddress() + "</html>");
-        uAddress.setForeground(SUB_TEXT_COLOR);
-        uAddress.setFont(new Font("SansSerif", Font.BOLD, 16));
+        uAddress.setForeground(UIColors.SUB_TEXT_COLOR);
+        uAddress.setFont(UIFont.lexend(Font.BOLD, 20));
         userInfoPanel.add(uAddress);
 
         JPanel cropBeds = new JPanel();
@@ -105,33 +86,7 @@ public class SideBar extends JPanel {
         cropBeds.setMinimumSize(new Dimension(230, 100));
         cropBeds.setPreferredSize(new Dimension(230, 100));
         cropBeds.setOpaque(false);
-        cropBeds.setFont(new Font("SansSerif", Font.BOLD, 32));
-
-
-        // edit to make loop for number of crop beds
-        // edit this nalang soon to make it white with for loop (THESE SHOULD BE JBUTTONS)
-        // for(CropBed i : farm.getCropBeds()){
-        //     JButton crop = new JButton(i.getPlantType().getName());
-        //     crop.setBorderPainted(false);
-        //     crop.setContentAreaFilled(false);
-        //     crop.setFocusPainted(false);
-        //     crop.setFocusable(true);
-        //     crop.setForeground(SUB_TEXT_COLOR);
-
-        //     // add color shi
-        //     crop.addMouseListener(new MouseAdapter() {
-        //         @Override
-        //         public void mouseEntered(MouseEvent e) {
-        //             crop.setForeground(TEXT_COLOR);
-        //         }
-
-        //         @Override
-        //         public void mouseExited(MouseEvent e) {
-        //             crop.setForeground(SUB_TEXT_COLOR);
-        //         }
-        //     });
-        //     cropBeds.add(crop);
-        // }
+        cropBeds.setFont(UIFont.lexend(Font.BOLD, 32));
 
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);
@@ -145,30 +100,12 @@ public class SideBar extends JPanel {
         JPanel cropsTitleRow = new JPanel(new GridLayout(1, 2));
         cropsTitleRow.setSize(230, 100);
         JLabel cropBedsLabel = new JLabel("Crop Beds");
-        cropBedsLabel.setForeground(SUB_TEXT_COLOR);
+        cropBedsLabel.setForeground(UIColors.SUB_TEXT_COLOR);
         cropsTitleRow.add(cropBedsLabel);
         cropsTitleRow.setOpaque(false);
 
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        addCropBed = new JButton("+ Add Crop Bed");
-        addCropBed.setBorderPainted(false);
-        addCropBed.setContentAreaFilled(false);
-        addCropBed.setFocusPainted(false);
-        addCropBed.setFocusable(true);
-        addCropBed.setForeground(SUB_TEXT_COLOR);
-
-        // add color shi
-        addCropBed.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                addCropBed.setForeground(TEXT_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                addCropBed.setForeground(SUB_TEXT_COLOR);
-            }
-        });
+        addCropBed = UIButtons.createSettingsButton("Add Crop Bed");
 
         buttonWrapper.add(this.addCropBed);
         buttonWrapper.setOpaque(false);
@@ -183,73 +120,17 @@ public class SideBar extends JPanel {
         cropsPanel.setOpaque(false);
 
         // SETTINGS PANEL
-        this.changeName = new JButton("Change Name");
-        changeName.setBorderPainted(false);
-        changeName.setContentAreaFilled(false);
-        changeName.setFocusPainted(false);
-        changeName.setFocusable(true);
-        changeName.setForeground(SUB_TEXT_COLOR);
-        changeName.setHorizontalAlignment(SwingConstants.LEFT);
-        changeName.setMargin(new Insets(0, 0, 0, 0));
-
-        changeName.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                changeName.setForeground(TEXT_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                changeName.setForeground(SUB_TEXT_COLOR);
-            }
-        });
-
-        this.changePass = new JButton("Change Password");
-        changePass.setBorderPainted(false);
-        changePass.setContentAreaFilled(false);
-        changePass.setFocusPainted(false);
-        changePass.setFocusable(true);
-        changePass.setForeground(SUB_TEXT_COLOR);
-        changePass.setHorizontalAlignment(SwingConstants.LEFT);
-        changePass.setMargin(new Insets(0, 0, 0, 0));
-        changePass.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                changePass.setForeground(TEXT_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                changePass.setForeground(SUB_TEXT_COLOR);
-            }
-        });
-
-        this.changeAddress = new JButton("Change Address");
-        changeAddress.setBorderPainted(false);
-        changeAddress.setContentAreaFilled(false);
-        changeAddress.setFocusPainted(false);
-        changeAddress.setFocusable(true);
-        changeAddress.setForeground(SUB_TEXT_COLOR);
-        changeAddress.setHorizontalAlignment(SwingConstants.LEFT);
-        changeAddress.setMargin(new Insets(0, 0, 0, 0));
-        changeAddress.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                changeAddress.setForeground(TEXT_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                changeAddress.setForeground(SUB_TEXT_COLOR);
-            }
-        });
+        this.changeName = UIButtons.createSettingsButton("Change Name");
+        this.changePass = UIButtons.createSettingsButton("Change Password");
+        this.changeAddress = UIButtons.createSettingsButton("Change Address");
 
         JPanel settingsPanel = new JPanel();
         settingsPanel.setOpaque(false);
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
         settingsPanel.setSize(200, 500);
         JLabel settingsLabel = new JLabel("Settings");
-        settingsLabel.setForeground(SUB_TEXT_COLOR);
+
+        settingsLabel.setForeground(UIColors.SUB_TEXT_COLOR);
         settingsPanel.add(settingsLabel);
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changeName);
@@ -258,25 +139,7 @@ public class SideBar extends JPanel {
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changePass);
 
-        logOut = new JButton("Log Out");
-        logOut.setBorderPainted(false);
-        logOut.setContentAreaFilled(false);
-        logOut.setFocusPainted(false);
-        logOut.setFocusable(true);
-        logOut.setForeground(SUB_TEXT_COLOR);
-        logOut.setHorizontalAlignment(SwingConstants.LEFT);
-        logOut.setMargin(new Insets(0, 0, 0, 0));
-        logOut.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                logOut.setForeground(TEXT_COLOR);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                logOut.setForeground(SUB_TEXT_COLOR);
-            }
-        });
+        logOut = UIButtons.createSettingsButton("Log Out");
 
         gbc.gridy = 0;
         add(logoLabel, gbc);
@@ -296,9 +159,7 @@ public class SideBar extends JPanel {
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             Object value = UIManager.get(key);
-            if (value instanceof FontUIResource) {
-                FontUIResource originalFont = (FontUIResource) value;
-                // CORRECTED LINE: Use the original font's style, but apply the new size and family name.
+            if (value instanceof FontUIResource originalFont) {
                 Font newFont = new Font(f.getFontName(), originalFont.getStyle(), f.getSize());
                 UIManager.put(key, new FontUIResource(newFont));
             }
@@ -308,9 +169,7 @@ public class SideBar extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // Call superclass method to ensure proper painting
-
         Graphics2D g2d = (Graphics2D) g;
-
         // Define start and end colors
         Color startColor = new Color(76, 139, 63); // Steel Blue
         Color endColor = new Color(102, 177, 75); // Light Blue
@@ -323,21 +182,22 @@ public class SideBar extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }
 
-    // public static void main(String[] args) {
-    // SwingUtilities.invokeLater(() -> {
-    // JFrame frame = new JFrame("AniCore Lite Sidebar");
-    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //
-    // // Create the new SideBar JPanel instance
-    // SideBar sideBarPanel = new SideBar();
-    //
-    // // Add the JPanel to the JFrame's content pane
-    // frame.getContentPane().add(sideBarPanel);
-    //
-    // frame.setSize(300, 800);
-    // frame.setMinimumSize(new Dimension(300, 600));
-    // frame.setVisible(true);
-    // });
-    // }
+     public static void main(String[] args) {
+     SwingUtilities.invokeLater(() -> {
+     JFrame frame = new JFrame("AniCore Lite Sidebar");
+     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+     // Create the new SideBar JPanel instance
+     SideBar sideBarPanel = new SideBar(new User("John", "john123", "Farm Address", 19, "123"));
+         Home home = new Home(new User("John", "john123", "Farm Address", 19, "123"));
+     // Add the JPanel to the JFrame's content pane
+     frame.getContentPane().add(sideBarPanel);
+     frame.getContentPane().add(home);
+
+     frame.setSize(1280, 720);
+     frame.setMinimumSize(new Dimension(1280, 720));
+     frame.setVisible(true);
+     });
+     }
 
 }

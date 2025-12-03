@@ -5,6 +5,7 @@ import java.awt.*;
 public class UIColors {
     public static final Color BG_COLOR = new Color(242, 238, 227);
     public static final Color BG_COLOR_GENERAL = new Color(113, 165, 84);
+    public static final Color SUB_TEXT_COLOR = new Color(214, 223, 197);
 
     public static final Color CARD_COLOR = new Color(226, 237, 214);
     public static final Color BUTTON_COLOR = new Color(56, 89, 57);

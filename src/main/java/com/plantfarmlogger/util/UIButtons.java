@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
+
 public class UIButtons {
 
     public static JButton createPrimaryButton(String text) {
@@ -69,6 +71,36 @@ public class UIButtons {
         btn.setBorder(null);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return btn;
+    }
+
+    public static JButton createSettingsButton(String text) {
+        return new settingsButton(text);
+    }
+
+    private static class settingsButton extends JButton {
+        public settingsButton(String text) {
+            super(text);
+            setOpaque(false);
+            setContentAreaFilled(false);
+            setBorderPainted(false);
+            setFocusPainted(false);
+            setBorder(null);
+            setBackground(new Color(0,0,0,0));
+            setForeground(Color.WHITE);
+            setFont(UIFont.lexend(Font.BOLD, 14));
+            setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) { setForeground(UIColors.TEXT_COLOR);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) { setForeground(UIColors.SUB_TEXT_COLOR);
+                }
+            });
+        }
+
     }
 
     private UIButtons() {}
