@@ -9,8 +9,14 @@ public class NutCrop extends Crop implements Prunable {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
 
+
     @Override
-    public String schedulePruningDate() {
-        return null;
+    public void setExplicitPruningDate(String date) {
+
+    }
+
+    @Override
+    public void setCalculatedPruningDate() {
+
     }
 }

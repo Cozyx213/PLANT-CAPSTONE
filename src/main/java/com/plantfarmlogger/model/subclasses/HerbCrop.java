@@ -14,13 +14,20 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
 
-    @Override
-    public String schedulePruningDate() {
-        return null;
-    }
+
 
     @Override
     public ArrayList<String> getActiveCompounds() {
         return null;
+    }
+
+    @Override
+    public void setExplicitPruningDate(String date) {
+
+    }
+
+    @Override
+    public void setCalculatedPruningDate() {
+
     }
 }

@@ -11,13 +11,20 @@ public class VineCrop extends Crop implements Prunable, TrellisSupportable {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
 
-    @Override
-    public String schedulePruningDate() {
-        return null;
-    }
+
 
     @Override
     public boolean validateWeight() {
         return false;
+    }
+
+    @Override
+    public void setExplicitPruningDate(String date) {
+
+    }
+
+    @Override
+    public void setCalculatedPruningDate() {
+
     }
 }
