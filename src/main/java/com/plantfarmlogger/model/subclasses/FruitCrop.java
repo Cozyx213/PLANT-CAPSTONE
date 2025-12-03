@@ -13,13 +13,20 @@ public class FruitCrop extends Crop implements Prunable, Ornamental {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
 
-    @Override
-    public String schedulePruningDate() {
-        return null;
-    }
+
 
     @Override
     public String getAestheticFeatures() {
         return "";
+    }
+
+    @Override
+    public void setExplicitPruningDate(String date) {
+
+    }
+
+    @Override
+    public void setCalculatedPruningDate() {
+
     }
 }
