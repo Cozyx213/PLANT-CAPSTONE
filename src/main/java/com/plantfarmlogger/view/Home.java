@@ -32,6 +32,7 @@ public class Home extends BaseDashboardView {
 
         JPanel titleBlock = new JPanel();
         titleBlock.setLayout(new BoxLayout(titleBlock, BoxLayout.Y_AXIS));
+        titleBlock.setOpaque(false);
 
         JLabel title = new JLabel("My Farm");
         title.setFont(UIFont.lexend(Font.BOLD, 36));
