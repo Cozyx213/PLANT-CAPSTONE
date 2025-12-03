@@ -60,4 +60,6 @@ public class RootCrop extends Crop implements Subterranean {
         double rootCropDensity = ROOTCROP_DENSITIES.getOrDefault(getPlantType(), DEFAULT_ROOTCROP_DENSITY);
         return bedVolume * rootCropDensity * PACKING_FACTOR;
     }
+
+
 }
