@@ -8,7 +8,7 @@ Plant.java subclasses:
         FlowerCrop - getAestheticFeatures()
         VineCrop - validateWeight()
         BulbCrop - getActiveCompounds(), estimateMass()
-        HerbCrop - getActiveCompounds()
+        HerbCrop - getActiveCompounds(), pruningdate())
     make missing setters and getters of all subclasses
 Diagram:
     1. Update CropBed to Crop with all respective changes

@@ -88,4 +88,28 @@ public class VineCrop extends Crop implements Prunable, TrellisSupportable {
 
         pruningDate = nextPrune.toString();
     }
+
+    public String getPruningDate() {
+        return pruningDate;
+    }
+
+    public void setPruningDate(String pruningDate) {
+        this.pruningDate = pruningDate;
+    }
+
+    public Integer getUserInitialPruneDays() {
+        return userInitialPruneDays;
+    }
+
+    public void setUserInitialPruneDays(Integer userInitialPruneDays) {
+        this.userInitialPruneDays = userInitialPruneDays;
+    }
+
+    public Integer getUserPruneIntervalDays() {
+        return userPruneIntervalDays;
+    }
+
+    public void setUserPruneIntervalDays(Integer userPruneIntervalDays) {
+        this.userPruneIntervalDays = userPruneIntervalDays;
+    }
 }
