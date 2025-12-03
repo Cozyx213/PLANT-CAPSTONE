@@ -6,7 +6,7 @@ Plant.java subclasses:
     implement algorithm:
         FruitCrop - getAestheticFeatures()
         FlowerCrop - getAestheticFeatures()
-        VineCrop - schedulePruningDate(), validateWeight()
+        VineCrop - validateWeight()
         BulbCrop - getActiveCompounds(), estimateMass()
         NutCrop - schedulePruningDate()
         HerbCrop - getActiveCompounds()
