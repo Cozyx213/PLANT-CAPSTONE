@@ -148,6 +148,23 @@ public class Register extends JPanel {
         return field;
     }
 
+    //making the background a gradient
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Call superclass method to ensure proper painting
+        Graphics2D g2d = (Graphics2D) g;
+        // Define start and end colors
+        Color startColor = new Color(76, 139, 63); // Steel Blue
+        Color endColor = new Color(102, 177, 75); // Light Blue
+
+        // Create a vertical gradient from top to bottom
+        GradientPaint gp = new GradientPaint(0, 0, startColor, 0, getHeight(), endColor);
+
+        // Set the paint and fill the rectangle
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+    }
+
     private void onRegisterClicked() {
         navigator.showLogin();
 

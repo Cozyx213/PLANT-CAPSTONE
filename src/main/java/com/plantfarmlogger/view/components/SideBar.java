@@ -36,7 +36,6 @@ public class SideBar extends JPanel {
         setMinimumSize(new Dimension(400, 720));
         setFont(UIFont.lexend(Font.BOLD, 20));
 
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(15, 15, 15, 15);
         gbc.gridx = 0;

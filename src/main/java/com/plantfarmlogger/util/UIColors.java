@@ -16,6 +16,5 @@ public class UIColors {
     public static final Color TEXT_FIELD_BG = new Color(220, 220, 220);
     public static final Color ERROR_COLOR = new Color(180, 60, 60);
 
-
     private UIColors() {}
 }

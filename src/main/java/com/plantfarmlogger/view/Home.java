@@ -36,6 +36,8 @@ public class Home extends BaseDashboardView {
         JLabel title = new JLabel("My Farm");
         title.setFont(UIFont.lexend(Font.BOLD, 36));
         title.setForeground(UIColors.BUTTON_COLOR);
+        title.setOpaque(false);
+        title.setBorder(null);
 
         countLabel = new JLabel(" ");
         countLabel.setFont(UIFont.lexend(Font.PLAIN, 14));

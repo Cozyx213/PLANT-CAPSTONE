@@ -34,9 +34,14 @@ public class Login extends JPanel {
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JLabel logoLabel = new JLabel("ANiCore LITE");
-        logoLabel.setFont(UIFont.lexend(Font.BOLD, 32));
-        logoLabel.setForeground(Color.WHITE);
+        ImageIcon logoIcon = new ImageIcon("src/main/files/logo.png");
+        Image image = logoIcon.getImage();
+        Image scaledLogoImage = image.getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+        ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
+
+        JLabel logoLabel = new JLabel(scaledLogoIcon);
+//        logoLabel.setFont(UIFont.lexend(Font.BOLD, 32));
+//        logoLabel.setForeground(Color.WHITE);
 
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 0, 40, 0);
@@ -99,7 +104,7 @@ public class Login extends JPanel {
         loginBtn.setMaximumSize(new Dimension(200, 45));
         loginBtn.setPreferredSize(new Dimension(200, 45));
 
-        loginBtn.addActionListener(_ -> performLogin());
+        loginBtn.addActionListener(event -> performLogin());
 
         formPanel.add(loginBtn);
         formPanel.add(Box.createVerticalStrut(30));
@@ -137,6 +142,23 @@ public class Login extends JPanel {
         gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
         add(linkPanel, gbc);
+    }
+
+    //making the background a gradient
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Call superclass method to ensure proper painting
+        Graphics2D g2d = (Graphics2D) g;
+        // Define start and end colors
+        Color startColor = new Color(76, 139, 63); // Steel Blue
+        Color endColor = new Color(102, 177, 75); // Light Blue
+
+        // Create a vertical gradient from top to bottom
+        GradientPaint gp = new GradientPaint(0, 0, startColor, 0, getHeight(), endColor);
+
+        // Set the paint and fill the rectangle
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, getWidth(), getHeight());
     }
 
     private void performLogin() {
