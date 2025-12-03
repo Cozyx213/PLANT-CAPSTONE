@@ -101,10 +101,8 @@ public class FruitCrop extends Crop implements Prunable, Ornamental {
 
         LocalDate nextPrune;
         if (pruningDate == null) {
-            // First prune
             nextPrune = planted.plusDays(initialDays);
         } else {
-            // Subsequent prunes
             nextPrune = LocalDate.parse(pruningDate);
             while (!nextPrune.isAfter(now)) {
                 nextPrune = nextPrune.plusDays(intervalDays);
