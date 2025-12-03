@@ -24,7 +24,7 @@ public class SideBar extends JPanel {
     private final JButton logOut;
 
     public SideBar(User user) {
-        java.net.URL imageUrl = getClass().getResource("src/main/java/resources/logo.png");
+        java.net.URL imageUrl = getClass().getResource("/logo_lite.png");
         System.out.println(System.getProperty("user.dir"));
         System.out.println(new File(".").getAbsolutePath());
 
@@ -51,7 +51,7 @@ public class SideBar extends JPanel {
         if (imageUrl != null) {
             ImageIcon logoIcon = new ImageIcon(imageUrl);
             Image image = logoIcon.getImage();
-            Image scaledLogoImage = image.getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+            Image scaledLogoImage = image.getScaledInstance(200, 30, Image.SCALE_SMOOTH);
             ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
             logoLabel = new JLabel(scaledLogoIcon);
         } else {
@@ -184,22 +184,23 @@ public class SideBar extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }
 
-    //this is for testing purposes
-     public static void main(String[] args) {
-     SwingUtilities.invokeLater(() -> {
-     JFrame frame = new JFrame("AniCore Lite Sidebar");
-     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-     // Create the new SideBar JPanel instance
-     SideBar sideBarPanel = new SideBar(new User("John", "john123", "Farm Address", 19, "123"));
-     Home home = new Home(new User("John", "john123", "Farm Address", 19, "123"));
-     // Add the JPanel to the JFrame's content pane
-     frame.getContentPane().add(home);
-
-     frame.setSize(1280, 720);
-     frame.setMinimumSize(new Dimension(1280, 720));
-     frame.setVisible(true);
-     });
-     }
+//    //this is for testing purposes
+//     public static void main(String[] args) {
+//     SwingUtilities.invokeLater(() -> {
+//     JFrame frame = new JFrame("AniCore Lite Sidebar");
+//     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//     // Create the new SideBar JPanel instance
+//     SideBar sideBarPanel = new SideBar(new User("John", "john123", "Farm Address", 19, "123"));
+//     Home home = new Home(new User("John", "john123", "Farm Address", 19, "123"));
+//     // Add the JPanel to the JFrame's content pane
+//     //home.addCardComponent(new CropCardPanel());
+//     frame.getContentPane().add(home);
+//
+//     frame.setSize(1280, 720);
+//     frame.setMinimumSize(new Dimension(1280, 720));
+//     frame.setVisible(true);
+//     });
+//     }
 
 }

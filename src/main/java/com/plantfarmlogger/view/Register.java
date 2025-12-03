@@ -24,7 +24,7 @@ public class Register extends JPanel {
 
     public Register(AppNavigator navigator) {
         this.navigator = navigator;
-
+        java.net.URL imageUrl = getClass().getResource("/logo_lite.png");
         setLayout(new GridBagLayout());
         setBackground(UIColors.BG_COLOR_GENERAL);
 
@@ -32,12 +32,21 @@ public class Register extends JPanel {
         gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JLabel logo = new JLabel("ANiCore LITE");
-        logo.setFont(UIFont.lexend(Font.BOLD, 32));
-        logo.setForeground(UIColors.TEXT_COLOR);
+        JLabel logoLabel = new JLabel("ANiCore LITE");
+        if (imageUrl != null) {
+            ImageIcon logoIcon = new ImageIcon(imageUrl);
+            Image image = logoIcon.getImage();
+            Image scaledLogoImage = image.getScaledInstance(200, 30, Image.SCALE_SMOOTH);
+            ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
+            logoLabel = new JLabel(scaledLogoIcon);
+        } else {
+            System.err.println("Error: Image resource not found at /files/logo.png");
+            logoLabel.setForeground(UIColors.BG_COLOR);
+            logoLabel.setFont(UIFont.lexend(Font.BOLD, 26));
+        }
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 0, 20, 0);
-        add(logo, gbc);
+        add(logoLabel, gbc);
 
         JLabel title = new JLabel("Create Account");
         title.setFont(UIFont.lexend(Font.BOLD, 24));
