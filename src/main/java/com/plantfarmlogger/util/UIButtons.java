@@ -86,7 +86,7 @@ public class UIButtons {
             setFocusPainted(false);
             setBorder(null);
             setBackground(new Color(0,0,0,0));
-            setForeground(Color.WHITE);
+            setForeground(UIColors.SUB_TEXT_COLOR);
             setFont(UIFont.lexend(Font.BOLD, 14));
             setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 

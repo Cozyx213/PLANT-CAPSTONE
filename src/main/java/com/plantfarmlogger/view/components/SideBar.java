@@ -72,18 +72,18 @@ public class SideBar extends JPanel {
         JLabel uUsername = new JLabel("@" + user.getUsername());
         uUsername.setForeground(UIColors.SUB_TEXT_COLOR);
         uUsername.setBorder(new EmptyBorder(new Insets(0, 0, 30, 0)));
-        uUsername.setFont(UIFont.lexend(Font.BOLD, 20));
+        uUsername.setFont(UIFont.lexend(Font.PLAIN, 14));
         userInfoPanel.add(uUsername);
 
         JLabel uAddress = new JLabel("<html>" + user.getAddress() + "</html>");
         uAddress.setForeground(UIColors.SUB_TEXT_COLOR);
-        uAddress.setFont(UIFont.lexend(Font.BOLD, 20));
+        uAddress.setFont(UIFont.lexend(Font.PLAIN, 16));
         userInfoPanel.add(uAddress);
 
         JPanel cropBeds = new JPanel();
         cropBeds.setLayout(new BoxLayout(cropBeds, BoxLayout.Y_AXIS));
-        cropBeds.setMinimumSize(new Dimension(230, 100));
-        cropBeds.setPreferredSize(new Dimension(230, 100));
+        cropBeds.setMinimumSize(new Dimension(230, 90));
+        cropBeds.setPreferredSize(new Dimension(230, 90));
         cropBeds.setOpaque(false);
         cropBeds.setFont(UIFont.lexend(Font.BOLD, 32));
 
@@ -92,14 +92,15 @@ public class SideBar extends JPanel {
         cropBedsList.getViewport().setOpaque(false);
         // Setting the preferred size of the scroll pane itself controls its visible
         // area
-        cropBedsList.setMinimumSize(new Dimension(230, 100));
-        cropBedsList.setPreferredSize(new Dimension(230, 100));
+        cropBedsList.setMinimumSize(new Dimension(230, 90));
+        cropBedsList.setPreferredSize(new Dimension(230, 90));
         cropBedsList.setBorder(BorderFactory.createEmptyBorder());
 
         JPanel cropsTitleRow = new JPanel(new GridLayout(1, 2));
         cropsTitleRow.setSize(230, 100);
         JLabel cropBedsLabel = new JLabel("Crop Beds");
-        cropBedsLabel.setForeground(UIColors.SUB_TEXT_COLOR);
+        cropBedsLabel.setForeground(UIColors.TEXT_COLOR);
+        cropBedsLabel.setFont(UIFont.lexend(Font.BOLD, 16));
         cropsTitleRow.add(cropBedsLabel);
         cropsTitleRow.setOpaque(false);
 
@@ -128,8 +129,9 @@ public class SideBar extends JPanel {
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
         settingsPanel.setSize(200, 500);
         JLabel settingsLabel = new JLabel("Settings");
+        settingsLabel.setFont(UIFont.lexend(Font.BOLD, 16));
+        settingsLabel.setForeground(UIColors.TEXT_COLOR);
 
-        settingsLabel.setForeground(UIColors.SUB_TEXT_COLOR);
         settingsPanel.add(settingsLabel);
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changeName);
@@ -137,6 +139,7 @@ public class SideBar extends JPanel {
         settingsPanel.add(changeAddress);
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(changePass);
+        settingsPanel.add(Box.createVerticalStrut(28));
 
         logOut = UIButtons.createSettingsButton("Log Out");
 
@@ -181,6 +184,7 @@ public class SideBar extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    //this is for testing purposes
      public static void main(String[] args) {
      SwingUtilities.invokeLater(() -> {
      JFrame frame = new JFrame("AniCore Lite Sidebar");
@@ -188,9 +192,8 @@ public class SideBar extends JPanel {
 
      // Create the new SideBar JPanel instance
      SideBar sideBarPanel = new SideBar(new User("John", "john123", "Farm Address", 19, "123"));
-         Home home = new Home(new User("John", "john123", "Farm Address", 19, "123"));
+     Home home = new Home(new User("John", "john123", "Farm Address", 19, "123"));
      // Add the JPanel to the JFrame's content pane
-     frame.getContentPane().add(sideBarPanel);
      frame.getContentPane().add(home);
 
      frame.setSize(1280, 720);

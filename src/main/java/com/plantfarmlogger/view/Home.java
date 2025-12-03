@@ -78,7 +78,6 @@ public class Home extends BaseDashboardView {
     public void addCardComponent(JComponent card) {
         cardsContainer.add(card, 0);
         cardsContainer.add(Box.createVerticalStrut(20), 1);
-
         refreshLayout();
     }
 
