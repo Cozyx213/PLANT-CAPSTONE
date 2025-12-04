@@ -24,35 +24,24 @@ public class LeafCrop extends Crop implements Prunable {
             Map.entry("red leaf lettuce", 14));
     public static final int DEFAULT_BASE_GROWING_DAYS = 14;
     private String pruningDate;
-    private Integer userBaseGrowingDays;
+    private int userBaseGrowingDays;
 
-    public LeafCrop(String identification, String plantType, String soilType, String lastFertilized,
-            String datePlanted, double width, double height,
-            double length, String pruningDate, String userId) {
-        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
+    // used for creation of new HerbCrop
+    public LeafCrop(String plantType, String soilType, double width,
+                    double height, double length, String userId,
+                    String pruningDate, int userBaseGrowingDays) {
+        super(plantType, soilType, width, height, length, userId);
         this.pruningDate = pruningDate;
+        this.userBaseGrowingDays = userBaseGrowingDays;
     }
 
-    public LeafCrop(String identification, String plantType, String soilType, String lastFertilized,
+    // used for loading from file; full parameters
+    public LeafCrop(String id, String plantType, String soilType, String lastFertilized,
             String datePlanted, double width, double height,
-            double length, String userId) {
-        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
-
-    }
-
-    public LeafCrop(String plantType, String soilType, String lastFertilized,
-            String datePlanted, double width, double height,
-            double length, String userId) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
-
-    }
-
-    public LeafCrop(String plantType, String soilType,
-            String datePlanted, double width, double height,
-            double length, String userId) {
-        super(plantType, soilType, datePlanted, width, height, length, userId);
-        this.pruningDate = "";
-        this.userBaseGrowingDays = 0;
+            double length, String userId, String pruningDate, int  userBaseGrowingDays) {
+        super(id, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
+        this.pruningDate = pruningDate;
+        this.userBaseGrowingDays = userBaseGrowingDays;
     }
 
     /**
@@ -121,7 +110,7 @@ public class LeafCrop extends Crop implements Prunable {
         LocalDate planted = LocalDate.parse(getDatePlanted());
         LocalDate now = LocalDate.now();
         int baseDays;
-        if (userBaseGrowingDays != null) {
+        if (userBaseGrowingDays != 0) {
             baseDays = userBaseGrowingDays;
         } else {
             baseDays = LEAFCROP_BASE_GROWING_DAYS.getOrDefault(
@@ -156,7 +145,7 @@ public class LeafCrop extends Crop implements Prunable {
     @Override
     public String toString() {
         return String.join(",",
-                getIdentification(),
+                getID(),
                 "LeafCrop-" + getPlantType(),
                 getSoilType(),
                 getLastFertilized(),

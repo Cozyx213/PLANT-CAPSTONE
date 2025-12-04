@@ -8,42 +8,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.plantfarmlogger.model.Crop;
-import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.model.interfaces.CropDaoInter;
 import com.plantfarmlogger.model.subclasses.HerbCrop;
 import com.plantfarmlogger.model.subclasses.LeafCrop;
 import com.plantfarmlogger.model.subclasses.RootCrop;
 
 public class CropDao implements CropDaoInter {
-    ArrayList<Crop> Crops = new ArrayList<Crop>();
-    private static CropDao instance = null;
+    private static CropDao instance;
+    ArrayList<Crop> cache = new ArrayList<Crop>();
     private final String cropFile = "src/main/resources/csv/cropbeds.csv";
 
     private CropDao() {
-        fetch();
+        loadAll();
     }
     public static CropDao getInstance() {
         return instance == null ? instance = new CropDao() : instance;
     }
 
-    public ArrayList<Crop> getCropBeds(User user) {
 
-        ArrayList<Crop> copy = new ArrayList<>();
-        for (Crop c : Crops) {
-            if(c.getUserId() != user.getId()) continue;
-            copy.add(c);
-        }
-        return copy;
-    }
-
-    private void fetch() {
-        try (
-                BufferedReader br = new BufferedReader(new FileReader(cropFile));) {
+    private void loadAll() {
+        try (BufferedReader br = new BufferedReader(new FileReader(cropFile));) {
             String line;
 
             while ((line = br.readLine()) != null) {
-                String[] spl = line.split(",");
-                String identification = spl[0];
+                String[] spl = line.split(",", -1);
+                String id = spl[0];
                 String userId = spl[1];
                 String plantType = spl[2];
                 String soilType = spl[3];
@@ -56,76 +45,135 @@ public class CropDao implements CropDaoInter {
 
                 String[] t = plantType.split("-");
                 String type = t[0];
-                String crp = t[1];
+                String cropName = t[1];
                 Crop n = null;
                 if (type.equals("HerbCrop")) {
-                    String pruningDate = spl.length > 9 ? spl[9] : "null";
-                    int userBaseGrowingDays = spl.length > 10 ? parseIntOrDefault(spl[10], 0) : 0;
-                    String activeCompounds = spl.length > 11 ? spl[11] : "null";
-                    n = new HerbCrop(identification, crp, soilType, lastFertilized, datePlanted, width, height, length,
-                            pruningDate, userBaseGrowingDays, activeCompounds, userId);
-                } else if (type.equals("RootCrop")) {
-                    n = new RootCrop(identification, crp, soilType, lastFertilized, datePlanted, width, height,
-                            length, userId);
-                } else if (type.equals("LeafCrop")) {
-                    String pruningDate = spl.length > 9 ? spl[9] : "null";
-                    int userBaseGrowingDays = spl.length > 10 ? parseIntOrDefault(spl[10], 0) : 0;
-                    LeafCrop e = new LeafCrop(identification, crp, soilType, lastFertilized, datePlanted, width,
-                            height, length, pruningDate, userId);
+                    String pruningDate = spl.length > 9 && !spl[9].isEmpty() ? spl[9] : null;
 
-                    e.setUserBaseGrowingDays(userBaseGrowingDays);
-                    n = e;
+                    int userBaseGrowingDays = spl.length > 10 && !spl[10].isEmpty()
+                                    ? parseIntOrDefault(spl[10], 0) : 0;
+                    String activeCompounds = spl.length > 11 && !spl[11].isEmpty() ? spl[11] : null;
+
+                    n = new HerbCrop(id, cropName, soilType,
+                            lastFertilized, datePlanted, width,
+                            height, length, userId,
+                            pruningDate, userBaseGrowingDays, activeCompounds);
+                } else if (type.equals("RootCrop")) {
+                    double userRootCropDensity = spl.length > 9 && !spl[9].isEmpty()? Double.parseDouble(spl[9]) : 0;
+                    n = new RootCrop(id, cropName, soilType,
+                            lastFertilized, datePlanted, width,
+                            height, length, userId,
+                            userRootCropDensity);
+                } else if (type.equals("LeafCrop")) {
+                    String pruningDate = spl.length > 9 && !spl[9].isEmpty()? spl[9] : null;
+                    int userBaseGrowingDays = spl.length > 10 ? parseIntOrDefault(spl[10], 0) : 0;
+                    n = new LeafCrop(id, cropName, soilType,
+                            lastFertilized, datePlanted, width,
+                            height, length, pruningDate,
+                            userId, userBaseGrowingDays);
                 }
-                Crops.add(n);
+                cache.add(n);
             }
 
         } catch (IOException e) {
-            System.out.println("IO_ERROR theres no file " + cropFile);
+            System.out.println("IO_ERROR: file " + cropFile + "does not exist");
         }
         System.out.println("SUCCESS");
     }
 
-    private void saveToCSV() {
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(cropFile));
-
-        ) {
-            for (Crop c : Crops) {
-
+    private void save() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(cropFile))) {
+            for (Crop c : cache) {
                 bw.write(c.toString());
                 bw.newLine();
             }
-
         } catch (IOException e) {
             System.out.println("IO_ERROR");
         }
-        System.out.println("OPEnEd " + cropFile);
+        System.out.println("Opened " + cropFile);
     }
 
-    public void create(Crop t) {
-        if (t == null) {
-            System.out.println("no user ");
+    // create
+    public boolean create(Crop crop) {
+        if (crop == null) {
+            System.out.println("No crop found");
+            return false;
         }
-        Crops.add(t);
-        saveToCSV();
-
+        cache.add(crop);
+        save();
+        return true;
     }
 
-    public void delete(Crop t) {
-        int index = 0;
-        for (Crop u : Crops) {
+    // read
+    @Override
+    public ArrayList<Crop> findAll() {
+        return cache;
+    }
 
-            if (t == u) {
-                Crops.remove(index);
+    @Override
+    public Crop findByCropId(String cropId) {
+        for (Crop c : cache) {
+            if(c.getID().equals(cropId)) {return c;}
+        }
+        throw new IllegalArgumentException("Crop with id " + cropId + " not found");
+    }
+
+    @Override
+    public ArrayList<Crop> findAllByUserId(String userId) {
+        ArrayList<Crop> cropsOfUser = new ArrayList<>();
+        for (Crop c : cache) {
+            if (c.getUserId().equals(userId)) {
+                cropsOfUser.add(c);
             }
-
-            index++;
         }
-        saveToCSV();
+        return cropsOfUser;
+    }
+
+
+    // update
+        // TODO: implement updateMethods
+
+    // delete
+    @Override
+    public void deleteAll() {
+        int ctr = 0;
+        for(Crop c : cache) {
+            deleteByCropId(c.getID());
+        }
+        System.out.println("Deleted all crops");
+    }
+    @Override
+    public void deleteByCropId(String cropId) {
+        for (Crop c : cache) {
+            if (c.getID().equals(cropId)) {
+                cache.remove(c);
+                save();
+                System.out.println("Deleted Crop with id " + cropId);
+                return;
+            }
+        }
+        System.out.println("Failed to delete Crop with " + cropId + ". Not found");
+    }
+
+    @Override
+    public void deleteAllByUserId(String userId) {
+        int ctr = 0;
+        for (Crop c : cache) {
+            if (c.getID().equals(userId)) {
+                deleteByCropId(c.getID());
+                ctr++;
+            }
+        }
+        if(ctr == 0) {
+            System.out.println("No crops with userId: " + userId );
+            return;
+        }
+        System.out.println("Deleted " + ctr + " Crops with userId: " + userId);
     }
 
     public void printU() {
-        for (Crop c : Crops) {
+        for (Crop c : cache) {
             if (c == null) {
                 System.out.println("null crop");
             } else {
