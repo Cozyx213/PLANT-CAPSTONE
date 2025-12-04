@@ -23,11 +23,11 @@ public class Crop {
         this.height = height;
         this.length = length;
     }
-     public Crop(String identification, String plantType, String soilType, String lastFertilized,
+     public Crop(String identification, String plantType, String soilType,
                  double width, double height,
                  double length) {
-            this(identification, plantType, soilType,LocalDate.now().toString(), lastFertilized, width, height, length);
-     
+            this(identification, plantType, soilType,LocalDate.now().toString(), LocalDate.now().toString(), width, height, length);
+            
     }
     public CropLog getLogs() {
         return null;

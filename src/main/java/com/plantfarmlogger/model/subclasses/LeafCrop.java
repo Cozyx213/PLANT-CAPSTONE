@@ -27,18 +27,18 @@ public class LeafCrop extends Crop implements Prunable {
     private String pruningDate;
     private Integer userBaseGrowingDays;
 
-    public LeafCrop(String plantType, String soilType, String lastFertilized,
+    public LeafCrop(String identification, String plantType, String soilType, String lastFertilized,
                     String datePlanted, double width, double height,
                     double length, String pruningDate) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
         this.pruningDate = pruningDate;
     }
-    public LeafCrop(String plantType, String soilType, String lastFertilized,
+    public LeafCrop(String plantType, String soilType,
                     String datePlanted, double width, double height,
                     double length) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
-        this.pruningDate = null;
-        this.userBaseGrowingDays = null;
+        super(plantType, soilType, datePlanted, width, height, length);
+        this.pruningDate = "";
+        this.userBaseGrowingDays = 0;
     }
 
     /**

@@ -7,20 +7,21 @@ import com.plantfarmlogger.model.interfaces.Prunable;
 import java.util.ArrayList;
 
 public class HerbCrop extends Crop implements Prunable, Medicinal {
-
-    public HerbCrop(String plantType, String soilType, String lastFertilized,
+    private String activeCompunds;
+    public HerbCrop(String identification, String plantType, String soilType, String lastFertilized,
                     String datePlanted, double width, double height,
                     double length) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
 
 
 
     @Override
-    public ArrayList<String> getActiveCompounds() {
-        return null;
+    public String getActiveCompounds() {
+        return activeCompunds;
     }
 
+    public void setActiveCompounds(String activeCompounds) {activeCompunds = activeCompounds;}
     @Override
     public void setExplicitPruningDate(String date) {
 
