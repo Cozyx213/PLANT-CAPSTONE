@@ -113,6 +113,15 @@ public class FlowerCrop extends Crop implements Prunable, Ornamental {
     public String getAestheticFeatures() {
         return this.aestheticFeatures;
     }
-
+    /**
+     * Sets the aesthetic features for this flower crop.
+     * <p>
+     * Aesthetic features describe the visual or ornamental characteristics
+     * of the plant (e.g., bloom color, petal shape, fragrance, foliage details,
+     * or any other decorative attributes). This value is user-defined and is
+     * returned by {@link #getAestheticFeatures()}.
+     *
+     * @param aestheticFeatures a textual description of the plant's aesthetic or ornamental qualities
+     */
     public void setAestheticFeatures(String aestheticFeatures) {this.aestheticFeatures = aestheticFeatures;}
 }
