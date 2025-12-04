@@ -12,7 +12,6 @@ import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
-import com.plantfarmlogger.view.Home;
 import com.plantfarmlogger.view.MainWindow;
 
 // Change from 'extends JFrame' to 'extends JPanel'
