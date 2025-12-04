@@ -95,7 +95,7 @@ public class CropDao implements CropDaoInter {
     }
 
     // create
-    public boolean create(Crop crop) {
+    public boolean createCrop(Crop crop) {
         if (crop == null) {
             System.out.println("No crop found");
             return false;
