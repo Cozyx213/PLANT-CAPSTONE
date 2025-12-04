@@ -26,7 +26,13 @@ public class CropDao implements CropDaoInter {
     }
 
     public ArrayList<Crop> getCropBeds() {
-        return Crops;
+
+        ArrayList<Crop> copy = new ArrayList<>();
+        for (Crop c : Crops) {
+           
+            copy.add(c);
+        }
+        return copy;
     }
 
     private void fetch() {
@@ -37,36 +43,37 @@ public class CropDao implements CropDaoInter {
             while ((line = br.readLine()) != null) {
                 String[] spl = line.split(",");
                 String identification = spl[0];
-                String plantType = spl[1];
-                String soilType = spl[2];
-                String lastFertilized = spl[3];
-                String datePlanted = spl[4];
+                String userId = spl[1];
+                String plantType = spl[2];
+                String soilType = spl[3];
+                String lastFertilized = spl[4];
+                String datePlanted = spl[5];
 
-                double width = Double.parseDouble(spl[5]);
-                double height = Double.parseDouble(spl[6]);
-                double length = Double.parseDouble(spl[7]);
+                double width = Double.parseDouble(spl[6]);
+                double height = Double.parseDouble(spl[7]);
+                double length = Double.parseDouble(spl[8]);
 
                 String[] t = plantType.split("-");
                 String type = t[0];
                 String crp = t[1];
                 Crop n = null;
                 if (type.equals("HerbCrop")) {
-                    String pruningDate = spl.length > 8 ? spl[8] : "null";
-                    int userBaseGrowingDays = spl.length > 9 ? parseIntOrDefault(spl[9], 0) : 0;
-                    String activeCompounds = spl.length > 10 ? spl[10] : "null";
+                    String pruningDate = spl.length > 9 ? spl[9] : "null";
+                    int userBaseGrowingDays = spl.length > 10 ? parseIntOrDefault(spl[10], 0) : 0;
+                    String activeCompounds = spl.length > 11 ? spl[11] : "null";
                     n = new HerbCrop(identification, crp, soilType, lastFertilized, datePlanted, width, height, length,
-                            pruningDate, userBaseGrowingDays, activeCompounds);
+                            pruningDate, userBaseGrowingDays, activeCompounds, userId);
                 } else if (type.equals("RootCrop")) {
-                    n = (Crop) new RootCrop(identification, crp, soilType, lastFertilized, datePlanted, width, height,
-                            length);
+                    n = new RootCrop(identification, crp, soilType, lastFertilized, datePlanted, width, height,
+                            length, userId);
                 } else if (type.equals("LeafCrop")) {
-                    String pruningDate = spl.length > 8 ? spl[8] : "null";
-                    int userBaseGrowingDays = spl.length > 9 ? parseIntOrDefault(spl[9], 0) : 0;
+                    String pruningDate = spl.length > 9 ? spl[9] : "null";
+                    int userBaseGrowingDays = spl.length > 10 ? parseIntOrDefault(spl[10], 0) : 0;
                     LeafCrop e = new LeafCrop(identification, crp, soilType, lastFertilized, datePlanted, width,
-                            height, length, pruningDate);
+                            height, length, pruningDate, userId);
 
                     e.setUserBaseGrowingDays(userBaseGrowingDays);
-                    n = (Crop) e;
+                    n = e;
                 }
                 Crops.add(n);
             }

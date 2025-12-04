@@ -28,29 +28,29 @@ public class LeafCrop extends Crop implements Prunable {
 
     public LeafCrop(String identification, String plantType, String soilType, String lastFertilized,
             String datePlanted, double width, double height,
-            double length, String pruningDate) {
-        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
+            double length, String pruningDate, String userId) {
+        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
         this.pruningDate = pruningDate;
     }
 
     public LeafCrop(String identification, String plantType, String soilType, String lastFertilized,
             String datePlanted, double width, double height,
-            double length) {
-        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
+            double length, String userId) {
+        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
 
     }
 
     public LeafCrop(String plantType, String soilType, String lastFertilized,
             String datePlanted, double width, double height,
-            double length) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+            double length, String userId) {
+        super(plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
 
     }
 
     public LeafCrop(String plantType, String soilType,
             String datePlanted, double width, double height,
-            double length) {
-        super(plantType, soilType, datePlanted, width, height, length);
+            double length, String userId) {
+        super(plantType, soilType, datePlanted, width, height, length, userId);
         this.pruningDate = "";
         this.userBaseGrowingDays = 0;
     }
@@ -165,6 +165,8 @@ public class LeafCrop extends Crop implements Prunable {
                 String.valueOf(getHeight()),
                 String.valueOf(getLength()),
                 getPruningDate() == null ? "now" : getPruningDate(),
-                String.valueOf(getUserBaseGrowingDays()));
+                String.valueOf(getUserBaseGrowingDays()),
+                getUserId());
+                
     }
 }

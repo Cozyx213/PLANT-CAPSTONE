@@ -22,13 +22,13 @@ public class RootCrop extends Crop implements Subterranean {
     private String userRootCropDensity;
 
     public RootCrop(String identification, String plantType, String soilType, String lastFertilized, String datePlanted,
-            double width, double height, double length) {
-        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
+            double width, double height, double length, String userId) {
+        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
     }
 
     public RootCrop(String plantType, String soilType, String lastFertilized, String datePlanted, double width,
-            double height, double length) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+            double height, double length, String userId) {
+        super(plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
     }
 
     /**
@@ -89,6 +89,7 @@ public class RootCrop extends Crop implements Subterranean {
                 getDatePlanted(),
                 String.valueOf(getWidth()),
                 String.valueOf(getHeight()),
-                String.valueOf(getLength()));
+                String.valueOf(getLength()),
+                getUserId());
     }
 }

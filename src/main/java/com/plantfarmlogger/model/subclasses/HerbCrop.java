@@ -11,16 +11,16 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
 
     public HerbCrop(String identification, String plantType, String soilType, String lastFertilized,
             String datePlanted, double width, double height,
-            double length, String pruningDate, int userBaseGrowingDays, String activeCompounds) {
-        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
+            double length, String pruningDate, int userBaseGrowingDays, String activeCompounds, String userId) {
+        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
         this.pruningDate = pruningDate;
         this.userBaseGrowingDays = userBaseGrowingDays;
         this.activeCompounds = activeCompounds;
     }
      public HerbCrop( String plantType, String soilType, String lastFertilized,
             String datePlanted, double width, double height,
-            double length, String pruningDate, int userBaseGrowingDays, String activeCompounds) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+            double length, String pruningDate, int userBaseGrowingDays, String activeCompounds , String userId) {
+        super(plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
         this.pruningDate = pruningDate;
         this.userBaseGrowingDays = userBaseGrowingDays;
         this.activeCompounds = activeCompounds;
@@ -67,6 +67,8 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
                 String.valueOf(getLength()),
                 getPruningDate(),
                 String.valueOf(getUserBaseGrowingDays()),
-                getActiveCompounds());
+                getActiveCompounds(),
+                getUserId());
+                
     }
 }

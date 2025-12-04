@@ -33,14 +33,14 @@ public class UserDao implements UserDaoInter {
 
             while ((line = br.readLine()) != null) {
                 String[] spl = line.split(",");
+                String id = spl[0];
+                String name = spl[1];
+                String username = spl[2];
+                String address = spl[3];
+                int age = Integer.parseInt(spl[4]);
+                String password = spl[5];
 
-                String name = spl[0];
-                String username = spl[1];
-                String address = spl[2];
-                int age = Integer.parseInt(spl[3]);
-                String password = spl[4];
-
-                User n = new User(name, username, address, age, password);
+                User n = new User(id, name, username, address, age, password);
                 Users.add(n);
             }
 
@@ -56,8 +56,8 @@ public class UserDao implements UserDaoInter {
 
         ) {
             for (User u : Users) {
-                bw.write(u.getName() + "," + u.getUsername() + "," + u.getAddress() + "," + u.getAge() + ","
-                        + u.getPassword() + "\n");
+                bw.write(u.getId() + "," + u.getName() + "," + u.getUsername() + "," + u.getAddress() + "," + u.getAge() + ","
+                        + u.getPassword()  +  "\n");
             }
 
         } catch (IOException e) {
@@ -69,8 +69,11 @@ public class UserDao implements UserDaoInter {
     public void create(User t) {
         if (t == null) {
             System.out.println("no user ");
+            return;
         }
+        t.setId(java.util.UUID.randomUUID().toString());
         Users.add(t);
+
         saveToCSV();
 
     }
