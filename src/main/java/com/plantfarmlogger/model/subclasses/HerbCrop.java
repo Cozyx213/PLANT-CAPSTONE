@@ -17,6 +17,14 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
         this.userBaseGrowingDays = userBaseGrowingDays;
         this.activeCompounds = activeCompounds;
     }
+     public HerbCrop( String plantType, String soilType, String lastFertilized,
+            String datePlanted, double width, double height,
+            double length, String pruningDate, int userBaseGrowingDays, String activeCompounds) {
+        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+        this.pruningDate = pruningDate;
+        this.userBaseGrowingDays = userBaseGrowingDays;
+        this.activeCompounds = activeCompounds;
+    }
 
     @Override
     public String getActiveCompounds() {

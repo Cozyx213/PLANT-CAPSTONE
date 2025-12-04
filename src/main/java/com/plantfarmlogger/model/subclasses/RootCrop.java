@@ -24,6 +24,9 @@ public class RootCrop extends Crop implements Subterranean {
     public RootCrop(String identification, String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
         super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
+        public RootCrop( String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
+            super( plantType, soilType, lastFertilized, datePlanted, width, height, length);
+        }
     /**
      * Estimates the total mass of root biomass contained within the crop bed.
      * <p>

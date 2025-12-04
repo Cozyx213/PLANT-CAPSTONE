@@ -1,4 +1,5 @@
 package com.plantfarmlogger.model;
+import java.util.UUID;
 
 import java.time.LocalDate;
 
@@ -15,6 +16,18 @@ public class Crop {
                 String datePlanted, double width, double height,
                 double length) {
         this.identification = identification;
+        this.plantType = plantType;
+        this.soilType = soilType;
+        this.lastFertilized = lastFertilized;
+        this.datePlanted = datePlanted;
+        this.width = width;
+        this.height = height;
+        this.length = length;
+    }
+    public Crop( String plantType, String soilType, String lastFertilized,
+                String datePlanted, double width, double height,
+                double length) {
+        this.identification = UUID.randomUUID().toString();
         this.plantType = plantType;
         this.soilType = soilType;
         this.lastFertilized = lastFertilized;
