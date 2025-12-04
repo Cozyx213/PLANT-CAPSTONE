@@ -69,4 +69,18 @@ public class RootCrop extends Crop implements Subterranean {
     public void setUserRootCropDensity(String userRootCropDensity) {
         this.userRootCropDensity = userRootCropDensity;
     }
+    @Override
+  
+    public String toString() {
+        // TODO Auto-generated method stub
+        return String.join(",",
+                        getIdentification(),
+                        "RootCrop-" + getPlantType(),
+                        getSoilType(),
+                        getLastFertilized(),
+                        getDatePlanted(),
+                        String.valueOf(getWidth()),
+                        String.valueOf(getHeight()),
+                        String.valueOf(getLength()));
+    }
 }

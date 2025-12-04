@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.interfaces.CropDaoInter;
+import com.plantfarmlogger.model.subclasses.HerbCrop;
+import com.plantfarmlogger.model.subclasses.LeafCrop;
+import com.plantfarmlogger.model.subclasses.RootCrop;
 
 public class CropDao implements CropDaoInter {
     ArrayList<Crop> Crops = new ArrayList<Crop>();
@@ -40,7 +43,28 @@ public class CropDao implements CropDaoInter {
                 double height = Double.parseDouble(spl[6]);
                 double length = Double.parseDouble(spl[7]);
 
-                Crop n = new Crop(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
+                String[] t = plantType.split("-");
+                String type = t[0];
+                String crp = t[1];
+                Crop n = null;
+                if (type.equals("HerbCrop")) {
+                    String pruningDate = spl.length > 8 ? spl[8] : "null";
+                    int userBaseGrowingDays = spl.length > 9 ? parseIntOrDefault(spl[9], 0) : 0;
+                    String activeCompounds = spl.length > 10 ? spl[10] : "null";
+                    n = new HerbCrop(identification, crp, soilType, lastFertilized, datePlanted, width, height, length,
+                            pruningDate, userBaseGrowingDays, activeCompounds);
+                } else if (type.equals("RootCrop")) {
+                    n = (Crop) new RootCrop(identification, crp, soilType, lastFertilized, datePlanted, width, height,
+                            length);
+                } else if (type.equals("LeafCrop")) {
+                    String pruningDate = spl.length > 8 ? spl[8] : "null";
+                    int userBaseGrowingDays = spl.length > 9 ? parseIntOrDefault(spl[9], 0) : 0;
+                    LeafCrop e = new LeafCrop(identification, crp, soilType, lastFertilized, datePlanted, width,
+                            height, length, pruningDate);
+
+                    e.setUserBaseGrowingDays(userBaseGrowingDays);
+                    n = (Crop) e;
+                }
                 Crops.add(n);
             }
 
@@ -56,15 +80,8 @@ public class CropDao implements CropDaoInter {
 
         ) {
             for (Crop c : Crops) {
-                bw.write(String.join(",",
-                        c.getIdentification(),
-                        c.getPlantType(),
-                        c.getSoilType(),
-                        c.getLastFertilized(),
-                        c.getDatePlanted(),
-                        String.valueOf(c.getWidth()),
-                        String.valueOf(c.getHeight()),
-                        String.valueOf(c.getLength())));
+
+                bw.write(c.toString());
                 bw.newLine();
             }
 
@@ -98,8 +115,23 @@ public class CropDao implements CropDaoInter {
 
     public void printU() {
         for (Crop c : Crops) {
-            System.out.println(c);
+            if (c == null) {
+                System.out.println("null crop");
+            } else {
+                System.out.println(c.toString());
+                
+            }
         }
     }
 
+    private int parseIntOrDefault(String value, int defaultValue) {
+        if (value == null || value.trim().equalsIgnoreCase("null") || value.trim().isEmpty()) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(value.trim());
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 }

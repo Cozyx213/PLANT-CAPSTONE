@@ -7,6 +7,9 @@ import javax.swing.SwingUtilities;
 import com.plantfarmlogger.controller.dao.CropDao;
 import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.model.subclasses.LeafCrop;
+import com.plantfarmlogger.model.subclasses.RootCrop;
+import com.plantfarmlogger.model.subclasses.HerbCrop;
 import com.plantfarmlogger.view.MainWindow;
 
 import javax.swing.UIManager;
@@ -15,10 +18,11 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("Farm Logger start");
-
-        CropDao cbd = new CropDao();
-        LocalDate ld = LocalDate.now();
-        cbd.create(new Crop("type1" ,"type2" , "typ3" , ld.toString() , 12.12 ,32.4 , 33.3 ));
+        CropDao cd = new CropDao();
+        // cd.create( (Crop) new  LeafCrop("id5", "Lettuce", "Loamy", "2024-10-01", "2024-09-15", 10.0, 5.0, 15.0));
+        // cd.create((Crop) new RootCrop("id6", "Carrot", "Sandy", "2024-10-05", "2024-09-20", 8.0, 4.0, 12.0));
+        // cd.create((Crop) new HerbCrop("id7", "Basil", "Clay", "2024-10-03", "2024-09-18", 6.0, 3.0, 9.0, "2024-10-10", 20, "Eugenol"));
+        cd.printU();
         SwingUtilities.invokeLater(() -> {
             try {
 
