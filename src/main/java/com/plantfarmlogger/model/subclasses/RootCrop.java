@@ -20,8 +20,9 @@ public class RootCrop extends Crop implements Subterranean {
             );
     public static final double DEFAULT_ROOTCROP_DENSITY = 750.0;
     public static final double PACKING_FACTOR = 1.0;
-    public RootCrop(String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+    private String userRootCropDensity;
+    public RootCrop(String identification, String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
+        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
     /**
      * Estimates the total mass of root biomass contained within the crop bed.
@@ -61,5 +62,11 @@ public class RootCrop extends Crop implements Subterranean {
         return bedVolume * rootCropDensity * PACKING_FACTOR;
     }
 
+    public String getUserRootCropDensity() {
+        return userRootCropDensity;
+    }
 
+    public void setUserRootCropDensity(String userRootCropDensity) {
+        this.userRootCropDensity = userRootCropDensity;
+    }
 }
