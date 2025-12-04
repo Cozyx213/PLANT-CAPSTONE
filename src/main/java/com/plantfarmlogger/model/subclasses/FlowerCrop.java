@@ -25,18 +25,13 @@ public class FlowerCrop extends Crop implements Prunable, Ornamental {
     private String pruningDate;
     private Integer userInitialPruneDays;
     private Integer userPruneIntervalDays;
+    private String aestheticFeatures;
 
     public FlowerCrop(String plantType, String soilType, String lastFertilized,
                       String datePlanted, double width, double height,
-                      double length) {
+                      double length, String aestheticFeatures) {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
-    }
-
-
-
-    @Override
-    public String getAestheticFeatures() {
-        return "";
+        this.aestheticFeatures = aestheticFeatures;
     }
 
     @Override
@@ -113,4 +108,20 @@ public class FlowerCrop extends Crop implements Prunable, Ornamental {
     public void setUserPruneIntervalDays(Integer userPruneIntervalDays) {
         this.userPruneIntervalDays = userPruneIntervalDays;
     }
+
+    @Override
+    public String getAestheticFeatures() {
+        return this.aestheticFeatures;
+    }
+    /**
+     * Sets the aesthetic features for this flower crop.
+     * <p>
+     * Aesthetic features describe the visual or ornamental characteristics
+     * of the plant (e.g., bloom color, petal shape, fragrance, foliage details,
+     * or any other decorative attributes). This value is user-defined and is
+     * returned by {@link #getAestheticFeatures()}.
+     *
+     * @param aestheticFeatures a textual description of the plant's aesthetic or ornamental qualities
+     */
+    public void setAestheticFeatures(String aestheticFeatures) {this.aestheticFeatures = aestheticFeatures;}
 }

@@ -4,11 +4,9 @@ CropLog.java:
 	implement methods and use DAO
 Plant.java subclasses:
     implement algorithm:
-        FruitCrop - getAestheticFeatures()
-        FlowerCrop - getAestheticFeatures()
-        VineCrop - validateWeight()
         BulbCrop - getActiveCompounds(), estimateMass()
         HerbCrop - getActiveCompounds(), pruningdate())
     make missing setters and getters of all subclasses
+    fix all contructors considering new params of interface method implementations
 Diagram:
     1. Update CropBed to Crop with all respective changes
