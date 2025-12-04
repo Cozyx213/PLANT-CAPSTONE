@@ -29,8 +29,8 @@ Thumbs.db
 *.tmp
 *~
 
-# CSV resources (keep source but ignore generated)
-/src/main/resources/*.csv
+# CSV com.plantfarmlogger.resources (keep source but ignore generated)
+/src/main/com.plantfarmlogger.resources/*.csv
 
 # Backup files
 *.bak
