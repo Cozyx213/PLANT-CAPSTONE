@@ -26,19 +26,16 @@ public class FruitCrop extends Crop implements Prunable, Ornamental {
     private String pruningDate;
     private Integer userInitialPruneDays;
     private Integer userPruneIntervalDays;
-
+    private String aestheticFeatures;
     public FruitCrop(String plantType, String soilType, String lastFertilized,
                      String datePlanted, double width, double height,
-                     double length) {
+                     double length, String aestheticFeatures) {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+        this.aestheticFeatures = aestheticFeatures;
     }
 
 
 
-    @Override
-    public String getAestheticFeatures() {
-        return "";
-    }
 
     @Override
     public void setExplicitPruningDate(String date) {
@@ -134,4 +131,11 @@ public class FruitCrop extends Crop implements Prunable, Ornamental {
     public void setUserPruneIntervalDays(Integer userPruneIntervalDays) {
         this.userPruneIntervalDays = userPruneIntervalDays;
     }
+
+    @Override
+    public String getAestheticFeatures() {
+        return this.aestheticFeatures;
+    }
+
+    public void setAestheticFeatures(String aestheticFeatures) {this.aestheticFeatures = aestheticFeatures;}
 }
