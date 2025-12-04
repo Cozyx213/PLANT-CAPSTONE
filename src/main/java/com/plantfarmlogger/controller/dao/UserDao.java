@@ -12,10 +12,10 @@ import com.plantfarmlogger.model.interfaces.UserDaoInter;
 
 public class UserDao implements UserDaoInter {
     ArrayList<User> Users = new ArrayList<User>();
-
+    private static UserDao instance = null;
     private final String userFile = "src/main/resources/csv/users.csv";
 
-    public UserDao() {
+    private UserDao() {
         fetch();
     }
 
@@ -23,6 +23,9 @@ public class UserDao implements UserDaoInter {
         return Users;
     }
 
+    public static UserDao getInstance() {
+        return instance == null ? instance = new UserDao() : instance;
+    }
     private void fetch() {
         try (
                 BufferedReader br = new BufferedReader(new FileReader(userFile));) {

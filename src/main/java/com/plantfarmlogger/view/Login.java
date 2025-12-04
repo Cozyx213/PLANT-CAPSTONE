@@ -172,7 +172,7 @@ public class Login extends JPanel {
         String username = userField.getText();
         char[] password = passField.getPassword();
 
-        UserDao ud = new UserDao();
+        UserDao ud = UserDao.getInstance();
         User u = ud.authenticate(username, new String(password));
 
         if (u != null) {

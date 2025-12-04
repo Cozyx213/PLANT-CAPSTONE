@@ -15,11 +15,14 @@ import com.plantfarmlogger.model.subclasses.RootCrop;
 
 public class CropDao implements CropDaoInter {
     ArrayList<Crop> Crops = new ArrayList<Crop>();
-
+    private static CropDao instance = null;
     private final String cropFile = "src/main/resources/csv/cropbeds.csv";
 
-    public CropDao() {
+    private CropDao() {
         fetch();
+    }
+    public static CropDao getInstance() {
+        return instance == null ? instance = new CropDao() : instance;
     }
 
     public ArrayList<Crop> getCropBeds() {
