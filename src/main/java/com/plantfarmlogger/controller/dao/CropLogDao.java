@@ -27,6 +27,7 @@ public class CropLogDao {
     public CropLogDao() {
         fetch();
     }
+    
     public static CropLogDao getInstance() {
         return instance == null ? instance = new CropLogDao() : instance;
     }
@@ -47,10 +48,10 @@ public class CropLogDao {
                 HealthStatus healthStatus = HealthStatus.valueOf(spl[2]);
                  GrowthStatus growthStatus = GrowthStatus.valueOf(spl[3]);
                 String action = spl[4];
-                String cropBed = spl[5];
-                String farmer = spl[6];
-                String cropId = spl[7];
-                CropLog n = new CropLog(notes, date, healthStatus, growthStatus, action, cropBed, farmer, cropId);
+               
+                String farmer = spl[5];
+                String cropId = spl[6];
+                CropLog n = new CropLog(notes, date, healthStatus, growthStatus, action, farmer, cropId);
                 CropLogs.add(n);
             }
 
@@ -59,23 +60,14 @@ public class CropLogDao {
         }
         System.out.println("SUCCESS");
     }
-    private String enumtoString(Enum e) {
-        return e == null ? "null" : e.name();
-    }
-    private Enum stringToEnum(String s, Class<? extends Enum> enumType) {
-        if (s.equals("null")) {
-            return null;
-        }
-        return Enum.valueOf(enumType, s);
-    }
     private void saveToCSV() {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(CropLogFile));
 
         ) {
             for (CropLog c : CropLogs) {
-              bw.write(c.getNotes() + "," + c.getDate() + "," + enumtoString(c.getHealthStatus()) + "," + enumtoString(c.getGrowthStatus()) + "," +
-                      c.getAction() + "," + c.getCropBed() + "," + c.getFarmer() + "," + c.getCropId());
+              bw.write(c.getNotes() + "," + c.getDate() + "," + c.getHealthStatus().name() + "," + c.getGrowthStatus().name() + "," +
+                      c.getAction() + "," + c.getFarmer() + "," + c.getCropId());
                 bw.newLine();
             }
 

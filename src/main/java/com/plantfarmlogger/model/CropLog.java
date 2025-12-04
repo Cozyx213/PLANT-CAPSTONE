@@ -11,19 +11,19 @@ public class CropLog {
     private HealthStatus healthStatus;
     private GrowthStatus growthStatus;
     private String action;
-    private String cropBed;
+    
     private String farmer;
     private String cropId;
     public CropLog(String notes, String date, HealthStatus healthStatus,
-            GrowthStatus growthStatus, String action, String cropBed,
+            GrowthStatus growthStatus, String action, 
             String farmer, String cropId) {
-                
+
         this.notes = notes;
         this.date = date;
         this.healthStatus = healthStatus;
         this.growthStatus = growthStatus;
         this.action = action;
-        this.cropBed = cropBed;
+      
         this.farmer = farmer;
         this.cropId = cropId;
     }
@@ -36,7 +36,7 @@ public class CropLog {
     public CropLog(String notes, HealthStatus healthStatus,
             GrowthStatus growthStatus, String action, String cropBed,
             String farmer, String cropId) {
-        this(notes, LocalDate.now().toString(), healthStatus, growthStatus, action, cropBed, farmer, cropId);
+        this(notes, LocalDate.now().toString(), healthStatus, growthStatus, action,  farmer, cropId);
 
     }
 
@@ -80,14 +80,7 @@ public class CropLog {
         this.action = action;
     }
 
-    public String getCropBed() {
-        return cropBed;
-    }
-
-    public void setCropBed(String cropBed) {
-        this.cropBed = cropBed;
-    }
-
+    
     public String getFarmer() {
         return farmer;
     }

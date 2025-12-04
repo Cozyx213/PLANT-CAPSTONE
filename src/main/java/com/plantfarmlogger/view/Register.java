@@ -37,7 +37,7 @@ public class Register extends JPanel {
 
     private final AppNavigator navigator;
 
-    private JTextField nameField, usernameField, ageField, farmField;
+    private JTextField nameField, usernameField, ageField;
     private JTextField addressField;
     private JPasswordField passField, confirmPassField;
 
@@ -81,7 +81,7 @@ public class Register extends JPanel {
         nameField = addFieldToPanel(leftPanel, "Name");
         usernameField = addFieldToPanel(leftPanel, "Username");
         ageField = addFieldToPanel(leftPanel, "Age");
-        farmField = addFieldToPanel(leftPanel, "Farm Name");
+        
 
         JPanel rightPanel = createColumnPanel();
         addressField = addFieldToPanel(rightPanel, "Address");
