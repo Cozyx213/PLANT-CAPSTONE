@@ -39,13 +39,13 @@ public class LeafCrop extends Crop implements Prunable {
         super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
 
     }
-     public LeafCrop( String plantType, String soilType, String lastFertilized,
+
+    public LeafCrop(String plantType, String soilType, String lastFertilized,
             String datePlanted, double width, double height,
             double length) {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
 
     }
-
 
     public LeafCrop(String plantType, String soilType,
             String datePlanted, double width, double height,

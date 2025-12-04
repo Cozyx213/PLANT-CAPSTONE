@@ -1,9 +1,9 @@
 package com.plantfarmlogger.model.subclasses;
 
+import java.util.Map;
+
 import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.interfaces.Subterranean;
-
-import java.util.Map;
 
 public class RootCrop extends Crop implements Subterranean {
     public static final Map<String, Double> ROOTCROP_DENSITIES = Map.ofEntries(
@@ -16,17 +16,21 @@ public class RootCrop extends Crop implements Subterranean {
             Map.entry("cassava", 1000.0),
             Map.entry("ginger", 870.0),
             Map.entry("onion", 600.0),
-            Map.entry("garlic", 570.0)
-            );
+            Map.entry("garlic", 570.0));
     public static final double DEFAULT_ROOTCROP_DENSITY = 750.0;
     public static final double PACKING_FACTOR = 1.0;
     private String userRootCropDensity;
-    public RootCrop(String identification, String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
+
+    public RootCrop(String identification, String plantType, String soilType, String lastFertilized, String datePlanted,
+            double width, double height, double length) {
         super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length);
     }
-        public RootCrop( String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
-            super( plantType, soilType, lastFertilized, datePlanted, width, height, length);
-        }
+
+    public RootCrop(String plantType, String soilType, String lastFertilized, String datePlanted, double width,
+            double height, double length) {
+        super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+    }
+
     /**
      * Estimates the total mass of root biomass contained within the crop bed.
      * <p>
@@ -38,19 +42,19 @@ public class RootCrop extends Crop implements Subterranean {
      *
      * Where:
      * <ul>
-     *     <li><b>bedVolume</b> is the geometric soil volume of the crop bed,
-     *         computed as width × height × length.</li>
+     * <li><b>bedVolume</b> is the geometric soil volume of the crop bed,
+     * computed as width × height × length.</li>
      *
-     *     <li><b>rootCropDensity</b> is the physical density of the harvested
-     *         root tissue (e.g., potato, carrot, cassava), retrieved from
-     *         {@code ROOTCROP_DENSITIES}. If the plant type is not listed,
-     *         {@code DEFAULT_ROOTCROP_DENSITY} is used.</li>
+     * <li><b>rootCropDensity</b> is the physical density of the harvested
+     * root tissue (e.g., potato, carrot, cassava), retrieved from
+     * {@code ROOTCROP_DENSITIES}. If the plant type is not listed,
+     * {@code DEFAULT_ROOTCROP_DENSITY} is used.</li>
      *
-     *     <li><b>PACKING_FACTOR</b> represents the proportion of the soil volume
-     *         that is assumed to be occupied by actual root biomass.
-     *         A value of 1.0 means the entire soil volume is treated as
-     *         filled with root material. Realistic agricultural values
-     *         range from 0.3 to 0.7, depending on the crop and planting density.</li>
+     * <li><b>PACKING_FACTOR</b> represents the proportion of the soil volume
+     * that is assumed to be occupied by actual root biomass.
+     * A value of 1.0 means the entire soil volume is treated as
+     * filled with root material. Realistic agricultural values
+     * range from 0.3 to 0.7, depending on the crop and planting density.</li>
      * </ul>
      *
      * This method produces an estimate for the <b>entire bed</b>, not an average
@@ -72,18 +76,19 @@ public class RootCrop extends Crop implements Subterranean {
     public void setUserRootCropDensity(String userRootCropDensity) {
         this.userRootCropDensity = userRootCropDensity;
     }
+
     @Override
-  
+
     public String toString() {
         // TODO Auto-generated method stub
         return String.join(",",
-                        getIdentification(),
-                        "RootCrop-" + getPlantType(),
-                        getSoilType(),
-                        getLastFertilized(),
-                        getDatePlanted(),
-                        String.valueOf(getWidth()),
-                        String.valueOf(getHeight()),
-                        String.valueOf(getLength()));
+                getIdentification(),
+                "RootCrop-" + getPlantType(),
+                getSoilType(),
+                getLastFertilized(),
+                getDatePlanted(),
+                String.valueOf(getWidth()),
+                String.valueOf(getHeight()),
+                String.valueOf(getLength()));
     }
 }

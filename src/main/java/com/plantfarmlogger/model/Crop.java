@@ -1,7 +1,7 @@
 package com.plantfarmlogger.model;
-import java.util.UUID;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Crop {
     private String identification;
@@ -12,9 +12,10 @@ public class Crop {
     private double width;
     private double height;
     private double length;
+
     public Crop(String identification, String plantType, String soilType, String lastFertilized,
-                String datePlanted, double width, double height,
-                double length) {
+            String datePlanted, double width, double height,
+            double length) {
         this.identification = identification;
         this.plantType = plantType;
         this.soilType = soilType;
@@ -24,9 +25,10 @@ public class Crop {
         this.height = height;
         this.length = length;
     }
-    public Crop( String plantType, String soilType, String lastFertilized,
-                String datePlanted, double width, double height,
-                double length) {
+
+    public Crop(String plantType, String soilType, String lastFertilized,
+            String datePlanted, double width, double height,
+            double length) {
         this.identification = UUID.randomUUID().toString();
         this.plantType = plantType;
         this.soilType = soilType;
@@ -36,12 +38,15 @@ public class Crop {
         this.height = height;
         this.length = length;
     }
-     public Crop(String identification, String plantType, String soilType,
-                 double width, double height,
-                 double length) {
-            this(identification, plantType, soilType,LocalDate.now().toString(), LocalDate.now().toString(), width, height, length);
-            
+
+    public Crop(String identification, String plantType, String soilType,
+            double width, double height,
+            double length) {
+        this(identification, plantType, soilType, LocalDate.now().toString(), LocalDate.now().toString(), width, height,
+                length);
+
     }
+
     public CropLog getLogs() {
         return null;
     }

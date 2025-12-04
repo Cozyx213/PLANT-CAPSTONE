@@ -13,6 +13,7 @@ public class CropLog {
     private String action;
     private String cropBed;
     private String farmer;
+
     public CropLog(String notes, String date, HealthStatus healthStatus,
             GrowthStatus growthStatus, String action, String cropBed,
             String farmer) {

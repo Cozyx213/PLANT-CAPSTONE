@@ -1,14 +1,14 @@
 package com.plantfarmlogger.controller.dao;
 
-import com.plantfarmlogger.model.User;
-import com.plantfarmlogger.model.interfaces.UserDaoInter;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.model.interfaces.UserDaoInter;
 
 public class UserDao implements UserDaoInter {
     ArrayList<User> Users = new ArrayList<User>();
@@ -42,9 +42,9 @@ public class UserDao implements UserDaoInter {
             }
 
         } catch (IOException e) {
-            System.out.println("IO_ERROR theres no file "+userFile);
+            System.out.println("IO_ERROR theres no file " + userFile);
         }
-         System.out.println("OPEnEd " + userFile);
+        System.out.println("OPEnEd " + userFile);
     }
 
     private void saveToCSV() {
