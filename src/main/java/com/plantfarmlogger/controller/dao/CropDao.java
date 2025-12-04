@@ -30,7 +30,7 @@ public class CropDao implements CropDaoInter {
 
         ArrayList<Crop> copy = new ArrayList<>();
         for (Crop c : Crops) {
-            if(c.getUserId()!=user.getId()) continue;
+            if(c.getUserId() != user.getId()) continue;
             copy.add(c);
         }
         return copy;
