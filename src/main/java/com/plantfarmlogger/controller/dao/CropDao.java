@@ -34,7 +34,7 @@ public class CropDao implements CropDaoInter {
                 String[] spl = line.split(",", -1);
                 String id = spl[0];
                 String userId = spl[1];
-                String plantType = spl[2];
+                String combinedType = spl[2];
                 String soilType = spl[3];
                 String lastFertilized = spl[4];
                 String datePlanted = spl[5];
@@ -43,34 +43,32 @@ public class CropDao implements CropDaoInter {
                 double height = Double.parseDouble(spl[7]);
                 double length = Double.parseDouble(spl[8]);
 
-                String[] t = plantType.split("-");
-                String type = t[0];
-                String cropName = t[1];
+                String[] t = combinedType.split("-");
+                String subclass = t[0];
+                String plantType = t[1];
                 Crop n = null;
-                if (type.equals("HerbCrop")) {
+                if (subclass.equals("HerbCrop")) {
                     String pruningDate = spl.length > 9 && !spl[9].isEmpty() ? spl[9] : null;
-
                     int userBaseGrowingDays = spl.length > 10 && !spl[10].isEmpty()
                                     ? parseIntOrDefault(spl[10], 0) : 0;
                     String activeCompounds = spl.length > 11 && !spl[11].isEmpty() ? spl[11] : null;
-
-                    n = new HerbCrop(id, cropName, soilType,
+                    n = new HerbCrop(id, plantType, soilType,
                             lastFertilized, datePlanted, width,
                             height, length, userId,
                             pruningDate, userBaseGrowingDays, activeCompounds);
-                } else if (type.equals("RootCrop")) {
+                } else if (subclass.equals("RootCrop")) {
                     double userRootCropDensity = spl.length > 9 && !spl[9].isEmpty()? Double.parseDouble(spl[9]) : 0;
-                    n = new RootCrop(id, cropName, soilType,
+                    n = new RootCrop(id, plantType, soilType,
                             lastFertilized, datePlanted, width,
                             height, length, userId,
                             userRootCropDensity);
-                } else if (type.equals("LeafCrop")) {
+                } else if (subclass.equals("LeafCrop")) {
                     String pruningDate = spl.length > 9 && !spl[9].isEmpty()? spl[9] : null;
                     int userBaseGrowingDays = spl.length > 10 ? parseIntOrDefault(spl[10], 0) : 0;
-                    n = new LeafCrop(id, cropName, soilType,
+                    n = new LeafCrop(id, plantType, soilType,
                             lastFertilized, datePlanted, width,
-                            height, length, pruningDate,
-                            userId, userBaseGrowingDays);
+                            height, length, userId,
+                            pruningDate, userBaseGrowingDays);
                 }
                 cache.add(n);
             }
