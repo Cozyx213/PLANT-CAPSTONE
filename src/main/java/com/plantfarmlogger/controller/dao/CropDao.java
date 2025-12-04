@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.plantfarmlogger.model.Crop;
+import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.model.interfaces.CropDaoInter;
 import com.plantfarmlogger.model.subclasses.HerbCrop;
 import com.plantfarmlogger.model.subclasses.LeafCrop;
@@ -25,11 +26,11 @@ public class CropDao implements CropDaoInter {
         return instance == null ? instance = new CropDao() : instance;
     }
 
-    public ArrayList<Crop> getCropBeds() {
+    public ArrayList<Crop> getCropBeds(User user) {
 
         ArrayList<Crop> copy = new ArrayList<>();
         for (Crop c : Crops) {
-           
+            if(c.getUserId()!=user.getId()) continue;
             copy.add(c);
         }
         return copy;
