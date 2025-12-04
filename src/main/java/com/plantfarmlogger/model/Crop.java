@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Crop {
-    private String identification;
+    private String id;
     private String plantType;
     private String soilType;
     private String lastFertilized;
@@ -13,10 +13,26 @@ public class Crop {
     private double height;
     private double length;
     private String userId;
-    public Crop(String identification, String plantType, String soilType, String lastFertilized,
-            String datePlanted, double width, double height,
-            double length, String userId) {
-        this.identification = identification;
+
+    // used for first creation
+    public Crop(String plantType, String soilType, double width,
+                double height, double length, String userId) {
+        this.id = UUID.randomUUID().toString();
+        this.plantType = plantType;
+        this.soilType = soilType;
+        this.lastFertilized = LocalDate.now().toString();
+        this.datePlanted = LocalDate.now().toString();
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.userId = userId;
+    }
+
+    // used for loading from file; full parameters
+    public Crop(String id, String plantType, String soilType,
+                String lastFertilized, String datePlanted, double width,
+                double height, double length, String userId) {
+        this.id = id;
         this.plantType = plantType;
         this.soilType = soilType;
         this.lastFertilized = lastFertilized;
@@ -25,33 +41,6 @@ public class Crop {
         this.height = height;
         this.length = length;
         this.userId = userId;
-    }
-    public String getUserId() {
-        return userId;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-    public Crop(String plantType, String soilType, String lastFertilized,
-            String datePlanted, double width, double height,
-            double length, String userId) {
-        this.identification = UUID.randomUUID().toString();
-        this.plantType = plantType;
-        this.soilType = soilType;
-        this.lastFertilized = lastFertilized;
-        this.datePlanted = datePlanted;
-        this.width = width;
-        this.height = height;
-        this.length = length;
-        this.userId = userId;
-    }
-
-    public Crop(String identification, String plantType, String soilType,
-            double width, double height,
-            double length, String userId) {
-        this(identification, plantType, soilType, LocalDate.now().toString(), LocalDate.now().toString(), width, height,
-                length, userId);
-
     }
 
     public CropLog getLogs() {
@@ -118,11 +107,18 @@ public class Crop {
         this.length = length;
     }
 
-    public String getIdentification() {
-        return identification;
+    public String getID() {
+        return id;
     }
 
-    public void setIdentification(String identification) {
-        this.identification = identification;
+    public void setID(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

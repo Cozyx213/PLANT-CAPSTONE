@@ -9,22 +9,27 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
     private String pruningDate;
     private int userBaseGrowingDays;
 
-    public HerbCrop(String identification, String plantType, String soilType, String lastFertilized,
-            String datePlanted, double width, double height,
+    // used for creation of new HerbCrop
+    public HerbCrop(String plantType, String soilType, double width, double height,
             double length, String pruningDate, int userBaseGrowingDays, String activeCompounds, String userId) {
-        super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
+        super(plantType, soilType, width, height, length, userId);
         this.pruningDate = pruningDate;
         this.userBaseGrowingDays = userBaseGrowingDays;
         this.activeCompounds = activeCompounds;
     }
-     public HerbCrop( String plantType, String soilType, String lastFertilized,
-            String datePlanted, double width, double height,
-            double length, String pruningDate, int userBaseGrowingDays, String activeCompounds , String userId) {
-        super(plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
+
+    // used for loading from file; full parameters
+    public HerbCrop(String id, String plantType, String soilType,
+                    String lastFertilized, String datePlanted,
+                    double width, double height, double length,
+                    String userId, String pruningDate, int userBaseGrowingDays,
+                    String activeCompounds) {
+        super(id, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
         this.pruningDate = pruningDate;
         this.userBaseGrowingDays = userBaseGrowingDays;
         this.activeCompounds = activeCompounds;
     }
+
 
     @Override
     public String getActiveCompounds() {
@@ -57,7 +62,7 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
     @Override
     public String toString() {
         return String.join(",",
-                getIdentification(),
+                getID(),
                 "HerbCrop-" + getPlantType(),
                 getSoilType(),
                 getLastFertilized(),
