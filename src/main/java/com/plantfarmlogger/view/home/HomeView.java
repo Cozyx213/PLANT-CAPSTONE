@@ -1,4 +1,4 @@
-package com.plantfarmlogger.view;
+package com.plantfarmlogger.view.home;
 
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIButtons;
@@ -11,13 +11,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class Home extends BaseDashboardView {
+public class HomeView extends BaseDashboardView {
+
     private JPanel cardsContainer;
     private JLabel countLabel;
     private JButton addBtn;
-    private JScrollPane scrollPane;
 
-    public Home(User user) {
+    public HomeView(User user) {
         super(user);
     }
 
@@ -26,6 +26,7 @@ public class Home extends BaseDashboardView {
         JPanel content = new JPanel(new BorderLayout());
         content.setBackground(UIColors.BG_COLOR);
 
+        // --- Header ---
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(UIColors.BG_COLOR);
         header.setBorder(new EmptyBorder(40, 40, 20, 40));
@@ -37,10 +38,8 @@ public class Home extends BaseDashboardView {
         JLabel title = new JLabel("My Farm");
         title.setFont(UIFont.lexend(Font.BOLD, 36));
         title.setForeground(UIColors.BUTTON_COLOR);
-        title.setOpaque(false);
-        title.setBorder(null);
 
-        countLabel = new JLabel(" ");
+        countLabel = new JLabel("Number of Crop Beds: 0");
         countLabel.setFont(UIFont.lexend(Font.PLAIN, 14));
         countLabel.setForeground(UIColors.TEXT_DARK);
 
@@ -48,55 +47,62 @@ public class Home extends BaseDashboardView {
         titleBlock.add(Box.createVerticalStrut(5));
         titleBlock.add(countLabel);
 
-        addBtn = UIButtons.createPrimaryButton("Add crop bed");
+        addBtn = UIButtons.createPrimaryButton("Add Cropbed");
 
         header.add(titleBlock, BorderLayout.WEST);
         header.add(addBtn, BorderLayout.EAST);
         content.add(header, BorderLayout.NORTH);
 
+        // --- List Section ---
         cardsContainer = new JPanel();
         cardsContainer.setLayout(new BoxLayout(cardsContainer, BoxLayout.Y_AXIS));
         cardsContainer.setBackground(UIColors.BG_COLOR);
         cardsContainer.setBorder(new EmptyBorder(0, 40, 40, 40));
-        cardsContainer.add(Box.createVerticalGlue());
+        cardsContainer.add(Box.createVerticalGlue()); // Push items up
 
-        scrollPane = new JScrollPane(cardsContainer);
-        scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        content.add(scrollPane, BorderLayout.CENTER);
+        JScrollPane scroll = new JScrollPane(cardsContainer);
+        scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(16);
+        content.add(scroll, BorderLayout.CENTER);
 
         return content;
     }
 
-    public void setAddButtonListener(ActionListener action) {
-        addBtn.addActionListener(action);
+    // --- Exposed Methods for Controller ---
+
+    public void setAddButtonListener(ActionListener listener) {
+        addBtn.addActionListener(listener);
     }
 
-    public void setCountLabelText(String text) {
-        countLabel.setText(text);
+    public void updateCountLabel(int count) {
+        countLabel.setText("Number of Crop Beds: " + count);
     }
 
-    public void addCardComponent(JComponent card) {
+    public void addCardToTop(JPanel card) {
+        // Index 0 puts it at the top
         cardsContainer.add(card, 0);
-        cardsContainer.add(Box.createVerticalStrut(20), 1);
-        refreshLayout();
-    }
-
-    public void removeCardComponent(JComponent card) {
-        cardsContainer.remove(card);
-        refreshLayout();
-    }
-
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
-    }
-
-    public JScrollPane getScrollPane() {
-        return scrollPane;
-    }
-
-    private void refreshLayout() {
+        cardsContainer.add(Box.createVerticalStrut(20), 1); // Spacer
         cardsContainer.revalidate();
         cardsContainer.repaint();
+    }
+
+    // Inside HomeView class
+
+    public void toggleAddButton(boolean enabled) {
+        addBtn.setEnabled(enabled);
+        // visually dim the button if needed,
+        // though setEnabled usually handles that.
+    }
+
+    public void removeTopCard() {
+        // Index 0 is the new card, Index 1 is the spacer
+        try {
+            cardsContainer.remove(0);
+            cardsContainer.remove(0); // Remove the spacer too
+            cardsContainer.revalidate();
+            cardsContainer.repaint();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
