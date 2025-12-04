@@ -33,11 +33,12 @@ import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFields;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.controller.dao.UserDao;
+
 public class Register extends JPanel {
 
     private final AppNavigator navigator;
 
-    private JTextField nameField, usernameField, ageField;
+    private JTextField nameField, usernameField, ageField, farmField;
     private JTextField addressField;
     private JPasswordField passField, confirmPassField;
 
@@ -81,6 +82,7 @@ public class Register extends JPanel {
         nameField = addFieldToPanel(leftPanel, "Name");
         usernameField = addFieldToPanel(leftPanel, "Username");
         ageField = addFieldToPanel(leftPanel, "Age");
+        farmField = addFieldToPanel(leftPanel, "Farm Name");
         
 
         JPanel rightPanel = createColumnPanel();
