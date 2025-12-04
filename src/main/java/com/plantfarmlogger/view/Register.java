@@ -88,7 +88,6 @@ public class Register extends JPanel {
         passField = (JPasswordField) addPasswordFieldToPanel(rightPanel, "Password", false);
         confirmPassField = (JPasswordField) addPasswordFieldToPanel(rightPanel, "Confirm Password", true);
 
-        rightPanel.add(Box.createVerticalStrut(80));
         rightPanel.add(Box.createVerticalGlue());
         columnsPanel.add(leftPanel);
         columnsPanel.add(rightPanel);
