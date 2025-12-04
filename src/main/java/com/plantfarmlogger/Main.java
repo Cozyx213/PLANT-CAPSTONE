@@ -29,7 +29,7 @@ public class Main {
 
             MainWindow mainWindow = new MainWindow();
 
-            mainWindow.getNavigator().showRegister();
+            mainWindow.getNavigator().showHome(testUser);
 
             mainWindow.setVisible(true);
         });
