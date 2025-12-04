@@ -9,6 +9,12 @@ import java.util.Map;
 
 
 public class VineCrop extends Crop implements Prunable, TrellisSupportable {
+    public static final Map<String, Double> VINECROP_MAX_TRELLIS_CAPACITY = Map.ofEntries(
+            Map.entry("tomato", 10.0),     // kg
+            Map.entry("cucumber", 8.0),
+            Map.entry("grape", 15.0),
+            Map.entry("pumpkin", 20.0)
+    );
     public static final Map<String, Integer> VINECROP_INITIAL_PRUNE_DAYS = Map.ofEntries(
             Map.entry("tomato", 14),
             Map.entry("cucumber", 10),
@@ -25,21 +31,53 @@ public class VineCrop extends Crop implements Prunable, TrellisSupportable {
 
     public static final int DEFAULT_INITIAL_PRUNE_DAYS = 14;
     public static final int DEFAULT_PRUNE_INTERVAL_DAYS = 7;
+    public static final double DEFAULT_MAX_TRELLIS_CAPACITY = 10; // kg
 
     private String pruningDate;
     private Integer userInitialPruneDays;
     private Integer userPruneIntervalDays;
+    private double userMaxTrellisCapacity;
     public VineCrop(String plantType, String soilType, String lastFertilized, String datePlanted, double width, double height, double length) {
         super(plantType, soilType, lastFertilized, datePlanted, width, height, length);
+        pruningDate = "";
+        userInitialPruneDays = 0;
+        userPruneIntervalDays = 0;
+        userMaxTrellisCapacity = 0;
     }
 
 
-
+    /**
+     * Determines whether the given estimated weight of this vine crop is within
+     * the maximum supported capacity of the trellis.
+     * <p>
+     * The maximum supported weight is determined in the following order:
+     * <ol>
+     *     <li>If a user-defined maximum capacity has been set via
+     *         {@link #setUserMaxTrellisCapacity(double)}, that value is used.</li>
+     *     <li>Otherwise, a species-specific default is retrieved from
+     *         {@link #VINECROP_MAX_TRELLIS_CAPACITY}.</li>
+     *     <li>If the plant type is not listed, a general default
+     *         ({@link #DEFAULT_MAX_TRELLIS_CAPACITY}) is used.</li>
+     * </ol>
+     *
+     * @param estimatedWeight the estimated weight of the vine crop in kilograms
+     * @return {@code true} if the weight is within the supported capacity,
+     *         {@code false} if the vine is too heavy
+     */
     @Override
-    public boolean validateWeight() {
-        return false;
-    }
+    public boolean validateWeight(double estimatedWeight) {
+        double maxCapacity;
+        if (userMaxTrellisCapacity > 0) {
+            maxCapacity = userMaxTrellisCapacity;
+        } else {
+            maxCapacity = VINECROP_MAX_TRELLIS_CAPACITY.getOrDefault(
+                    getPlantType().toLowerCase(),
+                    DEFAULT_MAX_TRELLIS_CAPACITY
+            );
+        }
 
+        return estimatedWeight <= maxCapacity;
+    }
     @Override
     public void setExplicitPruningDate(String date) {
         pruningDate = date;
@@ -111,5 +149,13 @@ public class VineCrop extends Crop implements Prunable, TrellisSupportable {
 
     public void setUserPruneIntervalDays(Integer userPruneIntervalDays) {
         this.userPruneIntervalDays = userPruneIntervalDays;
+    }
+
+    public double getUserMaxTrellisCapacity() {
+        return userMaxTrellisCapacity;
+    }
+
+    public void setUserMaxTrellisCapacity(double userMaxTrellisCapacity) {
+        this.userMaxTrellisCapacity = userMaxTrellisCapacity;
     }
 }
