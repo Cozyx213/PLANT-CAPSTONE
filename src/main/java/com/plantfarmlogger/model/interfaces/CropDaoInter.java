@@ -3,10 +3,14 @@ package com.plantfarmlogger.model.interfaces;
 import java.util.ArrayList;
 
 import com.plantfarmlogger.model.Crop;
+import com.plantfarmlogger.model.User;
 
 public interface CropDaoInter {
-    ArrayList<Crop> getCropBeds();
-    void create(Crop t);
-    void delete(Crop t);
-
+    ArrayList<Crop> findAll();
+    Crop findByCropId(String cropId);
+    ArrayList<Crop> findAllByUserId(String userId);
+    boolean createCrop(Crop t);
+    void deleteAll();
+    void deleteByCropId(String cropId);
+    void deleteAllByUserId(String userId);
 }

@@ -1,8 +1,5 @@
 package com.plantfarmlogger.controller.dao;
 
-import com.plantfarmlogger.model.User;
-import com.plantfarmlogger.model.interfaces.UserDaoInter;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -10,12 +7,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.model.interfaces.UserDaoInter;
+
 public class UserDao implements UserDaoInter {
     ArrayList<User> Users = new ArrayList<User>();
-
+    private static UserDao instance = null;
     private final String userFile = "src/main/resources/csv/users.csv";
 
-    public UserDao() {
+    private UserDao() {
         fetch();
     }
 
@@ -23,6 +23,9 @@ public class UserDao implements UserDaoInter {
         return Users;
     }
 
+    public static UserDao getInstance() {
+        return instance == null ? instance = new UserDao() : instance;
+    }
     private void fetch() {
         try (
                 BufferedReader br = new BufferedReader(new FileReader(userFile));) {
@@ -30,21 +33,21 @@ public class UserDao implements UserDaoInter {
 
             while ((line = br.readLine()) != null) {
                 String[] spl = line.split(",");
+                String id = spl[0];
+                String name = spl[1];
+                String username = spl[2];
+                String address = spl[3];
+                int age = Integer.parseInt(spl[4]);
+                String password = spl[5];
 
-                String name = spl[0];
-                String username = spl[1];
-                String address = spl[2];
-                int age = Integer.parseInt(spl[3]);
-                String password = spl[4];
-
-                User n = new User(name, username, address, age, password);
+                User n = new User(id, name, username, address, age, password);
                 Users.add(n);
             }
 
         } catch (IOException e) {
-            System.out.println("IO_ERROR theres no file "+userFile);
+            System.out.println("IO_ERROR theres no file " + userFile);
         }
-         System.out.println("OPEnEd " + userFile);
+        System.out.println("OPEnEd " + userFile);
     }
 
     private void saveToCSV() {
@@ -53,8 +56,8 @@ public class UserDao implements UserDaoInter {
 
         ) {
             for (User u : Users) {
-                bw.write(u.getName() + "," + u.getUsername() + "," + u.getAddress() + "," + u.getAge() + ","
-                        + u.getPassword() + "\n");
+                bw.write(u.getId() + "," + u.getName() + "," + u.getUsername() + "," + u.getAddress() + "," + u.getAge() + ","
+                        + u.getPassword()  +  "\n");
             }
 
         } catch (IOException e) {
@@ -66,8 +69,11 @@ public class UserDao implements UserDaoInter {
     public void create(User t) {
         if (t == null) {
             System.out.println("no user ");
+            return;
         }
+        t.setId(java.util.UUID.randomUUID().toString());
         Users.add(t);
+
         saveToCSV();
 
     }

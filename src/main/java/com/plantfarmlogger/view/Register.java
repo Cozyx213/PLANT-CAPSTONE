@@ -1,24 +1,43 @@
 package com.plantfarmlogger.view;
 
-
-import com.plantfarmlogger.util.UIButtons;
-import com.plantfarmlogger.util.UIColors;
-import com.plantfarmlogger.util.UIFields;
-import com.plantfarmlogger.util.UIFont;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
+import com.plantfarmlogger.util.UIButtons;
+import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.util.UIFields;
+import com.plantfarmlogger.util.UIFont;
+import com.plantfarmlogger.controller.dao.UserDao;
 public class Register extends JPanel {
 
     private final AppNavigator navigator;
 
-    private JTextField nameField, usernameField, ageField, farmField;
+    private JTextField nameField, usernameField, ageField;
     private JTextField addressField;
     private JPasswordField passField, confirmPassField;
 
@@ -62,14 +81,13 @@ public class Register extends JPanel {
         nameField = addFieldToPanel(leftPanel, "Name");
         usernameField = addFieldToPanel(leftPanel, "Username");
         ageField = addFieldToPanel(leftPanel, "Age");
-        farmField = addFieldToPanel(leftPanel, "Farm Name");
+        
 
         JPanel rightPanel = createColumnPanel();
         addressField = addFieldToPanel(rightPanel, "Address");
         passField = (JPasswordField) addPasswordFieldToPanel(rightPanel, "Password", false);
         confirmPassField = (JPasswordField) addPasswordFieldToPanel(rightPanel, "Confirm Password", true);
 
-        rightPanel.add(Box.createVerticalStrut(80));
         rightPanel.add(Box.createVerticalGlue());
         columnsPanel.add(leftPanel);
         columnsPanel.add(rightPanel);
@@ -148,16 +166,16 @@ public class Register extends JPanel {
 
         JPasswordField field = UIFields.createRoundedPasswordField();
 
-
         panel.add(labelWrapper);
         panel.add(Box.createVerticalStrut(5));
         panel.add(field);
-        if (!isLast) panel.add(Box.createVerticalStrut(15));
+        if (!isLast)
+            panel.add(Box.createVerticalStrut(15));
 
         return field;
     }
 
-    //making the background a gradient
+    // making the background a gradient
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // Call superclass method to ensure proper painting
@@ -175,8 +193,66 @@ public class Register extends JPanel {
     }
 
     private void onRegisterClicked() {
+        String name = nameField.getText().trim();
+        String username = usernameField.getText().trim();
+        String address = addressField.getText().trim();
+       
+        String ageText = ageField.getText().trim();
+        char[] passChars = passField.getPassword();
+        char[] confirmChars = confirmPassField.getPassword();
+
+        String password = new String(passChars);
+        String confirmPassword = new String(confirmChars);
+
+        // Basic validation
+        if (name.isEmpty() || username.isEmpty() || address.isEmpty() || ageText.isEmpty() || password.isEmpty()
+                || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing Information",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int age;
+        try {
+            age = Integer.parseInt(ageText);
+            if (age <= 0)
+                throw new NumberFormatException("age must be positive");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Age must be a positive number.", "Invalid Age",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Passwords do not match.", "Password Mismatch",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Check for existing username
+        UserDao userDao = UserDao.getInstance();
+        for (com.plantfarmlogger.model.User u : userDao.getUsers()) {
+            if (u.getUsername().equalsIgnoreCase(username)) {
+                JOptionPane.showMessageDialog(this, "Username already exists.", "Duplicate Username",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+
+        // Persist user
+        com.plantfarmlogger.model.User newUser = new com.plantfarmlogger.model.User(name, username, address, age,
+                password);
+        userDao.create(newUser);
+
+        // Clear sensitive char arrays
+        java.util.Arrays.fill(passChars, '\0');
+        java.util.Arrays.fill(confirmChars, '\0');
+
+        JOptionPane.showMessageDialog(this, "Account created successfully.", "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // Navigate to login
         navigator.showLogin();
 
     }
 }
-
