@@ -229,23 +229,32 @@ public class Register extends JPanel {
             return;
         }
 
-        // Check for existing username
-        UserDao userDao = UserDao.getInstance();
-        for (com.plantfarmlogger.model.User u : userDao.getUsers()) {
-            if (u.getUsername().equalsIgnoreCase(username)) {
-                JOptionPane.showMessageDialog(this, "Username already exists.", "Duplicate Username",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+        // Check for existing username --> this is backend duty
+//        UserDao userDao = UserDao.getInstance();
+//        for (com.plantfarmlogger.model.User u : userDao.getUsers()) {
+//            if (u.getUsername().equalsIgnoreCase(username)) {
+//                JOptionPane.showMessageDialog(this, "Username already exists.", "Duplicate Username",
+//                        JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//        }
 
-        // Persist user
+        // Persist user -->
+        // Jairus: this is just sample implementation, should be implemented as
+        // singleton according to @Jake
         UserController userController = new UserController();
-        userController.addUser(name, username, password, address, age);
+        boolean res = userController.addUser(name, username, password, address, age);
+
 
         // Clear sensitive char arrays
         java.util.Arrays.fill(passChars, '\0');
         java.util.Arrays.fill(confirmChars, '\0');
+
+        if(!res){
+            JOptionPane.showMessageDialog(this, "Failed to create account.", "Error",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
         JOptionPane.showMessageDialog(this, "Account created successfully.", "Success",
                 JOptionPane.INFORMATION_MESSAGE);
