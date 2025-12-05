@@ -14,7 +14,7 @@ import com.plantfarmlogger.model.subclasses.LeafCrop;
 import com.plantfarmlogger.model.subclasses.RootCrop;
 
 public class CropDao implements CropDaoInter {
-    private static CropDao instance;
+    private static CropDao instance = null;
     ArrayList<Crop> cache = new ArrayList<Crop>();
     private final String cropFile = "src/main/resources/csv/cropbeds.csv";
 
@@ -72,11 +72,10 @@ public class CropDao implements CropDaoInter {
                 }
                 cache.add(n);
             }
-
+            System.out.println("[CropDao] Cache loaded successfully!");
         } catch (IOException e) {
-            System.out.println("IO_ERROR: file " + cropFile + "does not exist");
+            System.out.println("[CropDao] IO_ERROR: file " + cropFile + "does not exist!");
         }
-        System.out.println("SUCCESS");
     }
 
 
@@ -86,81 +85,97 @@ public class CropDao implements CropDaoInter {
                 bw.write(c.toString());
                 bw.newLine();
             }
+            System.out.println("Crops saved to file " + cropFile + " successfully!");
         } catch (IOException e) {
-            System.out.println("IO_ERROR");
+            System.out.println("IO_ERROR: Error in opening file " + cropFile);
         }
-        System.out.println("Opened " + cropFile);
+
     }
 
     // create
     public boolean createCrop(Crop crop) {
         if (crop == null) {
-            System.out.println("No crop found");
+            System.out.println("[CropDao] Create new Crop unsuccessful: Cannot create nonexistent crop");
             return false;
         }
         cache.add(crop);
         save();
+        System.out.println("[CropDao] Crop " + crop.getID() + "saved to file.");
         return true;
     }
 
     // read
     @Override
-    public Crop findByCropId(String cropId) {
+    public Crop getCrop(String cropId) {
         for (Crop c : cache) {
-            if(c.getID().equals(cropId)) {return c;}
+            if(c.getID().equals(cropId)) {
+                System.out.println("[CropDao] Crop " + cropId + " fetched successfully!");
+                return c;
+            }
         }
-        throw new IllegalArgumentException("Crop with id " + cropId + " not found");
+        System.out.println("[CropDao] Crop " + cropId + " not found.");
+        return null;
     }
 
     @Override
-    public ArrayList<Crop> findAllByUserId(String userId) {
+    public ArrayList<Crop> getAllByUserId(String userId) {
         ArrayList<Crop> cropsOfUser = new ArrayList<>();
         for (Crop c : cache) {
             if (c.getUserId().equals(userId)) {
                 cropsOfUser.add(c);
             }
         }
+        if (cropsOfUser.isEmpty()) {
+            System.out.println("[CropDao] No Crops found for userId " + userId);
+        }
         return cropsOfUser;
     }
 
 
     // update
+    @Override
     public boolean updateCrop(Crop updatedCrop) {
+        if (updatedCrop == null) {
+            System.out.println("[CropDao] Update Crop unsuccessful: Cannot update nonexistent Crop");
+            return false;
+        }
         for (int i = 0; i < cache.size(); i++) {
             if (cache.get(i).getID().equals(updatedCrop.getID())) {
                 cache.set(i, updatedCrop);
                 save();
+                System.out.println("[CropDao] Crop " + updatedCrop.getID() + " updated successfully!");
                 return true;
             }
         }
+        System.out.println("[CropDao] Failed to update Crop " + updatedCrop.getID() + " not found.");
         return false;
     }
 
 
     // delete
     @Override
-    public void deleteByCropId(String cropId) {
+    public void deleteCrop(String cropId) {
         // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
         // new ArrayList<>(cache)
         for (Crop c : new ArrayList<>(cache)) {
             if (c.getID().equals(cropId)) {
                 cache.remove(c);
                 save();
-                System.out.println("Deleted Crop with id " + cropId);
+                System.out.println("[CropDao] Deleted Crop " + cropId + "succesfully!");
                 return;
             }
         }
-        System.out.println("Failed to delete Crop with " + cropId + ". Not found");
+        System.out.println("[Cropdao] Failed to delete Crop " + cropId + ".Not found");
     }
 
     @Override
-    public void deleteAllByUserId(String userId) {
+    public void deleteCropsByUserId(String userId) {
         int ctr = 0;
         // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
         // new ArrayList<>(cache)
         for (Crop c : new ArrayList<>(cache)) {
             if (c.getUserId().equals(userId)) {
-                deleteByCropId(c.getID());
+                deleteCrop(c.getID());
                 ctr++;
             }
         }
