@@ -11,17 +11,17 @@ public class UIButtons {
 
     public static JButton createPrimaryButton(String text) {
         JButton btn = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                UIRenderer.paintRoundedButton(g, this, 15);
-            }
+//            @Override
+//            protected void paintComponent(Graphics g) {
+//                UIRenderer.paintRoundedButton(g, this, 15);
+//            }
         };
 
         btn.setFont(UIFont.lexend(Font.PLAIN, 16));
         btn.setForeground(UIColors.TEXT_COLOR);
         btn.setBackground(UIColors.BUTTON_COLOR);
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
+//        btn.setOpaque(false);
+//        btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
