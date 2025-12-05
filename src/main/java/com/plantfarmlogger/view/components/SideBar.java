@@ -86,6 +86,9 @@ public class SideBar extends JPanel {
         cropBeds.setOpaque(false);
         cropBeds.setFont(UIFont.lexend(Font.BOLD, 32));
 
+        //update sidebar
+        updateSideBar();
+
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);
         cropBedsList.getViewport().setOpaque(false);
@@ -183,6 +186,10 @@ public class SideBar extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    protected void updateSideBar(){
+        //get data
+        //add new to crop panel per cropbed
+    }
 //    //this is for testing purposes
 //     public static void main(String[] args) {
 //     SwingUtilities.invokeLater(() -> {
