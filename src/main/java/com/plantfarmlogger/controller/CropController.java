@@ -9,10 +9,12 @@ import com.plantfarmlogger.model.subclasses.RootCrop;
 import java.util.ArrayList;
 
 public class CropController {
+    private static CropController instance;
     private final CropDao cropDao;
     public CropController() {
         this.cropDao = CropDao.getInstance();
     }
+    public static CropController getInstance() {return instance == null ? instance = new CropController(): instance;}
     /**
      * Creates a Crop object based on type and parameters.
      *
@@ -44,10 +46,6 @@ public class CropController {
         validateCrop(newCrop);
 
         return cropDao.createCrop(newCrop);
-    }
-
-    public ArrayList<Crop> getAll() {
-        return cropDao.findAll();
     }
 
     public Crop get(String cropId) {

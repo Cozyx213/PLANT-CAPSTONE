@@ -105,11 +105,6 @@ public class CropDao implements CropDaoInter {
 
     // read
     @Override
-    public ArrayList<Crop> findAll() {
-        return cache;
-    }
-
-    @Override
     public Crop findByCropId(String cropId) {
         for (Crop c : cache) {
             if(c.getID().equals(cropId)) {return c;}
@@ -143,16 +138,6 @@ public class CropDao implements CropDaoInter {
 
 
     // delete
-    @Override
-    public void deleteAll() {
-        // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
-        // new ArrayList<>(cache)
-        for (Crop c : new ArrayList<>(cache)) {
-            deleteByCropId(c.getID());
-        }
-        System.out.println("Deleted all crops");
-    }
-
     @Override
     public void deleteByCropId(String cropId) {
         // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException

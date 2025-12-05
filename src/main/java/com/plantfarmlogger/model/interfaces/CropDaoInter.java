@@ -6,11 +6,9 @@ import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
 
 public interface CropDaoInter {
-    ArrayList<Crop> findAll();
     Crop findByCropId(String cropId);
     ArrayList<Crop> findAllByUserId(String userId);
     boolean createCrop(Crop t);
-    void deleteAll();
     void deleteByCropId(String cropId);
     void deleteAllByUserId(String userId);
 }
