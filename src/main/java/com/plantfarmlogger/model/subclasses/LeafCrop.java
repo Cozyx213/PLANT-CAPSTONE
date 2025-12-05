@@ -153,9 +153,10 @@ public class LeafCrop extends Crop implements Prunable {
                 String.valueOf(getWidth()),
                 String.valueOf(getHeight()),
                 String.valueOf(getLength()),
-                getPruningDate() == null ? "now" : getPruningDate(),
-                String.valueOf(getUserBaseGrowingDays()),
-                getUserId());
-                
+                getUserId(),
+                getPruningDate(),
+                String.valueOf(getUserBaseGrowingDays())
+        );
+
     }
 }

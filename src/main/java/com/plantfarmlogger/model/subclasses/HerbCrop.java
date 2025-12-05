@@ -70,10 +70,11 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
                 String.valueOf(getWidth()),
                 String.valueOf(getHeight()),
                 String.valueOf(getLength()),
+                getUserId(),
                 getPruningDate(),
                 String.valueOf(getUserBaseGrowingDays()),
-                getActiveCompounds(),
-                getUserId());
+                getActiveCompounds()
+                );
                 
     }
 }

@@ -9,7 +9,7 @@ public interface CropDaoInter {
     ArrayList<Crop> findAll();
     Crop findByCropId(String cropId);
     ArrayList<Crop> findAllByUserId(String userId);
-    boolean create(Crop t);
+    boolean createCrop(Crop t);
     void deleteAll();
     void deleteByCropId(String cropId);
     void deleteAllByUserId(String userId);
