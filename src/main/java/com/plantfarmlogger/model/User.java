@@ -3,29 +3,36 @@ package com.plantfarmlogger.model;
 import java.util.UUID;
 
 public class User {
+    private String id;
     private String name;
     private String username;
     private String password;
     private String address;
     private int age;
-    private String id;
-    public User(String id, String name, String username, String address, int age, String password) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.address = address;
-        this.age = age;
 
-    }public User( String name, String username, String address, int age, String password) {
+    // used for first creation
+    public User(String name, String username, String password,
+                String address, int age) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.username = username;
         this.password = password;
         this.address = address;
         this.age = age;
-
     }
+
+    // used for loading from file; full parameters
+    public User(String id,
+                String name, String username, String password,
+                String address, int age) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.age = age;
+    }
+
     // User n = new User(name,username,address,farm,age,password);
     // Getters and Setters
     public String getId() {
@@ -72,5 +79,17 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return String.join(",",
+                getId(),
+                getName(),
+                getUsername(),
+                getPassword(),
+                getAddress(),
+                String.valueOf(getAge())
+                );
     }
 }

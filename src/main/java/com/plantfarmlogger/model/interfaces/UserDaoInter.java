@@ -4,15 +4,9 @@ import java.util.ArrayList;
 import com.plantfarmlogger.model.User;
 
 public interface UserDaoInter {
-
+    boolean createUser(User user);
     ArrayList<User> getUsers();
-
-    void create(User t);
-
-    void update(User t, String[] params);
-
-    void delete(User t);
-
-    User authenticate(String username, String password);
-
+    User getUser(String userId);
+    boolean updateUser(User user);
+    void deleteUser(String userId);
 }

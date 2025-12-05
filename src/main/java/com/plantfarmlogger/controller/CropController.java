@@ -49,11 +49,11 @@ public class CropController {
     }
 
     public Crop get(String cropId) {
-        return cropDao.findByCropId(cropId);
+        return cropDao.getCrop(cropId);
     }
 
     public ArrayList<Crop> getAllByUserId(String userId) {
-        return cropDao.findAllByUserId(userId);
+        return cropDao.getAllByUserId(userId);
     }
 
     public Crop updateCrop(
@@ -64,8 +64,11 @@ public class CropController {
             String userId, String pruningDate, Integer userBaseDays,
             String activeCompounds, Double userRootDensity
     ){
-        Crop existing = cropDao.findByCropId(cropId);
-        if (existing == null) return null;
+        Crop existing = cropDao.getCrop(cropId);
+        if (existing == null) {
+            System.out.println("[CropController] Crop " + cropId + " does not exist");
+            return null;
+        }
 
         Crop updatedCrop = CropFactory.updateCrop(existing,
                 cropType,
@@ -76,16 +79,23 @@ public class CropController {
                 activeCompounds, userRootDensity);
         validateCrop(updatedCrop);
         boolean success = cropDao.updateCrop(updatedCrop);
-        return success ? updatedCrop : null;
+        if (success) {
+            System.out.println("[CropController] Crop " + cropId + " updated successfully");
+            return updatedCrop;
+        }
+        System.out.println("[CropController] Crop " + cropId + " could not be updated");
+        return null;
     }
 
     public boolean delete(String cropId) {
-        cropDao.deleteByCropId(cropId);
+        cropDao.deleteCrop(cropId);
+        System.out.println("[CropController] Crop " + cropId + " deleted");
         return true;
     }
 
     public boolean deleteAllByUserId(String userId) {
-        cropDao.deleteAllByUserId(userId);
+        cropDao.deleteCropsByUserId(userId);
+        System.out.println("[CropController] Crops of user " + userId + " deleted");
         return true;
     }
 
