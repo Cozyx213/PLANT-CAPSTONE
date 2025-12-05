@@ -78,9 +78,6 @@ public class CropController {
         boolean success = cropDao.updateCrop(updatedCrop);
         return success ? updatedCrop : null;
     }
-    public void deleteAll() {
-        cropDao.deleteAll();
-    }
 
     public boolean delete(String cropId) {
         cropDao.deleteByCropId(cropId);
