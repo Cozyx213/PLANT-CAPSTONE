@@ -13,6 +13,22 @@ public class CropController {
     public CropController() {
         this.cropDao = CropDao.getInstance();
     }
+    /**
+     * Creates a Crop object based on type and parameters.
+     *
+     * @param cropType        "Herb", "Leaf", or "Root"
+     * @param plantType       species name
+     * @param soilType
+     * @param width
+     * @param height
+     * @param length
+     * @param userId
+     * @param pruningDate     optional for Herb/Leaf
+     * @param userBaseDays    optional for Herb/Leaf
+     * @param activeCompounds optional for Herb
+     * @param userRootDensity optional for Root
+     * @return Crop object of the correct subclass
+     */
     public boolean addCrop(
             String cropType, String plantType, String soilType,
             double width, double height, double length,
@@ -42,6 +58,28 @@ public class CropController {
         return cropDao.findAllByUserId(userId);
     }
 
+    public Crop updateCrop(
+            String cropType,
+            String cropId, String plantType, String soilType,
+            String lastFertilized, String datePlanted,
+            Double width, Double height, Double length,
+            String userId, String pruningDate, Integer userBaseDays,
+            String activeCompounds, Double userRootDensity
+    ){
+        Crop existing = cropDao.findByCropId(cropId);
+        if (existing == null) return null;
+
+        Crop updatedCrop = CropFactory.updateCrop(existing,
+                cropType,
+                cropId, plantType, soilType,
+                lastFertilized, datePlanted,
+                width, height, length,
+                userId, pruningDate, userBaseDays,
+                activeCompounds, userRootDensity);
+        validateCrop(updatedCrop);
+        boolean success = cropDao.updateCrop(updatedCrop);
+        return success ? updatedCrop : null;
+    }
     public void deleteAll() {
         cropDao.deleteAll();
     }

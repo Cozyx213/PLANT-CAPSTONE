@@ -130,19 +130,34 @@ public class CropDao implements CropDaoInter {
 
 
     // update
-        // TODO: implement updateMethods
+    public boolean updateCrop(Crop updatedCrop) {
+        for (int i = 0; i < cache.size(); i++) {
+            if (cache.get(i).getID().equals(updatedCrop.getID())) {
+                cache.set(i, updatedCrop);
+                save();
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // delete
     @Override
     public void deleteAll() {
-        for(Crop c : cache) {
+        // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
+        // new ArrayList<>(cache)
+        for (Crop c : new ArrayList<>(cache)) {
             deleteByCropId(c.getID());
         }
         System.out.println("Deleted all crops");
     }
+
     @Override
     public void deleteByCropId(String cropId) {
-        for (Crop c : cache) {
+        // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
+        // new ArrayList<>(cache)
+        for (Crop c : new ArrayList<>(cache)) {
             if (c.getID().equals(cropId)) {
                 cache.remove(c);
                 save();
@@ -156,18 +171,21 @@ public class CropDao implements CropDaoInter {
     @Override
     public void deleteAllByUserId(String userId) {
         int ctr = 0;
-        for (Crop c : cache) {
-            if (c.getID().equals(userId)) {
+        // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
+        // new ArrayList<>(cache)
+        for (Crop c : new ArrayList<>(cache)) {
+            if (c.getUserId().equals(userId)) {
                 deleteByCropId(c.getID());
                 ctr++;
             }
         }
-        if(ctr == 0) {
-            System.out.println("No crops with userId: " + userId );
+        if (ctr == 0) {
+            System.out.println("No crops with userId: " + userId);
             return;
         }
         System.out.println("Deleted " + ctr + " Crops with userId: " + userId);
     }
+
 
     public void printU() {
         for (Crop c : cache) {
