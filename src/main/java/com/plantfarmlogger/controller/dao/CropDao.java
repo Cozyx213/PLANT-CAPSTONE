@@ -135,7 +135,6 @@ public class CropDao implements CropDaoInter {
     // delete
     @Override
     public void deleteAll() {
-        int ctr = 0;
         for(Crop c : cache) {
             deleteByCropId(c.getID());
         }
