@@ -28,13 +28,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.plantfarmlogger.controller.UserController;
 import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFields;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.controller.dao.UserDao;
 public class Register extends JPanel {
-
     private final AppNavigator navigator;
 
     private JTextField nameField, usernameField, ageField;
@@ -240,9 +240,8 @@ public class Register extends JPanel {
         }
 
         // Persist user
-        com.plantfarmlogger.model.User newUser = new com.plantfarmlogger.model.User(name, username, address, age,
-                password);
-        userDao.create(newUser);
+        UserController userController = new UserController();
+        userController.addUser(name, username, password, address, age);
 
         // Clear sensitive char arrays
         java.util.Arrays.fill(passChars, '\0');
