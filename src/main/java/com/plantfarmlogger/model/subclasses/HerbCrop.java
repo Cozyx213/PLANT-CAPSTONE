@@ -80,12 +80,57 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
         this.pruningDate = date;
     }
 
+    /**
+     * Calculates and sets the next pruning date for this herb crop based on herb-specific
+     * growth and harvest behavior.
+     * <p>
+     * Herb crops follow a different pruning cycle compared to leaf crops:
+     *
+     * <ul>
+     *     <li><b>First pruning:</b> Occurs when the herb reaches approximately
+     *     half of its base maturity period. Culinary herbs (basil, mint, thyme, etc.)
+     *     are typically pruned early to encourage branching.</li>
+     *
+     *     <li><b>Subsequent prunings:</b> After the first prune, herbs regrow at a
+     *     consistent rate defined by a species-specific pruning interval.
+     *     Their full maturity date is no longer relevant.</li>
+     *
+     *     <li><b>No backdated pruning:</b> If the first calculated prune date or a
+     *     subsequent interval prune falls in the past, the method repeatedly adds
+     *     {@code intervalDays} until a future date is reached.</li>
+     * </ul>
+     *
+     * <p>
+     * Behavior depends on whether the crop has been pruned before:
+     * </p>
+     *
+     * <h3>Case 1: {@code pruningDate == null}</h3>
+     * <ul>
+     *     <li>The first possible pruning date is: {@code planted + baseDays / 2}.</li>
+     *     <li>If this date is still in the future, it becomes the next pruning date.</li>
+     *     <li>If this date is in the past, the method begins adding {@code intervalDays}
+     *     until the resulting date is in the future.</li>
+     * </ul>
+     *
+     * <h3>Case 2: {@code pruningDate != null}</h3>
+     * <ul>
+     *     <li>The next pruning date is calculated as:
+     *         {@code LocalDate.parse(pruningDate) + intervalDays}.</li>
+     *     <li>If this date is already in the past, the method continues adding
+     *         {@code intervalDays} until a future date is found.</li>
+     * </ul>
+     *
+     * <p>
+     * Finally, the resulting date is always guaranteed to be strictly ahead of today.
+     * The computed date is stored back into {@code this.pruningDate} as an ISO-8601 string.
+     * </p>
+     */
     @Override
     public void setCalculatedPruningDate() {
         LocalDate planted = LocalDate.parse(getDatePlanted());
         LocalDate today = LocalDate.now();
 
-        // Determine base maturity days
+        // Base maturity for the herb species
         int baseDays = (userBaseGrowingDays != 0)
                 ? userBaseGrowingDays
                 : HERBCROP_BASE_GROWING_DAYS.getOrDefault(
@@ -93,36 +138,38 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
                 DEFAULT_BASE_GROWING_DAYS
         );
 
-        // Determine pruning interval
+        // Herb-specific pruning interval
         int intervalDays = HERBCROP_PRUNING_INTERVAL.getOrDefault(
                 getPlantType().toLowerCase(),
                 DEFAULT_PRUNING_INTERVAL
         );
 
-        // Date when the herb becomes mature
-        LocalDate maturityDate = planted.plusDays(baseDays);
-
         LocalDate nextPrune;
 
         if (pruningDate == null) {
-            // Never pruned before
-            if (maturityDate.isAfter(today)) {
-                // Not mature yet → next prune is maturity day
-                nextPrune = maturityDate;
-            } else {
-                // Mature → first prune happens intervalDays after maturity
-                nextPrune = maturityDate.plusDays(intervalDays);
+            // First pruning uses HALF the base maturity days (herb-specific rule)
+            LocalDate firstPossiblePrune = planted.plusDays(baseDays / 2);
 
+            if (firstPossiblePrune.isAfter(today)) {
+                // Plant has not reached first prune threshold
+                nextPrune = firstPossiblePrune;
+            } else {
+                // Past first prune window → begin counting intervals
+                nextPrune = firstPossiblePrune.plusDays(intervalDays);
             }
         } else {
-            // Already pruned before → count from last prune
+            // Herb regrows at interval rate regardless of maturity
             nextPrune = LocalDate.parse(pruningDate).plusDays(intervalDays);
         }
+
+        // Ensure next prune is always in the future
         while (!nextPrune.isAfter(today)) {
             nextPrune = nextPrune.plusDays(intervalDays);
         }
+
         this.pruningDate = nextPrune.toString();
     }
+
 
 
     public String getPruningDate() {
