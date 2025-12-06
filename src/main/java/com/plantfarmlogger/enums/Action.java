@@ -1,4 +1,4 @@
-package com.plantfarmlogger.model.enums;
+package com.plantfarmlogger.enums;
 
 public enum Action {
     FERTILIZE("fertilize"),

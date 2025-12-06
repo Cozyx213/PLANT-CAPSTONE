@@ -46,7 +46,7 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
 
     // used for creation of new HerbCrop
     public HerbCrop(String plantType, String soilType, double width, double height,
-            double length, String pruningDate, int userBaseGrowingDays, String activeCompounds, String userId) {
+            double length,  String userId, String pruningDate, int userBaseGrowingDays, String activeCompounds) {
         super(plantType, soilType, width, height, length, userId);
         this.pruningDate = pruningDate;
         this.userBaseGrowingDays = userBaseGrowingDays;

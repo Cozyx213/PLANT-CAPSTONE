@@ -1,5 +1,6 @@
 package com.plantfarmlogger.view;
 
+import com.plantfarmlogger.controller.UserController;
 import com.plantfarmlogger.controller.dao.UserDao;
 import com.plantfarmlogger.model.User;
 
@@ -13,6 +14,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.util.Arrays;
 import java.util.Map;
 
 
@@ -172,8 +174,8 @@ public class Login extends JPanel {
         String username = userField.getText();
         char[] password = passField.getPassword();
 
-        UserDao ud = UserDao.getInstance();
-        User u = ud.authenticate(username, new String(password));
+        UserController userController = UserController.getInstance();
+        User u = userController.authenticateLogin(username, Arrays.toString(password));
 
         if (u != null) {
             JOptionPane.showMessageDialog(this, "Login successful.", "Status", JOptionPane.INFORMATION_MESSAGE);

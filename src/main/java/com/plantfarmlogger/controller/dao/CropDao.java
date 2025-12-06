@@ -16,7 +16,7 @@ import com.plantfarmlogger.model.subclasses.RootCrop;
 public class CropDao implements CropDaoInter {
     private static CropDao instance = null;
     ArrayList<Crop> cache = new ArrayList<Crop>();
-    private final String cropFile = "src/main/resources/csv/cropbeds.csv";
+    private final String cropFile = "src/main/resources/csv/crops.csv";
 
     private CropDao() {
         loadAll();
@@ -33,15 +33,15 @@ public class CropDao implements CropDaoInter {
             while ((line = br.readLine()) != null) {
                 String[] spl = line.split(",", -1);
                 String id = spl[0];
-                String userId = spl[1];
-                String combinedType = spl[2];
-                String soilType = spl[3];
-                String lastFertilized = spl[4];
-                String datePlanted = spl[5];
+                String combinedType = spl[1];
+                String soilType = spl[2];
+                String lastFertilized = spl[3];
+                String datePlanted = spl[4];
 
-                double width = Double.parseDouble(spl[6]);
-                double height = Double.parseDouble(spl[7]);
-                double length = Double.parseDouble(spl[8]);
+                double width = Double.parseDouble(spl[5]);
+                double height = Double.parseDouble(spl[6]);
+                double length = Double.parseDouble(spl[7]);
+                String userId = spl[8];
 
                 String[] t = combinedType.split("-");
                 String subclass = t[0];

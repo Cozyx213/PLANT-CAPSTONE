@@ -1,11 +1,11 @@
-package com.plantfarmlogger.model.enums;
+package com.plantfarmlogger.enums;
 
 public enum HealthStatus {
-    HEALTHY("Healthy"),
-    DEFICIENT("Deficient"),
-    INFECTED("Infected"),
-    PEST_INFESTED("Pest Infested"),
-    DEAD("Dead");
+    HEALTHY("healthy"),
+    DEFICIENT("deficient"),
+    INFECTED("infected"),
+    PEST_INFESTED("pestinfested"),
+    DEAD("dead");
 
     private final String value;
     

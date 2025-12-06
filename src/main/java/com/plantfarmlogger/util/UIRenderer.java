@@ -41,5 +41,16 @@ public class UIRenderer {
         g2.dispose();
     }
 
+    public static void paintRoundedPanel(Graphics g, JComponent c, int radius, Color color) {
+        Graphics2D g2 = (Graphics2D) g.create();
+
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.setColor(color);
+
+        g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), radius, radius);
+
+        g2.dispose();
+    }
     private UIRenderer() {}
 }

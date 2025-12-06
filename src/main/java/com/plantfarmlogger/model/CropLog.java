@@ -1,30 +1,39 @@
 package com.plantfarmlogger.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
-import com.plantfarmlogger.model.enums.GrowthStatus;
-import com.plantfarmlogger.model.enums.HealthStatus;
+import com.plantfarmlogger.enums.Action;
+import com.plantfarmlogger.enums.GrowthStatus;
+import com.plantfarmlogger.enums.HealthStatus;
 
 public class CropLog {
     private String notes;
     private String date;
     private HealthStatus healthStatus;
     private GrowthStatus growthStatus;
-    private String action;
+    private ArrayList<Action> actions;
     
-    private String farmer;
+    private String userId;
     private String cropId;
-    public CropLog(String notes, String date, HealthStatus healthStatus,
-            GrowthStatus growthStatus, String action, 
-            String farmer, String cropId) {
 
+    // used for new creation
+    public CropLog(String notes, HealthStatus healthStatus,
+                   GrowthStatus growthStatus, ArrayList<Action> actions,
+                   String userId, String cropId) {
+        this(notes, LocalDate.now().toString(), healthStatus, growthStatus, actions,  userId, cropId);
+    }
+
+    // used for loading from file; full parameters
+    public CropLog(String notes, String date, HealthStatus healthStatus,
+            GrowthStatus growthStatus, ArrayList<Action> actions,
+            String userId, String cropId) {
         this.notes = notes;
         this.date = date;
         this.healthStatus = healthStatus;
         this.growthStatus = growthStatus;
-        this.action = action;
-      
-        this.farmer = farmer;
+        this.actions = actions;
+        this.userId = userId;
         this.cropId = cropId;
     }
     public String getCropId() {
@@ -33,12 +42,7 @@ public class CropLog {
     public void setCropId(String cropId) {
         this.cropId = cropId;
     }
-    public CropLog(String notes, HealthStatus healthStatus,
-            GrowthStatus growthStatus, String action, String cropBed,
-            String farmer, String cropId) {
-        this(notes, LocalDate.now().toString(), healthStatus, growthStatus, action,  farmer, cropId);
 
-    }
 
     public String getNotes() {
         return notes;
@@ -72,20 +76,20 @@ public class CropLog {
         this.growthStatus = growthStatus;
     }
 
-    public String getAction() {
-        return action;
+    public ArrayList<Action> getActions() {
+        return actions;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setActions(ArrayList<Action> actions) {
+        this.actions = actions;
     }
 
     
-    public String getFarmer() {
-        return farmer;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setFarmer(String farmer) {
-        this.farmer = farmer;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

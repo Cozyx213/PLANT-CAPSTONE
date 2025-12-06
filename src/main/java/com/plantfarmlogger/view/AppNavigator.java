@@ -1,6 +1,8 @@
 package com.plantfarmlogger.view;
 
+import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -37,10 +39,13 @@ public class AppNavigator {
         cardLayout.show(mainPanel, VIEW_HOME);
     }
 
-    public void showCropLogs(User user) {
-        CropLog view = new CropLog(user);
+    public void showCropLogs(User user, Crop crop) {
+        CropLogView.setSelectedCrop(crop);
+        CropLogView view = new CropLogView(user);
+
         mainPanel.add(view, VIEW_CROPLOGS);
         cardLayout.show(mainPanel, VIEW_CROPLOGS);
+
     }
 
     public void logout() {
