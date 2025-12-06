@@ -42,10 +42,10 @@ public class CropFactory {
                         plantType,
                         soilType,
                         width, height, length,
+                        userId,
                         pruningDate,
                         userBaseDays != null ? userBaseDays : HerbCrop.DEFAULT_BASE_GROWING_DAYS,
-                        activeCompounds,
-                        userId
+                        activeCompounds
                 );
 
             case "LeafCrop":

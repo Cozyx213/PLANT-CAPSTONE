@@ -31,9 +31,9 @@ public class UserDao implements UserDaoInter {
                 String id = spl[0];
                 String name = spl[1];
                 String username = spl[2];
-                String address = spl[3];
-                int age = Integer.parseInt(spl[4]);
-                String password = spl[5];
+                String password = spl[3];
+                String address = spl[4];
+                int age = Integer.parseInt(spl[5]);
                 User n = new User(id, name, username, password, address, age);
                 cache.add(n);
             }

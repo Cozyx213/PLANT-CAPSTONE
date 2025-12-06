@@ -4,14 +4,14 @@ import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
-import com.plantfarmlogger.view.components.BaseDashboardView_TRUE;
+import com.plantfarmlogger.view.components.BaseDashboardView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class Home extends BaseDashboardView_TRUE {
+public class Home extends BaseDashboardView {
     private JPanel cardsContainer;
     private JLabel countLabel;
     private JButton addBtn;

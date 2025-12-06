@@ -24,8 +24,9 @@ public class UserController {
         return userDao.getUsers();
     }
 
-    public User getUser(String username){
-        return userDao.getUser(username);
+    public User getUser(String userId){
+        System.out.println("getUser");
+        return userDao.getUser(userId);
     }
 
     public User updateUser(String userId,
