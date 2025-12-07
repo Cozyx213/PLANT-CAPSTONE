@@ -31,14 +31,14 @@ public class Main {
 
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignored) {}
-            UserController userController = UserController.getInstance();
-            CropController cropController = CropController.getInstance();
-            User testuser = userController.getUser("9ed94660-db75-49f9-87b3-17330e6848ea");
-            Crop testCrop = cropController.get("e054d929-2063-4b9a-a03f-80a20a807824");
+//            UserController userController = UserController.getInstance();
+//            CropController cropController = CropController.getInstance();
+//            User testuser = userController.getUser("9ed94660-db75-49f9-87b3-17330e6848ea");
+//            Crop testCrop = cropController.get("e054d929-2063-4b9a-a03f-80a20a807824");
             MainWindow mainWindow = new MainWindow();
 
 
-            mainWindow.getNavigator().showHome(testuser);
+            mainWindow.getNavigator().showLogin();
 
             mainWindow.setVisible(true);
         });

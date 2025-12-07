@@ -173,9 +173,10 @@ public class Login extends JPanel {
     private void performLogin() {
         String username = userField.getText();
         char[] password = passField.getPassword();
-
+        String passwordStr = new String(password);
         UserController userController = UserController.getInstance();
-        User u = userController.authenticateLogin(username, Arrays.toString(password));
+        User u = userController.authenticateLogin(username, passwordStr);
+        Arrays.fill(password, '0');
 
         if (u != null) {
             JOptionPane.showMessageDialog(this, "Login successful.", "Status", JOptionPane.INFORMATION_MESSAGE);
