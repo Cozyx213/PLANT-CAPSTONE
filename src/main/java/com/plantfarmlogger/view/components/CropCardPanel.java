@@ -1,205 +1,312 @@
 package com.plantfarmlogger.view.components;
 
+import com.plantfarmlogger.controller.CropController;
+import com.plantfarmlogger.model.Crop;
+import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.function.Consumer;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class CropCardPanel extends JPanel {
 
     private String cropName, plantType, soilType, size;
     private LocalDate datePlanted, lastFertilized;
 
-    private JTextField cropNameField, plantTypeField, datePlantedField, sizeField, fertField;
-    private JComboBox<String> soilCombo;
+    private JPanel cropSpecificPanel;
+    private JPanel herbPanel;
+    private JPanel leafPanel;
+    private JPanel rootPanel;
+    private JTextField soilTypeField;
+    private JComboBox<String> subclassCropField, plantTypeField, soilCombo;
+    private JSpinner widthSpinner,  heightSpinner, lengthSpinner;
+    private JSpinner herbBaseGrowingDaysSpinner;
+    private JTextField herbActiveCompoundsField;
+    private JSpinner leafBaseGrowingDaysSpinner;
+    private JSpinner rootDensitySpinner;
 
-    private Runnable onSaveCallback;
-    private Runnable onCancelCallback;
 
-    public CropCardPanel(Runnable onSaveCallback, Runnable onCancelCallback) {
-        this.onSaveCallback = onSaveCallback;
-        this.onCancelCallback = onCancelCallback;
+    private JLabel cropNameLabel, plantTypeLabel;
+    private User currentUser;
+    private String subclassTypes[] = {"HerbCrop", "LeafCrop", "RootCrop"};
+    private String herbTypes[] = {"basil",
+            "mint",
+            "oregano",
+            "thyme",
+            "rosemary",
+            "lavender",
+            "sage",
+            "chamomile",
+            "lemon balm",
+            "cilantro",
+            "dill",
+            "parsley",
+            "tarragon"};
+    private String leafTypes[] = {"lettuce",
+            "spinach",
+            "kale",
+            "arugula",
+            "bok choy",
+            "swiss chard",
+            "mustard greens",
+            "collard greens",
+            "mizuna",
+            "endive",
+            "romaine lettuce",
+            "watercress",
+            "tatsoi",
+            "red leaf lettuce"};
+    private String rootTypes[] = {"potato",
+            "carrot",
+            "beetroot",
+            "radish",
+            "turnip",
+            "sweet potato",
+            "cassava",
+            "ginger",
+            "onion",
+            "garlic"};
 
-        setLayout(new CardLayout());
-        setBackground(UIColors.BG_COLOR);
+    private final Runnable onSave;   // Callback to unlock Home "Add" button
+    private final Consumer<Crop> onNavigate; // Callback to switch screens
+    private final Runnable onCancel;         // Callback to remove card if cancelled
 
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 350));
-        setPreferredSize(new Dimension(0, 350));
+    public CropCardPanel(User user, Runnable onSave, Consumer<Crop> onNavigate, Runnable onCancel) {
+        this.currentUser = user;
+        this.onSave = onSave;
+        this.onNavigate = onNavigate;
+        this.onCancel = onCancel;
 
-        resizePanel(350);
+        setLayout(new BorderLayout());
+        setOpaque(false);
+        setBorder(new EmptyBorder(15, 20, 15, 20));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
-        add(createInputPanel(), "INPUT");
+
+        initInputMode();
     }
 
-    private JPanel createInputPanel() {
-        JPanel p = new JPanel(new GridBagLayout());
-        p.setBackground(UIColors.CARD_COLOR);
-        p.setBorder(new EmptyBorder(20, 25, 20, 25));
+    public CropCardPanel(Crop crop){
+        onSave = null;
+        onNavigate = null;
+        onCancel = null;
+        setLayout(new BorderLayout());
+        setOpaque(false);
+        setBorder(new EmptyBorder(15, 20, 15, 20));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        switchToDisplayMode(crop);
+    }
 
-        JLabel titleLabel = new JLabel("Enter Crop Name");
-        titleLabel.setFont(UIFont.lexend(Font.BOLD, 18));
-        titleLabel.setForeground(UIColors.TEXT_DARK);
+    private void initInputMode() {
+        removeAll(); // Clear previous components
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        cropNameField = UIFields.createStyledField("e.g. Tomato Bed 1");
+        // --- Input Field ---
+//        cropNameField = new JTextField();
+//        cropNameField.setFont(UIFont.lexend(Font.BOLD, 18));
+//        cropNameField.setText("Enter Crop Name");
+//        cropNameField.setForeground(UIColors.TEXT_DARK);
+        // Add a prompt/border style here if desired
 
-        plantTypeField = UIFields.createStyledField("Enter Plant Type");
-        datePlantedField = UIFields.createDateField("Date Planted");
+        subclassCropField = new JComboBox<>(subclassTypes);
+        subclassCropField.setSelectedIndex(0);
+        subclassCropField.addActionListener(subclassCropField);
 
-        String[] soils = {"Loam", "Clay", "Sandy", "Silt", "Peat"};
-        soilCombo = new JComboBox<>(soils);
-        soilCombo.setFont(UIFont.lexend(Font.PLAIN, 14));
-        soilCombo.setBackground(Color.WHITE);
+        plantTypeField = new JComboBox<>(herbTypes);
 
-        sizeField = UIFields.createStyledField("Enter Size");
-        fertField = UIFields.createDateField("Last Fertilized");
+        soilTypeField = new JTextField();
+        soilTypeField.setFont(UIFont.lexend(Font.BOLD, 18));
+        soilTypeField.setText("Enter Soil Type");
+        soilTypeField.setForeground(UIColors.TEXT_DARK);
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 1.0;
-        p.add(titleLabel, gbc);
 
-        gbc.gridy = 1;
-        p.add(cropNameField, gbc);
+        widthSpinner = new JSpinner(
+                new SpinnerNumberModel(0.5, 0.0, 10.0, 0.1)
+        );
+        heightSpinner = new JSpinner(
+                new SpinnerNumberModel(0.3, 0.0, 10.0, 0.1)
+        );
+        lengthSpinner = new JSpinner(
+                new SpinnerNumberModel(0.4, 0.0, 10.0, 0.1)
+        );
 
-        gbc.gridy = 2; p.add(plantTypeField, gbc);
-        gbc.gridy = 3; p.add(datePlantedField, gbc);
+        subclassCropField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedCategory = (String) subclassCropField.getSelectedItem();
+                CardLayout cl = (CardLayout) cropSpecificPanel.getLayout();
+                cl.show(cropSpecificPanel, selectedCategory);
 
-        JPanel soilPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        soilPanel.setOpaque(false);
-        JLabel soilLbl = new JLabel("Soil Type: ");
-        soilLbl.setFont(UIFont.lexend(Font.PLAIN, 14));
-        soilPanel.add(soilLbl);
-        soilPanel.add(soilCombo);
-
-        gbc.gridy = 4; p.add(soilPanel, gbc);
-
-        gbc.gridy = 5; p.add(sizeField, gbc);
-        gbc.gridy = 6; p.add(fertField, gbc);
-
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnPanel.setOpaque(false);
-
-        JButton cancelBtn = UIButtons.createTextButton("Cancel");
-        cancelBtn.addActionListener(e -> {
-            if (onCancelCallback != null) onCancelCallback.run();
+                // Update plantTypeField list
+                String[] newItems;
+                switch (selectedCategory) {
+                    case "HerbCrop" -> newItems = herbTypes;
+                    case "LeafCrop" -> newItems = leafTypes;
+                    default -> newItems = rootTypes;
+                }
+                plantTypeField.setModel(new DefaultComboBoxModel<>(newItems));
+            }
         });
+        // --- Buttons (Save / Cancel) ---
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttons.setOpaque(false);
+
 
         JButton saveBtn = UIButtons.createPrimaryButton("Save");
-        saveBtn.setPreferredSize(new Dimension(100, 35));
 
-        saveBtn.addActionListener(e -> attemptSave());
+        saveBtn.addActionListener(e -> {
+                String selectedCategory = (String) subclassCropField.getSelectedItem();
+                String plantType = (String) plantTypeField.getSelectedItem();
+                String soilType = soilTypeField.getText();
+                double width = (double) widthSpinner.getValue();
+                double height = (double) heightSpinner.getValue();
+                double length = (double) lengthSpinner.getValue();
 
-        btnPanel.add(cancelBtn);
-        btnPanel.add(saveBtn);
+                Integer userBaseDays = null;
+                String activeCompounds = null;
+                Double userRootDensity = null;
+                switch (selectedCategory) {
+                    case "HerbCrop" -> {
+                        userBaseDays = (Integer) herbBaseGrowingDaysSpinner.getValue();
+                        activeCompounds = herbActiveCompoundsField.getText();
+                    }
+                    case "LeafCrop" -> {
+                        userBaseDays = (Integer) leafBaseGrowingDaysSpinner.getValue();
+                    }
+                    case "RootCrop" -> {
+                        userRootDensity = (Double) rootDensitySpinner.getValue();
+                    }
+                }
+                CropController cropController = CropController.getInstance();
+                Crop newCrop = cropController.addCrop(
+                        selectedCategory,
+                        plantType,
+                        soilType,
+                        width,
+                        height,
+                        length,
+                        currentUser.getId(),
+                        LocalDate.now().toString(),  // pruningDate, can be null for Root
+                        userBaseDays,
+                        activeCompounds,
+                        userRootDensity
+                );
+                onSave.run(); // Tell Controller we are done editing
+                switchToDisplayMode(newCrop);
+//                showMessageDialog(this, "All field must be filled", "ALERT", JOptionPane.INFORMATION_MESSAGE);
+                // alert that all fields must be filled
 
-        gbc.gridy = 7; gbc.gridx = 0;
-        gbc.anchor = GridBagConstraints.SOUTHEAST;
-        p.add(btnPanel, gbc);
+        });
 
-        return p;
-    }
+        JButton cancelBtn = UIButtons.createTextButton("Cancel");
+        cancelBtn.addActionListener(e -> onCancel.run());
 
-    private JPanel createViewPanel() {
-        JPanel p = new JPanel(new GridBagLayout());
-        p.setBackground(UIColors.CARD_COLOR);
-        p.setBorder(new EmptyBorder(20, 25, 20, 25));
+        buttons.add(cancelBtn);
+        buttons.add(saveBtn);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.insets = new Insets(2, 0, 2, 0);
 
-        JLabel nameLbl = new JLabel(this.cropName);
-        nameLbl.setFont(UIFont.lexend(Font.BOLD, 24));
-        nameLbl.setForeground(UIColors.TEXT_DARK);
+        add(plantTypeField);
+        add(subclassCropField);
+        add(labeled("Width (m)", widthSpinner));
+        add(labeled("Height (m)", heightSpinner));
+        add(labeled("Length (m)", lengthSpinner));
 
-        JLabel typeLbl = new JLabel(this.plantType);
-        typeLbl.setFont(UIFont.lexend(Font.PLAIN, 16));
-        typeLbl.setForeground(new Color(60, 100, 60));
+        cropSpecificPanel = new JPanel(new CardLayout());
+        herbPanel = createHerbPanel();
+        leafPanel = createLeafPanel();
+        rootPanel = createRootPanel();
 
-        JLabel dateLbl = new JLabel("Date Planted: " + this.datePlanted);
-        JLabel soilLbl = new JLabel("Soil Type: " + this.soilType);
-        JLabel sizeLbl = new JLabel("Size: " + (this.size.isEmpty() ? "N/A" : this.size));
-        JLabel fertLbl = new JLabel("Last Fertilized: " + (this.lastFertilized == null ? "Never" : this.lastFertilized));
+        cropSpecificPanel.add(herbPanel, "HerbCrop");
+        cropSpecificPanel.add(leafPanel, "LeafCrop");
+        cropSpecificPanel.add(rootPanel, "RootCrop");
 
-        Font detailFont = UIFont.lexend(Font.PLAIN, 14);
-        for(JLabel l : new JLabel[]{dateLbl, soilLbl, sizeLbl, fertLbl}) {
-            l.setFont(detailFont);
-            l.setForeground(UIColors.TEXT_DARK);
-        }
+        add(buttons, BorderLayout.EAST);
+        add(cropSpecificPanel);
 
-        gbc.gridx = 0; gbc.gridy = 0; p.add(nameLbl, gbc);
-        gbc.gridy = 1; p.add(typeLbl, gbc);
-        gbc.gridy = 2; p.add(Box.createVerticalStrut(10), gbc);
-        gbc.gridy = 3; p.add(dateLbl, gbc);
-        gbc.gridy = 4; p.add(soilLbl, gbc);
-        gbc.gridy = 5; p.add(sizeLbl, gbc);
-        gbc.gridy = 6; p.add(fertLbl, gbc);
 
-        JButton viewLogsBtn = UIButtons.createPrimaryButton("View Logs");
-        gbc.gridx = 1; gbc.gridy = 5; gbc.gridheight = 2;
-        gbc.weightx = 1.0;
-        gbc.anchor = GridBagConstraints.SOUTHEAST;
-        p.add(viewLogsBtn, gbc);
 
-        return p;
-    }
 
-    private void attemptSave() {
-        String nameRaw = cropNameField.getText();
-        String typeRaw = plantTypeField.getText();
-        String dateRaw = datePlantedField.getText();
-        String fertRaw = fertField.getText();
-
-        if (isPlaceholder(nameRaw) || isPlaceholder(typeRaw) || isPlaceholder(dateRaw)) {
-            JOptionPane.showMessageDialog(this, "Please fill in Name, Plant Type, and Date Planted.");
-            return;
-        }
-
-        try {
-
-            this.datePlanted = LocalDate.parse(dateRaw);
-
-            if (!isPlaceholder(fertRaw) && !fertRaw.isEmpty()) {
-                this.lastFertilized = LocalDate.parse(fertRaw);
-            } else {
-                this.lastFertilized = null;
-            }
-
-        } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(this, "Invalid Date Format. Please use YYYY-MM-DD (e.g., 2025-01-30).");
-            return;
-        }
-
-        this.cropName = nameRaw;
-        this.plantType = typeRaw;
-        this.soilType = (String) soilCombo.getSelectedItem();
-        this.size = isPlaceholder(sizeField.getText()) ? "" : sizeField.getText();
-
-        add(createViewPanel(), "VIEW");
-
-        resizePanel(260);
-
-        ((CardLayout) getLayout()).show(this, "VIEW");
-
-        if (onSaveCallback != null) onSaveCallback.run();
-    }
-
-    private boolean isPlaceholder(String text) {
-        return text.contains("Enter") || text.contains("YYYY-MM-DD");
-    }
-
-    private void resizePanel(int height) {
-        setPreferredSize(new Dimension(0, height));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, height));
         revalidate();
-
         repaint();
+    }
+
+    private void switchToDisplayMode(Crop crop) {
+        if(crop==null){
+            System.out.println("[CropCardPanel] Failed to create new crop");
+            return;
+        }
+        removeAll();
+        //should update sidebar
+
+        cropNameLabel = new JLabel(crop.getPlantType());
+        cropNameLabel.setFont(UIFont.lexend(Font.BOLD, 20));
+        cropNameLabel.setForeground(UIColors.TEXT_DARK);
+
+        JButton viewLogsBtn = UIButtons.createRoundedButton("View Logs");
+        viewLogsBtn.setPreferredSize(new Dimension(120, 35));
+        viewLogsBtn.addActionListener(e -> onNavigate.accept(crop));
+
+        add(cropNameLabel, BorderLayout.WEST);
+        add(viewLogsBtn, BorderLayout.EAST);
+
+        revalidate();
+        repaint();
+    }
+
+    private JPanel labeled(String label, JComponent field) {
+        JPanel p = new JPanel(new BorderLayout());
+        JLabel l = new JLabel(label);
+        l.setFont(UIFont.lexend(Font.BOLD, 16));
+        p.add(l, BorderLayout.NORTH);
+        p.add(field, BorderLayout.CENTER);
+        p.setOpaque(false);
+        return p;
+    }
+
+    private JPanel createHerbPanel() {
+        JPanel p = new JPanel();
+        p.setLayout(new GridLayout(0, 1, 5, 5));
+
+        herbBaseGrowingDaysSpinner = new JSpinner(new SpinnerNumberModel(30, 1, 365, 1));
+        herbActiveCompoundsField = new JTextField();
+
+        p.add(labeled("Base Growing Days", herbBaseGrowingDaysSpinner));
+        p.add(labeled("Active Compounds", herbActiveCompoundsField));
+
+        return p;
+    }
+
+
+    private JPanel createLeafPanel() {
+        JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
+        leafBaseGrowingDaysSpinner = new JSpinner(new SpinnerNumberModel(30, 1, 365, 1));
+        p.add(labeled("Base Growing Days", leafBaseGrowingDaysSpinner));
+        return p;
+    }
+
+
+    private JPanel createRootPanel() {
+        JPanel p = new JPanel(new GridLayout(0, 1, 5, 5));
+        rootDensitySpinner = new JSpinner(new SpinnerNumberModel(1.0, 0.1, 10.0, 0.1));
+        p.add(labeled("Root Density", rootDensitySpinner));
+        return p;
+    }
+
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        UIRenderer.paintRoundedPanel(g, this, 20, UIColors.CARD_COLOR);
+        super.paintComponent(g);
     }
 }

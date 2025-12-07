@@ -21,8 +21,7 @@ public class MainWindow extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         add(mainPanel);
-
-        navigator = new AppNavigator(mainPanel, cardLayout);
+        navigator = AppNavigator.getInstance(mainPanel, cardLayout);
 
         navigator.showLogin();
 

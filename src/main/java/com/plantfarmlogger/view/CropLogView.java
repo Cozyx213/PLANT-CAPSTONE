@@ -30,8 +30,8 @@ public class CropLogView extends BaseDashboardView {
     private JButton addBtn;
     private static Crop selectedCrop;
 
-    public CropLogView(User user) {
-        super(user);
+    public CropLogView(User user, AppNavigator navigator) {
+        super(user, navigator);
     }
 
     @Override

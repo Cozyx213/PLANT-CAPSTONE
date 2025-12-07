@@ -1,5 +1,6 @@
 package com.plantfarmlogger.view;
 
+import com.plantfarmlogger.controller.dao.CropDao;
 import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AppNavigator {
-
+    public static AppNavigator instance = null;
     private final JPanel mainPanel;
     private final CardLayout cardLayout;
 
@@ -16,10 +17,14 @@ public class AppNavigator {
     private static final String VIEW_HOME = "HOME";
     private static final String VIEW_CROPLOGS = "CROPLOGS";
 
+
     public AppNavigator(JPanel mainPanel, CardLayout cardLayout) {
         this.mainPanel = mainPanel;
         this.cardLayout = cardLayout;
     }
+
+    public static AppNavigator getInstance(JPanel mainPanel, CardLayout cardLayout) {
+        return instance == null ? instance = new AppNavigator(mainPanel, cardLayout) : instance;}
 
     public void showLogin() {
         Login view = new Login(this);
@@ -34,14 +39,14 @@ public class AppNavigator {
     }
 
     public void showHome(User user) {
-        Home view = new Home(user);
+        Home view = new Home(user, this);
         mainPanel.add(view, VIEW_HOME);
         cardLayout.show(mainPanel, VIEW_HOME);
     }
 
     public void showCropLogs(User user, Crop crop) {
         CropLogView.setSelectedCrop(crop);
-        CropLogView view = new CropLogView(user);
+        CropLogView view = new CropLogView(user, this);
 
         mainPanel.add(view, VIEW_CROPLOGS);
         cardLayout.show(mainPanel, VIEW_CROPLOGS);
