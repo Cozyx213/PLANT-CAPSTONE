@@ -31,7 +31,7 @@ public class CropController {
      * @param userRootDensity optional for Root
      * @return Crop object of the correct subclass
      */
-    public boolean addCrop(
+    public Crop addCrop(
             String cropType, String plantType, String soilType,
             double width, double height, double length,
             String userId, String pruningDate, Integer userBaseDays,
@@ -40,12 +40,13 @@ public class CropController {
         Crop newCrop = CropFactory.createCrop(
                 cropType, plantType, soilType,
                 width, height, length,
-                userId, pruningDate, userBaseDays,
+                userId, userBaseDays,
                 activeCompounds, userRootDensity
         );
         validateCrop(newCrop);
-
-        return cropDao.createCrop(newCrop);
+        boolean res = cropDao.createCrop(newCrop);
+        if(res){return newCrop;}
+        return null;
     }
 
     public Crop get(String cropId) {
@@ -97,6 +98,10 @@ public class CropController {
         cropDao.deleteCropsByUserId(userId);
         System.out.println("[CropController] Crops of user " + userId + " deleted");
         return true;
+    }
+
+    public int getCountByUser(String userId){
+        return cropDao.getCountByUser(userId);
     }
 
     private void validateCrop(Crop crop) {

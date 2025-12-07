@@ -49,22 +49,22 @@ public class CropDao implements CropDaoInter {
                 Crop n = null;
                 if (subclass.equals("HerbCrop")) {
                     String pruningDate = spl.length > 9 && !spl[9].isEmpty() ? spl[9] : null;
-                    int userBaseGrowingDays = spl.length > 10 && !spl[10].isEmpty()
-                                    ? parseIntOrDefault(spl[10], 0) : 0;
+                    Integer userBaseGrowingDays = spl.length > 10 && !spl[10].isEmpty()
+                                    ? Integer.parseInt(spl[10]) : null;
                     String activeCompounds = spl.length > 11 && !spl[11].isEmpty() ? spl[11] : null;
                     n = new HerbCrop(id, plantType, soilType,
                             lastFertilized, datePlanted, width,
                             height, length, userId,
                             pruningDate, userBaseGrowingDays, activeCompounds);
                 } else if (subclass.equals("RootCrop")) {
-                    double userRootCropDensity = spl.length > 9 && !spl[9].isEmpty()? Double.parseDouble(spl[9]) : 0;
+                    Double userRootCropDensity = spl.length > 9 && !spl[9].isEmpty()? Double.parseDouble(spl[9]) : null;
                     n = new RootCrop(id, plantType, soilType,
                             lastFertilized, datePlanted, width,
                             height, length, userId,
                             userRootCropDensity);
                 } else if (subclass.equals("LeafCrop")) {
                     String pruningDate = spl.length > 9 && !spl[9].isEmpty()? spl[9] : null;
-                    int userBaseGrowingDays = spl.length > 10 ? parseIntOrDefault(spl[10], 0) : 0;
+                    Integer userBaseGrowingDays = spl.length > 10 ? Integer.parseInt(spl[10]) : null;
                     n = new LeafCrop(id, plantType, soilType,
                             lastFertilized, datePlanted, width,
                             height, length, userId,
@@ -184,6 +184,16 @@ public class CropDao implements CropDaoInter {
             return;
         }
         System.out.println("Deleted " + ctr + " Crops with userId: " + userId);
+    }
+
+    public int getCountByUser(String userId){
+        int ctr = 0;
+        for(Crop c : cache) {
+            if(c.getUserId().equals(userId)) {
+                ctr++;
+            }
+        }
+        return ctr;
     }
 
 

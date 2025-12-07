@@ -19,12 +19,12 @@ public class RootCrop extends Crop implements Subterranean {
             Map.entry("garlic", 570.0));
     public static final double DEFAULT_ROOTCROP_DENSITY = 750.0;
     public static final double PACKING_FACTOR = 1.0;
-    private double userRootCropDensity;
+    private Double userRootCropDensity;
 
     // used for first creation of RootCrop
     public RootCrop(String plantType, String soilType, double width,
                     double height, double length, String userId,
-                    double userRootCropDensity) {
+                    Double userRootCropDensity) {
         super(plantType, soilType, width, height, length, userId);
         this.userRootCropDensity = userRootCropDensity;
     }
@@ -33,7 +33,7 @@ public class RootCrop extends Crop implements Subterranean {
     // used for loading from file; full parameters
     public RootCrop(String identification, String plantType, String soilType,
                     String lastFertilized, String datePlanted, double width,
-                    double height, double length, String userId,  double userRootCropDensity) {
+                    double height, double length, String userId,  Double userRootCropDensity) {
         super(identification, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
         this.userRootCropDensity = userRootCropDensity;
     }
