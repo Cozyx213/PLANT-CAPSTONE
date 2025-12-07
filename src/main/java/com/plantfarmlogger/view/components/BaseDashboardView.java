@@ -5,6 +5,7 @@ import com.plantfarmlogger.controller.CropLogController;
 import com.plantfarmlogger.controller.UserController;
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.view.AppNavigator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +15,10 @@ public abstract class BaseDashboardView extends JPanel {
     protected UserController userController = UserController.getInstance();
     protected CropController cropController = CropController.getInstance();
     protected CropLogController cropLogController = CropLogController.getInstance();
-    public BaseDashboardView(User user) {
+    public final AppNavigator navigator;
+    public BaseDashboardView(User user, AppNavigator navigator) {
         this.user = user;
-
+        this.navigator = navigator;
         setLayout(new BorderLayout());
         setBackground(UIColors.BG_COLOR);
 

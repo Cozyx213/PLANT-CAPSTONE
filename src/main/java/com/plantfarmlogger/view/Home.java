@@ -1,24 +1,30 @@
 package com.plantfarmlogger.view;
 
+import com.plantfarmlogger.controller.CropController;
+import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.view.components.BaseDashboardView;
+import com.plantfarmlogger.view.components.CropCardPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class Home extends BaseDashboardView {
     private JPanel cardsContainer;
     private JLabel countLabel;
     private JButton addBtn;
     private JScrollPane scrollPane;
+    private boolean isCreating = false;
 
-    public Home(User user) {
-        super(user);
+    public Home(User user, AppNavigator appNavigator) {
+        super(user,  appNavigator);
     }
 
     @Override
@@ -88,38 +94,85 @@ public class Home extends BaseDashboardView {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         content.add(scrollPane, BorderLayout.CENTER);
 
+        CropController  cropController = CropController.getInstance();
+        ArrayList<Crop> cropsOfUser= cropController.getAllByUserId(user.getId());
+        for(Crop crop : cropsOfUser){
+            CropCardPanel  cardPanel = new CropCardPanel(crop);
+            addCardToTop(cardPanel);
+        }
+        setAddButtonListener(e->handleAddNewCard());
+
         return content;
     }
 
-    public void setAddButtonListener(ActionListener action) {
-        addBtn.addActionListener(action);
+    private void handleAddNewCard() {
+        if (isCreating) return; // Prevent multiple cards
+
+        // lock the UI
+        isCreating = true;
+        toggleAddButton(false); // Helper method we need to add to View
+
+        // callbacks for the card
+
+        // unlocking UI and saving the model on save
+        Runnable onSave = () -> {
+            updateCountLabel(cropController.getCountByUser(user.getId()));
+            isCreating = false;
+            toggleAddButton(true); // Unlock
+        };
+
+        // going to croplog
+        Consumer<Crop> onNavigate = (crop) -> {
+            System.out.println("Navigating to logs for: " + crop.getPlantType() + "-" + crop.getID());
+            navigator.showCropLogs(user, crop);
+        };
+
+        // remove card, unlock UI on cancel
+        Runnable onCancel = () -> {
+            removeTopCard(); // Helper method to remove the temp card
+            isCreating = false;
+            toggleAddButton(true); // Unlock
+        };
+
+        // create,add card
+        CropCardPanel card = new CropCardPanel(user, onSave, onNavigate, onCancel);
+        addCardToTop(card);
+    }
+    // --- Exposed Methods for Controller ---
+
+    public void setAddButtonListener(ActionListener listener) {
+        addBtn.addActionListener(listener);
     }
 
-    public void setCountLabelText(String text) {
-        countLabel.setText(text);
+    public void updateCountLabel(int count) {
+        countLabel.setText("Number of Crop Beds: " + count);
     }
 
-    public void addCardComponent(JComponent card) {
+    public void addCardToTop(JPanel card) {
+        // Index 0 puts it at the top
         cardsContainer.add(card, 0);
-        cardsContainer.add(Box.createVerticalStrut(20), 1);
-        refreshLayout();
-    }
-
-    public void removeCardComponent(JComponent card) {
-        cardsContainer.remove(card);
-        refreshLayout();
-    }
-
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
-    }
-
-    public JScrollPane getScrollPane() {
-        return scrollPane;
-    }
-
-    private void refreshLayout() {
+        cardsContainer.add(Box.createVerticalStrut(20), 1); // Spacer
         cardsContainer.revalidate();
         cardsContainer.repaint();
+    }
+
+    // Inside HomeView class
+
+    public void toggleAddButton(boolean enabled) {
+        addBtn.setEnabled(enabled);
+        // visually dim the button if needed,
+        // though setEnabled usually handles that.
+    }
+
+    public void removeTopCard() {
+        // Index 0 is the new card, Index 1 is the spacer
+        try {
+            cardsContainer.remove(0);
+            cardsContainer.remove(0); // Remove the spacer too
+            cardsContainer.revalidate();
+            cardsContainer.repaint();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
