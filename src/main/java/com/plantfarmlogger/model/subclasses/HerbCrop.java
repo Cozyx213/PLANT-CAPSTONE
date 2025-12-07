@@ -42,13 +42,13 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
     public static final int DEFAULT_PRUNING_INTERVAL = 7;
     private String activeCompounds;
     private String pruningDate;
-    private int userBaseGrowingDays;
+    private Integer userBaseGrowingDays;
 
     // used for creation of new HerbCrop
     public HerbCrop(String plantType, String soilType, double width, double height,
-            double length,  String userId, String pruningDate, int userBaseGrowingDays, String activeCompounds) {
+            double length,  String userId, Integer userBaseGrowingDays, String activeCompounds) {
         super(plantType, soilType, width, height, length, userId);
-        this.pruningDate = pruningDate;
+        this.pruningDate = null;
         this.userBaseGrowingDays = userBaseGrowingDays;
         this.activeCompounds = activeCompounds;
     }
@@ -57,7 +57,7 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
     public HerbCrop(String id, String plantType, String soilType,
                     String lastFertilized, String datePlanted,
                     double width, double height, double length,
-                    String userId, String pruningDate, int userBaseGrowingDays,
+                    String userId, String pruningDate, Integer userBaseGrowingDays,
                     String activeCompounds) {
         super(id, plantType, soilType, lastFertilized, datePlanted, width, height, length, userId);
         this.pruningDate = pruningDate;
@@ -131,7 +131,7 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
         LocalDate today = LocalDate.now();
 
         // Base maturity for the herb species
-        int baseDays = (userBaseGrowingDays != 0)
+        int baseDays = (userBaseGrowingDays != null)
                 ? userBaseGrowingDays
                 : HERBCROP_BASE_GROWING_DAYS.getOrDefault(
                 getPlantType().toLowerCase(),

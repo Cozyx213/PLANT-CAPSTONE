@@ -17,7 +17,6 @@ public class CropFactory {
      * @param height
      * @param length
      * @param userId
-     * @param pruningDate     optional for Herb/Leaf
      * @param userBaseDays    optional for Herb/Leaf
      * @param activeCompounds optional for Herb
      * @param userRootDensity optional for Root
@@ -31,7 +30,6 @@ public class CropFactory {
             double height,
             double length,
             String userId,
-            String pruningDate,
             Integer userBaseDays,
             String activeCompounds,
             Double userRootDensity
@@ -43,8 +41,7 @@ public class CropFactory {
                         soilType,
                         width, height, length,
                         userId,
-                        pruningDate,
-                        userBaseDays != null ? userBaseDays : HerbCrop.DEFAULT_BASE_GROWING_DAYS,
+                        userBaseDays,
                         activeCompounds
                 );
 
@@ -54,8 +51,7 @@ public class CropFactory {
                         soilType,
                         width, height, length,
                         userId,
-                        pruningDate,
-                        userBaseDays != null ? userBaseDays : LeafCrop.DEFAULT_BASE_GROWING_DAYS
+                        userBaseDays
                 );
 
             case "RootCrop":
@@ -64,7 +60,7 @@ public class CropFactory {
                         soilType,
                         width, height, length,
                         userId,
-                        userRootDensity != null ? userRootDensity : RootCrop.DEFAULT_ROOTCROP_DENSITY
+                        userRootDensity
                 );
 
             default:
