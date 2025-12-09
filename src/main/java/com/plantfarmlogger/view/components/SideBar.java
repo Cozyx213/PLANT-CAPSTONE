@@ -18,9 +18,9 @@ import com.plantfarmlogger.view.MainWindow;
 // Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
     private final JButton addCropBed;
-    private final JButton changeName;
-    private final JButton changeAddress;
-    private final JButton changePass;
+//    private final JButton changeName;
+//    private final JButton changeAddress;
+//    private final JButton changePass;
     private final JButton logOut;
 
     public SideBar(User user) {
@@ -120,31 +120,32 @@ public class SideBar extends JPanel {
         cropsPanel.setOpaque(false);
 
         // SETTINGS PANEL
-        this.changeName = UIButtons.createSettingsButton("Change Name");
-        this.changePass = UIButtons.createSettingsButton("Change Password");
-        this.changeAddress = UIButtons.createSettingsButton("Change Address");
+//        this.changeName = UIButtons.createSettingsButton("Change Name");
+//        this.changePass = UIButtons.createSettingsButton("Change Password");
+//        this.changeAddress = UIButtons.createSettingsButton("Change Address");
 
         JPanel settingsPanel = new JPanel();
         settingsPanel.setOpaque(false);
-        settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
+//        settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
         settingsPanel.setSize(200, 500);
         JLabel settingsLabel = new JLabel("Settings");
-        settingsLabel.setFont(UIFont.lexend(Font.BOLD, 16));
-        settingsLabel.setForeground(UIColors.TEXT_COLOR);
-
-        settingsPanel.add(settingsLabel);
-        settingsPanel.add(Box.createVerticalStrut(10));
-        settingsPanel.add(changeName);
-        settingsPanel.add(Box.createVerticalStrut(10));
-        settingsPanel.add(changeAddress);
-        settingsPanel.add(Box.createVerticalStrut(10));
-        settingsPanel.add(changePass);
-        settingsPanel.add(Box.createVerticalStrut(28));
+//        settingsLabel.setFont(UIFont.lexend(Font.BOLD, 16));
+//        settingsLabel.setForeground(UIColors.TEXT_COLOR);
+//
+//        settingsPanel.add(settingsLabel);
+        settingsPanel.add(Box.createVerticalStrut(180));
+//        settingsPanel.add(changeName);
+//        settingsPanel.add(Box.createVerticalStrut(10));
+//        settingsPanel.add(changeAddress);
+//        settingsPanel.add(Box.createVerticalStrut(10));
+//        settingsPanel.add(changePass);
+//        settingsPanel.add(Box.createVerticalStrut(28));
 
         logOut = UIButtons.createSettingsButton("Log Out");
 
         gbc.gridy = 0;
         add(logoLabel, gbc);
+
         gbc.gridy = 1;
         add(userInfoPanel, gbc);
         gbc.gridy = 2;

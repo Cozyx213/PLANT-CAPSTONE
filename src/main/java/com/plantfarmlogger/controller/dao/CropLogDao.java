@@ -52,7 +52,7 @@ public class CropLogDao {
                 CropLog n = new CropLog(notes, date, healthStatus, growthStatus, actions, farmer, cropId);
                 cache.add(n);
             }
-            System.out.println("SUCCESS");
+            System.out.println("[CropLogDao] Cache loaded successfully!");
 
         } catch (IOException e) {
             System.out.println("IO_ERROR theres no file " + CropLogFile);

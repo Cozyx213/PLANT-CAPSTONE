@@ -30,7 +30,7 @@ Thumbs.db
 *~
 
 # CSV resources (keep source but ignore generated)
-/src/main/resources/*.csv
+/src/main/resources/csv/*
 
 # Backup files
 *.bak
