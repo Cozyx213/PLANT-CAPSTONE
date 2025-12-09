@@ -6,11 +6,16 @@ import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.function.Consumer;
@@ -34,8 +39,7 @@ public class CropCardPanel extends JPanel {
     private JSpinner leafBaseGrowingDaysSpinner;
     private JSpinner rootDensitySpinner;
 
-
-    private JLabel cropNameLabel, plantTypeLabel;
+    private JLabel cropNameLabel, datePlantedLabel, soilTypeLabel, sizeLabel, lastFertilizedLabel;
     private User currentUser;
     private String subclassTypes[] = {"HerbCrop", "LeafCrop", "RootCrop"};
     private String herbTypes[] = {"basil",
@@ -91,7 +95,6 @@ public class CropCardPanel extends JPanel {
         setBorder(new EmptyBorder(15, 20, 15, 20));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
-
         initInputMode();
     }
 
@@ -101,7 +104,7 @@ public class CropCardPanel extends JPanel {
         onCancel = null;
         setLayout(new BorderLayout());
         setOpaque(false);
-        setBorder(new EmptyBorder(15, 20, 15, 20));
+        setBorder(new EmptyBorder(0, 15, 0, 0));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
         switchToDisplayMode(crop);
@@ -165,46 +168,46 @@ public class CropCardPanel extends JPanel {
         JButton saveBtn = UIButtons.createPrimaryButton("Save");
 
         saveBtn.addActionListener(e -> {
-                String selectedCategory = (String) subclassCropField.getSelectedItem();
-                String plantType = (String) plantTypeField.getSelectedItem();
-                String soilType = soilTypeField.getText();
-                double width = (double) widthSpinner.getValue();
-                double height = (double) heightSpinner.getValue();
-                double length = (double) lengthSpinner.getValue();
+            String selectedCategory = (String) subclassCropField.getSelectedItem();
+            String plantType = (String) plantTypeField.getSelectedItem();
+            String soilType = soilTypeField.getText();
+            double width = (double) widthSpinner.getValue();
+            double height = (double) heightSpinner.getValue();
+            double length = (double) lengthSpinner.getValue();
 
-                Integer userBaseDays = null;
-                String activeCompounds = null;
-                Double userRootDensity = null;
-                switch (selectedCategory) {
-                    case "HerbCrop" -> {
-                        userBaseDays = (Integer) herbBaseGrowingDaysSpinner.getValue();
-                        activeCompounds = herbActiveCompoundsField.getText();
-                    }
-                    case "LeafCrop" -> {
-                        userBaseDays = (Integer) leafBaseGrowingDaysSpinner.getValue();
-                    }
-                    case "RootCrop" -> {
-                        userRootDensity = (Double) rootDensitySpinner.getValue();
-                    }
+            Integer userBaseDays = null;
+            String activeCompounds = null;
+            Double userRootDensity = null;
+            switch (selectedCategory) {
+                case "HerbCrop" -> {
+                    userBaseDays = (Integer) herbBaseGrowingDaysSpinner.getValue();
+                    activeCompounds = herbActiveCompoundsField.getText();
                 }
-                CropController cropController = CropController.getInstance();
-                Crop newCrop = cropController.addCrop(
-                        selectedCategory,
-                        plantType,
-                        soilType,
-                        width,
-                        height,
-                        length,
-                        currentUser.getId(),
-                        LocalDate.now().toString(),  // pruningDate, can be null for Root
-                        userBaseDays,
-                        activeCompounds,
-                        userRootDensity
-                );
-                onSave.run(); // Tell Controller we are done editing
-                switchToDisplayMode(newCrop);
+                case "LeafCrop" -> {
+                    userBaseDays = (Integer) leafBaseGrowingDaysSpinner.getValue();
+                }
+                case "RootCrop" -> {
+                    userRootDensity = (Double) rootDensitySpinner.getValue();
+                }
+            }
+            CropController cropController = CropController.getInstance();
+            Crop newCrop = cropController.addCrop(
+                    selectedCategory,
+                    plantType,
+                    soilType,
+                    width,
+                    height,
+                    length,
+                    currentUser.getId(),
+                    LocalDate.now().toString(),  // pruningDate, can be null for Root
+                    userBaseDays,
+                    activeCompounds,
+                    userRootDensity
+            );
+            onSave.run(); // Tell Controller we are done editing
+            switchToDisplayMode(newCrop);
 //                showMessageDialog(this, "All field must be filled", "ALERT", JOptionPane.INFORMATION_MESSAGE);
-                // alert that all fields must be filled
+            // alert that all fields must be filled
 
         });
 
@@ -233,9 +236,6 @@ public class CropCardPanel extends JPanel {
         add(buttons, BorderLayout.EAST);
         add(cropSpecificPanel);
 
-
-
-
         revalidate();
         repaint();
     }
@@ -246,18 +246,56 @@ public class CropCardPanel extends JPanel {
             return;
         }
         removeAll();
-        //should update sidebar
+
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setOpaque(false);
+        infoPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         cropNameLabel = new JLabel(crop.getPlantType());
         cropNameLabel.setFont(UIFont.lexend(Font.BOLD, 20));
         cropNameLabel.setForeground(UIColors.TEXT_DARK);
 
+        datePlantedLabel = new JLabel("DATE PLANTED: " + crop.getDatePlanted());
+        datePlantedLabel.setFont(UIFont.lexend(Font.PLAIN, 16));
+        datePlantedLabel.setForeground(UIColors.BUTTON_COLOR);
+
+        soilTypeLabel = new JLabel("SOIL TYPE: " + crop.getSoilType());
+        soilTypeLabel.setFont(UIFont.lexend(Font.PLAIN, 16));
+        soilTypeLabel.setForeground(UIColors.BUTTON_COLOR);
+
+        sizeLabel = new JLabel("SIZE (LxHxW): " + crop.getWidth() + "x" + crop.getLength() + "x" + crop.getHeight());
+        sizeLabel.setFont(UIFont.lexend(Font.PLAIN, 16));
+        sizeLabel.setForeground(UIColors.BUTTON_COLOR);
+
+        lastFertilizedLabel = new JLabel("LAST FERTILIZED: " + crop.getLastFertilized());
+        lastFertilizedLabel.setFont(UIFont.lexend(Font.PLAIN, 16));
+        lastFertilizedLabel.setForeground(UIColors.BUTTON_COLOR);
+
+        infoPanel.add(Box.createVerticalStrut(10));
+        infoPanel.add(cropNameLabel);
+        infoPanel.add(datePlantedLabel);
+        infoPanel.add(Box.createVerticalStrut(20));
+        infoPanel.add(soilTypeLabel);
+        infoPanel.add(sizeLabel);
+        infoPanel.add(lastFertilizedLabel);
+        infoPanel.add(Box.createVerticalStrut(10));
+
         JButton viewLogsBtn = UIButtons.createRoundedButton("View Logs");
         viewLogsBtn.setPreferredSize(new Dimension(120, 35));
+        viewLogsBtn.setMaximumSize(new Dimension(120, 35));
         viewLogsBtn.addActionListener(e -> onNavigate.accept(crop));
 
-        add(cropNameLabel, BorderLayout.WEST);
-        add(viewLogsBtn, BorderLayout.EAST);
+        RoundedRightImagePanel imageBGPanel = new RoundedRightImagePanel("/farm_1.png", 20);
+        imageBGPanel.setLayout(new BorderLayout(10, 30));
+        imageBGPanel.setBorder(new EmptyBorder(0, 20, 15, 20));
+        //imageBGPanel.add(Box.createVerticalStrut(40));
+        imageBGPanel.add(viewLogsBtn, BorderLayout.SOUTH);
+        imageBGPanel.setOpaque(false);
+        imageBGPanel.setPreferredSize(new Dimension(300, 168));
+
+        add(infoPanel, BorderLayout.CENTER);
+        add(imageBGPanel, BorderLayout.EAST);
 
         revalidate();
         repaint();
@@ -271,6 +309,55 @@ public class CropCardPanel extends JPanel {
         p.add(field, BorderLayout.CENTER);
         p.setOpaque(false);
         return p;
+    }
+
+    class RoundedRightImagePanel extends JPanel {
+        private Image backgroundImage;
+        private int cornerRadius;
+
+        public RoundedRightImagePanel(String imagePath, int cornerRadius) {
+            this.cornerRadius = cornerRadius;
+            try (InputStream is = getClass().getResourceAsStream(imagePath)) {
+                if (is == null) {
+                    System.err.println("Resource not found: " + imagePath);
+                }
+                backgroundImage = ImageIO.read(is);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                System.err.println("Could not read image data for: " + imagePath);
+            }
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            if (backgroundImage != null) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                int w = getWidth();
+                int h = getHeight();
+
+                java.awt.geom.Path2D.Float path = new java.awt.geom.Path2D.Float();
+
+                path.moveTo(0, 0);
+                path.lineTo(w - cornerRadius, 0);
+                path.quadTo(w, 0, w, cornerRadius);
+                path.lineTo(w, h - cornerRadius);
+                path.quadTo(w, h, w - cornerRadius, h);
+                path.lineTo(0, h);
+                path.lineTo(0, 0);
+                path.closePath();
+                g2.setClip(path);
+
+                g2.drawImage(backgroundImage, 0, 0, w, h, this);
+
+                g2.dispose();
+            }
+            // Paint the children (The "View Logs" button)
+            super.paintComponent(g);
+        }
     }
 
     private JPanel createHerbPanel() {
@@ -301,8 +388,6 @@ public class CropCardPanel extends JPanel {
         p.add(labeled("Root Density", rootDensitySpinner));
         return p;
     }
-
-
 
     @Override
     protected void paintComponent(Graphics g) {
