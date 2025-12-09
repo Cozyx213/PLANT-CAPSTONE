@@ -58,7 +58,7 @@ public class Home extends BaseDashboardView {
             ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
             plantIcon = new JLabel(scaledLogoIcon);
         } else {
-            System.err.println("Error: Image resource not found at /files/logo.png");
+            System.err.println("Error: Image resource not found at /logo.png");
         }
 
         JLabel title = new JLabel("My Farm");

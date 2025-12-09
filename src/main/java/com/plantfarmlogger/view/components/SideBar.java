@@ -6,14 +6,22 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Enumeration;
+
+import com.plantfarmlogger.controller.CropController;
+import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
 import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
+import com.plantfarmlogger.view.AppNavigator;
 import com.plantfarmlogger.view.Home;
 import com.plantfarmlogger.view.MainWindow;
+import com.plantfarmlogger.view.components.BaseDashboardView;
 
 // Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
@@ -23,7 +31,7 @@ public class SideBar extends JPanel {
 //    private final JButton changePass;
     private final JButton logOut;
 
-    public SideBar(User user) {
+    public SideBar(User user, AppNavigator appNavigator) {
         java.net.URL imageUrl = getClass().getResource("/logo_lite.png");
         System.out.println(System.getProperty("user.dir"));
         System.out.println(new File(".").getAbsolutePath());
@@ -87,6 +95,13 @@ public class SideBar extends JPanel {
         cropBeds.setOpaque(false);
         cropBeds.setFont(UIFont.lexend(Font.BOLD, 32));
 
+        CropController cropController = CropController.getInstance();
+        ArrayList<Crop> cropsOfUser= cropController.getAllByUserId(user.getId());
+        for(Crop crop : cropsOfUser){
+            JButton cropBedButton = UIButtons.createSettingsButton(crop.getPlantType());
+            cropBeds.add(cropBedButton);
+        }
+
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);
         cropBedsList.getViewport().setOpaque(false);
@@ -107,7 +122,7 @@ public class SideBar extends JPanel {
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
         addCropBed = UIButtons.createSettingsButton("Add Crop Bed");
 
-        buttonWrapper.add(this.addCropBed);
+        //buttonWrapper.add(this.addCropBed);
         buttonWrapper.setOpaque(false);
         addCropBed.setMaximumSize(new Dimension(20, 20));
         cropsTitleRow.add(buttonWrapper);
@@ -126,22 +141,17 @@ public class SideBar extends JPanel {
 
         JPanel settingsPanel = new JPanel();
         settingsPanel.setOpaque(false);
-//        settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
         settingsPanel.setSize(200, 500);
         JLabel settingsLabel = new JLabel("Settings");
-//        settingsLabel.setFont(UIFont.lexend(Font.BOLD, 16));
-//        settingsLabel.setForeground(UIColors.TEXT_COLOR);
-//
-//        settingsPanel.add(settingsLabel);
         settingsPanel.add(Box.createVerticalStrut(180));
-//        settingsPanel.add(changeName);
-//        settingsPanel.add(Box.createVerticalStrut(10));
-//        settingsPanel.add(changeAddress);
-//        settingsPanel.add(Box.createVerticalStrut(10));
-//        settingsPanel.add(changePass);
-//        settingsPanel.add(Box.createVerticalStrut(28));
 
         logOut = UIButtons.createSettingsButton("Log Out");
+        logOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                appNavigator.showLogin();
+            }
+        });
 
         gbc.gridy = 0;
         add(logoLabel, gbc);

@@ -16,13 +16,14 @@ public abstract class BaseDashboardView extends JPanel {
     protected CropController cropController = CropController.getInstance();
     protected CropLogController cropLogController = CropLogController.getInstance();
     public final AppNavigator navigator;
+    // getter for navigator and put a last accessed here?
     public BaseDashboardView(User user, AppNavigator navigator) {
         this.user = user;
         this.navigator = navigator;
         setLayout(new BorderLayout());
         setBackground(UIColors.BG_COLOR);
 
-        add(new SideBar(user), BorderLayout.WEST);
+        add(new SideBar(user, navigator), BorderLayout.WEST);
 
         add(createContentPanel(), BorderLayout.CENTER);
 
