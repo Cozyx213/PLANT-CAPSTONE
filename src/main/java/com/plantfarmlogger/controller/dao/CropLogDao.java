@@ -14,81 +14,71 @@ import com.plantfarmlogger.enums.GrowthStatus;
 import com.plantfarmlogger.enums.HealthStatus;
 
 public class CropLogDao {
-    ArrayList<CropLog> cache = new ArrayList<CropLog>();
     private static CropLogDao instance = null;
-    private final String CropLogFile = "src/main/resources/csv/croplogs.csv";
-
+    ArrayList<CropLog> cache = new ArrayList<CropLog>();
+    private final String cropLogFile = "src/main/resources/csv/croplogs.csv";
     public CropLogDao() {
-        fetch();
+        loadAll();
     }
-    
     public static CropLogDao getInstance() {
         return instance == null ? instance = new CropLogDao() : instance;
     }
-    public ArrayList<CropLog> getCropLogs() {
-        return cache;
-    }
 
-    private void fetch() {
-        try (BufferedReader br = new BufferedReader(new FileReader(CropLogFile));) {
+
+    private void loadAll() {
+        try (BufferedReader br = new BufferedReader(new FileReader(cropLogFile));) {
             String line;
-
             while ((line = br.readLine()) != null) {
                 String[] spl = line.split(",", -1);
-
-                String notes = spl[0];
-                String date = spl[1];
-                HealthStatus healthStatus = HealthStatus.valueOf(spl[2]);
-                 GrowthStatus growthStatus = GrowthStatus.valueOf(spl[3]);
-                String actionsJoinedWithPipe = spl[4];
+                String id = spl[0];
+                String notes = spl[1];
+                String date = spl[2];
+                HealthStatus healthStatus = HealthStatus.valueOf(spl[3]);
+                 GrowthStatus growthStatus = GrowthStatus.valueOf(spl[4]);
+                String actionsJoinedWithSemicolon = spl[5];
                
-                String farmer = spl[5];
-                String cropId = spl[6];
-                String[] actionsList = actionsJoinedWithPipe.split(";");
-                ArrayList<Action> actions = new ArrayList<>();
-                for(String action : actionsList){
-                    actions.add(Action.valueOf(action));
+                String farmer = spl[6];
+                String cropId = spl[7];
+                String[] actionsArray = actionsJoinedWithSemicolon.split(";");
+                ArrayList<Action> actionsList = new ArrayList<>();
+                for(String action : actionsArray){
+                    actionsList.add(Action.valueOf(action));
                 }
-                CropLog n = new CropLog(notes, date, healthStatus, growthStatus, actions, farmer, cropId);
+                CropLog n = new CropLog(id, notes, date, healthStatus, growthStatus, actionsList, farmer, cropId);
                 cache.add(n);
             }
             System.out.println("[CropLogDao] Cache loaded successfully!");
-
         } catch (IOException e) {
-            System.out.println("IO_ERROR theres no file " + CropLogFile);
+            System.out.println("[CropLogDao] IO_ERROR: file " + cropLogFile + "does not exist!");
         }
     }
-    private void saveToCSV() {
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(CropLogFile))) {
+    private void save() {
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(cropLogFile))) {
             for (CropLog c : cache) {
-                ArrayList<Action> actions = c.getActions();
-                String[] actionsList = new String[actions.size()];
-                for (int i = 0; i < actions.size(); i++) {
-                    actionsList[i] = actions.get(i).toString();
-                }
-                String actionsJoinedWithPipe = String.join(";", actionsList);
-              bw.write(c.getNotes() + "," + c.getDate() + "," + c.getHealthStatus().name() + "," + c.getGrowthStatus().name() + "," +
-                       actionsJoinedWithPipe + "," + c.getUserId() + "," + c.getCropId());
+                bw.write(c.toString());
                 bw.newLine();
             }
-            System.out.println("[CropLogDao] CropLogs saved to file " + CropLogFile);
+            System.out.println("[CropLogDao] CropLogs saved to file " + cropLogFile + " successfully!");
         } catch (IOException e) {
-            System.out.println("[CropLogDao] IO_ERROR: file " + CropLogFile + " does not exist");
+            System.out.println("[CropLogDao] IO_ERROR: Error in opening file " + cropLogFile);
         }
     }
 
+    // create
     public boolean createCropLog(CropLog cropLog) {
         if (cropLog == null) {
-            System.out.println("no user ");
+            System.out.println("[CropLogDao] Create new CropLog unsuccessful: Cannot create nonexistent crop log");
             return false;
         }
         cache.add(cropLog);
-        saveToCSV();
-        System.out.println("[CropLogDao] CropLog" + cropLog.getCropId() + "saved to file");
+        save();
+        System.out.println("[CropLogDao] CropLog " + cropLog.getDate() + "saved to file.");
         return true;
     }
 
+    // read
     public ArrayList<CropLog> getAllByCropId(String cropId) {
         ArrayList<CropLog> cropsOfUser = new ArrayList<>();
         for (CropLog cropLog : cache) {
@@ -102,18 +92,70 @@ public class CropLogDao {
         return cropsOfUser;
     }
 
-    public void delete(CropLog t) {
-        int index = 0;
-        for (CropLog u : cache) {
-
-            if (t == u) {
-                cache.remove(index);
+    public ArrayList<CropLog> getAllByUserId(String userId) {
+        ArrayList<CropLog> cropsOfUser = new ArrayList<>();
+        for (CropLog cropLog : cache) {
+            if (cropLog.getUserId().equals(userId)) {
+                cropsOfUser.add(cropLog);
             }
-
-            index++;
         }
-        saveToCSV();
+        if (cropsOfUser.isEmpty()) {
+            System.out.println("[CropLogDao] No Crops found for userId " + userId);
+        }
+        return cropsOfUser;
     }
+
+
+
+    public void deleteCropLog(String cropLogId) {
+        // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
+        // new ArrayList<>(cache)
+        for (CropLog c : new ArrayList<>(cache)) {
+            if (c.getId().equals(cropLogId)) {
+                cache.remove(c);
+                save();
+                System.out.println("[CropLogDao] Deleted CropLog " + cropLogId + "succesfully!");
+                return;
+            }
+        }
+        System.out.println("[CropLogDao] Failed to delete Crop Log " + cropLogId + ".Not found");
+        save();
+    }
+
+    public void deleteCropsByCropId(String cropId) {
+        int ctr = 0;
+        // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
+        // new ArrayList<>(cache)
+        for (CropLog c : new ArrayList<>(cache)) {
+            if (c.getCropId().equals(cropId)) {
+                cache.remove(c);
+                ctr++;
+            }
+        }
+        if (ctr == 0) {
+            System.out.println("No crop logs with cropId: " + cropId);
+            return;
+        }
+        System.out.println("Deleted " + ctr + " Crop Logs with cropId: " + cropId);
+    }
+
+    public void deleteCropsByUserId(String userId) {
+        int ctr = 0;
+        // Do not FIXME: Iterating over a copy of the cache to avoid ConcurrentModificationException
+        // new ArrayList<>(cache)
+        for (CropLog c : new ArrayList<>(cache)) {
+            if (c.getUserId().equals(userId)) {
+                cache.remove(c);
+                ctr++;
+            }
+        }
+        if (ctr == 0) {
+            System.out.println("No crop logs with userId: " + userId);
+            return;
+        }
+        System.out.println("Deleted " + ctr + " Crop Logs with userId: " + userId);
+    }
+
 
     public void printU() {
         for (CropLog c : cache) {

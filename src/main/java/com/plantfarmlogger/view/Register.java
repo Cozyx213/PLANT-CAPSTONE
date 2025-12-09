@@ -229,20 +229,7 @@ public class Register extends JPanel {
             return;
         }
 
-        // Check for existing username --> this is backend duty
-//        UserDao userDao = UserDao.getInstance();
-//        for (com.plantfarmlogger.model.User u : userDao.getUsers()) {
-//            if (u.getUsername().equalsIgnoreCase(username)) {
-//                JOptionPane.showMessageDialog(this, "Username already exists.", "Duplicate Username",
-//                        JOptionPane.ERROR_MESSAGE);
-//                return;
-//            }
-//        }
-
-        // Persist user -->
-        // Jairus: this is just sample implementation, should be implemented as
-        // singleton according to @Jake
-        UserController userController = new UserController();
+        UserController userController = UserController.getInstance();
         boolean res = userController.addUser(name, username, password, address, age);
 
 

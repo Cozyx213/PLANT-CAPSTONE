@@ -51,13 +51,11 @@ public class UserController {
         System.out.println("[CropController] User " + userId + " deleted");
     }
 
-    public User authenticateLogin(String name, String password) {
+    public User authenticateLogin(String username, String password) {
         ArrayList<User> users = userDao.getUsers();
         for (User u : users) {
-            System.out.println("Name: " + u.getName() + " Password: " + u.getPassword());
-            System.out.println("Provided name: " + name + " Password: " + password);
-            if (u.getName().equals(name) && u.getPassword().equals(password)) {
-                System.out.println("[CropController] User " + name + " authenticated");
+            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                System.out.println("[CropController] User " + username + " authenticated");
                 return u;
             }
         }

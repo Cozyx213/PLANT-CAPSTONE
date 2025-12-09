@@ -98,9 +98,9 @@ public class CropCardPanel extends JPanel {
         initInputMode();
     }
 
-    public CropCardPanel(Crop crop){
+    public CropCardPanel(Crop crop, Consumer<Crop> onNavigate){
         onSave = null;
-        onNavigate = null;
+        this.onNavigate = onNavigate;
         onCancel = null;
         setLayout(new BorderLayout());
         setOpaque(false);
