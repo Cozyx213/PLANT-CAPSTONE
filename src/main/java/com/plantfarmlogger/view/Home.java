@@ -22,6 +22,9 @@ public class Home extends BaseDashboardView {
     private JButton addBtn;
     private JScrollPane scrollPane;
     private boolean isCreating = false;
+    private Runnable onSave;
+    private Consumer<Crop> onNavigate;
+    private Runnable onCancel;
 
     public Home(User user, AppNavigator appNavigator) {
         super(user,  appNavigator);
@@ -29,6 +32,20 @@ public class Home extends BaseDashboardView {
 
     @Override
     protected JPanel createContentPanel() {
+        onSave = () -> {
+            updateCountLabel(cropController.getCountByUser(user.getId()));
+            isCreating = false;
+            toggleAddButton(true); // Unlock
+        };
+        onNavigate = crop -> {
+            System.out.println("Navigating to logs for: " + crop.getPlantType() + "-" + crop.getID());
+            navigator.showCropLogs(user, crop);
+        };
+        onCancel = () -> {
+            removeTopCard(); // Helper method to remove the temp card
+            isCreating = false;
+            toggleAddButton(true); // Unlock
+        };
         int CropBeds = 0;
         java.net.URL imageUrl = getClass().getResource("/plant-icon.png");
         JPanel content = new JPanel(new BorderLayout());
@@ -97,7 +114,7 @@ public class Home extends BaseDashboardView {
         CropController  cropController = CropController.getInstance();
         ArrayList<Crop> cropsOfUser= cropController.getAllByUserId(user.getId());
         for(Crop crop : cropsOfUser){
-            CropCardPanel  cardPanel = new CropCardPanel(crop);
+            CropCardPanel  cardPanel = new CropCardPanel(crop, onNavigate);
             addCardToTop(cardPanel);
         }
         setAddButtonListener(e->handleAddNewCard());
@@ -111,28 +128,6 @@ public class Home extends BaseDashboardView {
         // lock the UI
         isCreating = true;
         toggleAddButton(false); // Helper method we need to add to View
-
-        // callbacks for the card
-
-        // unlocking UI and saving the model on save
-        Runnable onSave = () -> {
-            updateCountLabel(cropController.getCountByUser(user.getId()));
-            isCreating = false;
-            toggleAddButton(true); // Unlock
-        };
-
-        // going to croplog
-        Consumer<Crop> onNavigate = (crop) -> {
-            System.out.println("Navigating to logs for: " + crop.getPlantType() + "-" + crop.getID());
-            navigator.showCropLogs(user, crop);
-        };
-
-        // remove card, unlock UI on cancel
-        Runnable onCancel = () -> {
-            removeTopCard(); // Helper method to remove the temp card
-            isCreating = false;
-            toggleAddButton(true); // Unlock
-        };
 
         // create,add card
         CropCardPanel card = new CropCardPanel(user, onSave, onNavigate, onCancel);

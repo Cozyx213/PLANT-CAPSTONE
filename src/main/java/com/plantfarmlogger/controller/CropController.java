@@ -45,7 +45,11 @@ public class CropController {
         );
         validateCrop(newCrop);
         boolean res = cropDao.createCrop(newCrop);
-        if(res){return newCrop;}
+        if(res){
+            System.out.println("[CropController] Crop created successfully");
+            return newCrop;
+        }
+        System.out.println("[CropController] Failed to create crop");
         return null;
     }
 

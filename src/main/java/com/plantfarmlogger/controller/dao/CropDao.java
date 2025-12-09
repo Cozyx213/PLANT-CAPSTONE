@@ -17,7 +17,6 @@ public class CropDao implements CropDaoInter {
     private static CropDao instance = null;
     ArrayList<Crop> cache = new ArrayList<Crop>();
     private final String cropFile = "src/main/resources/csv/crops.csv";
-
     private CropDao() {
         loadAll();
     }
@@ -85,11 +84,10 @@ public class CropDao implements CropDaoInter {
                 bw.write(c.toString());
                 bw.newLine();
             }
-            System.out.println("Crops saved to file " + cropFile + " successfully!");
+            System.out.println("[CropDao] Crops saved to file " + cropFile + " successfully!");
         } catch (IOException e) {
-            System.out.println("IO_ERROR: Error in opening file " + cropFile);
+            System.out.println("[CropDao] IO_ERROR: Error in opening file " + cropFile);
         }
-
     }
 
     // create
@@ -175,7 +173,7 @@ public class CropDao implements CropDaoInter {
         // new ArrayList<>(cache)
         for (Crop c : new ArrayList<>(cache)) {
             if (c.getUserId().equals(userId)) {
-                deleteCrop(c.getID());
+                cache.remove(c);
                 ctr++;
             }
         }
