@@ -32,7 +32,7 @@ public class Main {
     }
 
     private static void ensureCsvResources() {
-        Path csvDir = Path.of("src", "main", "resources", "csv");
+        Path csvDir = Path.of("src",    "main", "resources", "csv");
         List<String> requiredFiles = List.of(
                 "cropbeds.csv",
                 "croplogs.csv",

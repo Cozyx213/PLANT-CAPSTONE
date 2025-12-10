@@ -97,7 +97,7 @@ public class CropCardPanel extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(new EmptyBorder(15, 20, 15, 20));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
         initInputMode();
     }
 
@@ -108,7 +108,8 @@ public class CropCardPanel extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(new EmptyBorder(0, 15, 0, 0));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 300));
+
         switchToDisplayMode(crop);
     }
 
@@ -242,7 +243,8 @@ public class CropCardPanel extends JPanel {
         cropSpecificPanel.add(herbPanel, "HerbCrop");
         cropSpecificPanel.add(leafPanel, "LeafCrop");
         cropSpecificPanel.add(rootPanel, "RootCrop");
-
+        add(Box.createVerticalStrut(10));
+        add(labeled("Soil Type", soilTypeField));
         add(Box.createVerticalStrut(15));
         add(cropSpecificPanel);
         add(Box.createVerticalStrut(15));
