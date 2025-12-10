@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.function.Consumer;
 
 import com.plantfarmlogger.controller.CropController;
 import com.plantfarmlogger.model.Crop;
@@ -26,12 +27,15 @@ import com.plantfarmlogger.view.components.BaseDashboardView;
 // Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
     private final JButton addCropBed;
-//    private final JButton changeName;
+    //    private final JButton changeName;
 //    private final JButton changeAddress;
 //    private final JButton changePass;
     private final JButton logOut;
+    private final Consumer<Crop> onNavigate;
 
-    public SideBar(User user, AppNavigator appNavigator) {
+    public SideBar(User user, AppNavigator appNavigator, Consumer<Crop> onNavigate) {
+        this.onNavigate = onNavigate;
+
         java.net.URL imageUrl = getClass().getResource("/logo_lite.png");
         System.out.println(System.getProperty("user.dir"));
         System.out.println(new File(".").getAbsolutePath());
@@ -99,6 +103,11 @@ public class SideBar extends JPanel {
         ArrayList<Crop> cropsOfUser= cropController.getAllByUserId(user.getId());
         for(Crop crop : cropsOfUser){
             JButton cropBedButton = UIButtons.createSettingsButton(crop.getPlantType());
+            cropBedButton.addActionListener(e -> {
+                if (this.onNavigate != null) {
+                    this.onNavigate.accept(crop);
+                }
+            });
             cropBeds.add(cropBedButton);
         }
 
@@ -194,24 +203,5 @@ public class SideBar extends JPanel {
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }
-
-//    //this is for testing purposes
-//     public static void main(String[] args) {
-//     SwingUtilities.invokeLater(() -> {
-//     JFrame frame = new JFrame("AniCore Lite Sidebar");
-//     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//     // Create the new SideBar JPanel instance
-//     SideBar sideBarPanel = new SideBar(new User("John", "john123", "Farm Address", 19, "123"));
-//     Home home = new Home(new User("John", "john123", "Farm Address", 19, "123"));
-//     // Add the JPanel to the JFrame's content pane
-//     //home.addCardComponent(new CropCardPanel());
-//     frame.getContentPane().add(home);
-//
-//     frame.setSize(1280, 720);
-//     frame.setMinimumSize(new Dimension(1280, 720));
-//     frame.setVisible(true);
-//     });
-//     }
 
 }

@@ -23,7 +23,7 @@ public abstract class BaseDashboardView extends JPanel {
         setLayout(new BorderLayout());
         setBackground(UIColors.BG_COLOR);
 
-        add(new SideBar(user, navigator), BorderLayout.WEST);
+        add(new SideBar(user, navigator, (crop) -> {navigator.showCropLogs(user, crop);}), BorderLayout.WEST);
 
         add(createContentPanel(), BorderLayout.CENTER);
 
