@@ -54,6 +54,17 @@ By the end of the season, the farmer will have a complete record of activities a
 
 The **Plant Farm Logger** program is a powerful tool designed to help farmers keep detailed records of their farming activities. By simplifying the process of logging and tracking plant-related tasks, it enables farmers to make informed decisions.
 
+## How the Program Fulfills the Criteria (for Sir Jay Vince Serato)
+Inheritance 
+-   Crop has 3 subclasses, namely HerbCrop, RootCrop, and LeafCrop
+Abstraction
+-   Interfaces are used for these different Crop Types, such as Prunable, Medicinal, and Subterranean
+Encapsulation 
+-   Already given
+Polymorphism 
+-   Used when creating/updating a crop through the cropfactory
+-   Loading all existing crops from the .csv file
+
 ## Quick Start
 
 Follow these steps to build and run the project using the included scripts.
