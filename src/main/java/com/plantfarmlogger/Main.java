@@ -1,88 +1,43 @@
 package com.plantfarmlogger;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
+import com.plantfarmlogger.controller.CropController;
+import com.plantfarmlogger.controller.CropLogController;
+import com.plantfarmlogger.controller.UserController;
+import com.plantfarmlogger.controller.dao.CropLogDao;
+import com.plantfarmlogger.enums.*;
+import com.plantfarmlogger.model.Crop;
+import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.model.CropLog;
+import com.plantfarmlogger.model.subclasses.HerbCrop;
 import com.plantfarmlogger.view.MainWindow;
+import com.plantfarmlogger.view.components.BaseDashboardView;
+
+import javax.swing.UIManager;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.UUID;
+
 
 public class Main {
     public static void main(String[] args) {
 
         System.out.println("Farm Logger start");
 
-        ensureCsvResources();
-        copyResourcesToOut();
-
         SwingUtilities.invokeLater(() -> {
             try {
 
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
             MainWindow mainWindow = new MainWindow();
+            UserController userController = UserController.getInstance();
+            User testUser = userController.getUser("64b49616-0515-41af-8080-9fe86d85336c");
+
+            mainWindow.getNavigator().showHome(testUser);
 
             mainWindow.setVisible(true);
         });
-    }
-
-    private static void ensureCsvResources() {
-        Path csvDir = Path.of("src", "main", "resources", "csv");
-        List<String> requiredFiles = List.of(
-                "cropbeds.csv",
-                "croplogs.csv",
-                "crops.csv",
-                "users.csv");
-
-        try {
-            if (Files.notExists(csvDir)) {
-                Files.createDirectories(csvDir);
-                System.out.println("Created directory: " + csvDir.toAbsolutePath());
-            }
-
-            for (String fileName : requiredFiles) {
-                Path filePath = csvDir.resolve(fileName);
-                if (Files.notExists(filePath)) {
-                    Files.createFile(filePath);
-                    System.out.println("Created file: " + filePath.toAbsolutePath());
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Failed to prepare CSV resources: " + e.getMessage());
-        }
-    }
-
-    private static void copyResourcesToOut() {
-        Path resourcesDir = Path.of("src", "main", "resources");
-        Path outDir = Path.of("out");
-
-        try {
-            if (Files.notExists(resourcesDir)) {
-                return; // nothing to copy
-            }
-
-            Files.createDirectories(outDir);
-
-            Files.walk(resourcesDir).forEach(source -> {
-                try {
-                    Path target = outDir.resolve(resourcesDir.relativize(source));
-                    if (Files.isDirectory(source)) {
-                        Files.createDirectories(target);
-                    } else {
-                        Files.createDirectories(target.getParent());
-                        Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
-                    }
-                } catch (IOException e) {
-                    System.err.println("Failed copying resource " + source + ": " + e.getMessage());
-                }
-            });
-        } catch (IOException e) {
-            System.err.println("Failed to copy resources: " + e.getMessage());
-        }
     }
 }

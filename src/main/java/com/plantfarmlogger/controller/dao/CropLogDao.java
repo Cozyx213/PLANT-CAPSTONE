@@ -38,9 +38,11 @@ public class CropLogDao {
                
                 String farmer = spl[6];
                 String cropId = spl[7];
+                System.out.println(actionsJoinedWithSemicolon);
                 String[] actionsArray = actionsJoinedWithSemicolon.split(";");
                 ArrayList<Action> actionsList = new ArrayList<>();
                 for(String action : actionsArray){
+                    System.out.println(action);
                     actionsList.add(Action.valueOf(action));
                 }
                 CropLog n = new CropLog(id, notes, date, healthStatus, growthStatus, actionsList, farmer, cropId);
