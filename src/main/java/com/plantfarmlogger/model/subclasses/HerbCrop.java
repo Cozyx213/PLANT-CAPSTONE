@@ -101,8 +101,7 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
 
         LocalDate nextPrune;
 
-        if (pruningDate == null) {
-            // First pruning uses HALF the base maturity days (herb-specific rule)
+        if (pruningDate == null || pruningDate.equals("null") || pruningDate.isBlank()) {            // First pruning uses HALF the base maturity days (herb-specific rule)
             LocalDate firstPossiblePrune = planted.plusDays(baseDays / 2);
 
             if (firstPossiblePrune.isAfter(today)) {

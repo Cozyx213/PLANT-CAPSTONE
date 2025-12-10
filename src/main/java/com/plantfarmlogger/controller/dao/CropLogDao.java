@@ -41,6 +41,7 @@ public class CropLogDao {
                 String[] actionsArray = actionsJoinedWithSemicolon.split(";");
                 ArrayList<Action> actionsList = new ArrayList<>();
                 for(String action : actionsArray){
+                    if (action == null || action.isBlank()) continue; // skip empty entries
                     actionsList.add(Action.valueOf(action));
                 }
                 CropLog n = new CropLog(id, notes, date, healthStatus, growthStatus, actionsList, farmer, cropId);

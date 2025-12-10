@@ -15,22 +15,28 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.geom.RoundRectangle2D;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
+import static javax.swing.JOptionPane.showMessageDialog;
 
 public class CropCardPanel extends JPanel {
 
+    private String cropName, plantType, soilType, size;
+    private LocalDate datePlanted, lastFertilized;
 
     private JPanel cropSpecificPanel;
     private JPanel herbPanel;
     private JPanel leafPanel;
     private JPanel rootPanel;
     private JTextField soilTypeField;
-    private JComboBox<String> subclassCropField, plantTypeField;
+    private JComboBox<String> subclassCropField, plantTypeField, soilCombo;
     private JSpinner widthSpinner,  heightSpinner, lengthSpinner;
     private JSpinner herbBaseGrowingDaysSpinner;
     private JTextField herbActiveCompoundsField;
@@ -78,9 +84,9 @@ public class CropCardPanel extends JPanel {
             "onion",
             "garlic"};
 
-    private final Runnable onSave;   
-    private final Consumer<Crop> onNavigate; 
-    private final Runnable onCancel;         
+    private final Runnable onSave;   // Callback to unlock Home "Add" button
+    private final Consumer<Crop> onNavigate; // Callback to switch screens
+    private final Runnable onCancel;         // Callback to remove card if cancelled
 
     public CropCardPanel(User user, Runnable onSave, Consumer<Crop> onNavigate, Runnable onCancel) {
         this.currentUser = user;
@@ -103,14 +109,15 @@ public class CropCardPanel extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(new EmptyBorder(0, 15, 0, 0));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
         switchToDisplayMode(crop);
     }
 
     private void initInputMode() {
-        removeAll(); 
+        removeAll(); // Clear previous components
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // Add a prompt/border style here if desired
 
 
         subclassCropField = new JComboBox<>(subclassTypes);
@@ -146,7 +153,7 @@ public class CropCardPanel extends JPanel {
                 CardLayout cl = (CardLayout) cropSpecificPanel.getLayout();
                 cl.show(cropSpecificPanel, selectedCategory);
 
-          
+                // Update plantTypeField list
                 String[] newItems;
                 switch (selectedCategory) {
                     case "HerbCrop" -> newItems = herbTypes;
@@ -156,7 +163,7 @@ public class CropCardPanel extends JPanel {
                 plantTypeField.setModel(new DefaultComboBoxModel<>(newItems));
             }
         });
-
+        // --- Buttons (Save / Cancel) ---
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttons.setOpaque(false);
 
@@ -195,15 +202,22 @@ public class CropCardPanel extends JPanel {
                     height,
                     length,
                     currentUser.getId(),
-                    LocalDate.now().toString(),  
+                    LocalDate.now().toString(),  // pruningDate, can be null for Root
                     userBaseDays,
                     activeCompounds,
                     userRootDensity
             );
-            onSave.run(); 
-            switchToDisplayMode(newCrop);
+            CropCardPanel displayCard = new CropCardPanel(newCrop, onNavigate);
 
+            // Replace the input card in the container
+            Container parent = CropCardPanel.this.getParent();
+            int index = Arrays.asList(parent.getComponents()).indexOf(CropCardPanel.this);
 
+            parent.remove(CropCardPanel.this);
+            parent.add(displayCard, index);
+            parent.revalidate();
+            parent.repaint();
+            onSave.run();
         });
 
         JButton cancelBtn = UIButtons.createTextButton("Cancel");
@@ -284,15 +298,7 @@ public class CropCardPanel extends JPanel {
         viewLogsBtn.setMaximumSize(new Dimension(200, 35));
         viewLogsBtn.addActionListener(e -> onNavigate.accept(crop));
 
-
-        RoundedRightImagePanel imageBGPanel;
-        imageBGPanel = new RoundedRightImagePanel("/farm_1.png", 20);
-        if (crop instanceof RootCrop){
-            imageBGPanel = new RoundedRightImagePanel("/root_farm.png", 20);
-        } else if (crop instanceof LeafCrop){
-            imageBGPanel = new RoundedRightImagePanel("/leaf_farm.png", 20);
-        }
-
+        RoundedRightImagePanel imageBGPanel = new RoundedRightImagePanel("/farm_1.png", 20);
         imageBGPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         imageBGPanel.setBorder(new EmptyBorder(20, 20, 15, 20));
         //imageBGPanel.add(Box.createVerticalStrut(40));
@@ -306,28 +312,207 @@ public class CropCardPanel extends JPanel {
         pruningDateLabel.setForeground(UIColors.BUTTON_COLOR);
 
         String cropType = crop.getClass().getSimpleName();
+        JButton setManualPruningDate = UIButtons.createRoundedButton("Manual Pruning Date");
         switch (cropType) {
             case "HerbCrop":
                 pruningDateLabel.setText("Pruning Date: " + ((HerbCrop)crop).getPruningDate());
                 infoPanel.add(pruningDateLabel);
 
-                setCalculatedPruningDateBtn.addActionListener(e -> ((HerbCrop)crop).setCalculatedPruningDate());
+                JLabel activeCompoundsLabel = new JLabel();
+                activeCompoundsLabel.setFont(UIFont.lexend(Font.PLAIN, 16));
+                activeCompoundsLabel.setForeground(UIColors.BUTTON_COLOR);
+                activeCompoundsLabel.setText("Active Compounds: " +
+                        (((HerbCrop) crop).getActiveCompounds() != null ? ((HerbCrop) crop).getActiveCompounds() : "None"));
+                infoPanel.add(activeCompoundsLabel);
+
+                setCalculatedPruningDateBtn.addActionListener(e -> {
+                    if (!(crop instanceof HerbCrop)) return;
+                    HerbCrop herb = (HerbCrop) crop;
+
+                    // Calculate pruning date
+                    herb.setCalculatedPruningDate();
+
+                    // Update label
+                    pruningDateLabel.setText("Pruning Date: " + herb.getPruningDate());
+
+                    // Persist via controller
+                    CropController.getInstance().updateCrop(
+                            "HerbCrop",
+                            herb.getID(),
+                            herb.getPlantType(),
+                            herb.getSoilType(),
+                            herb.getLastFertilized(),
+                            herb.getDatePlanted(),
+                            herb.getWidth(),
+                            herb.getHeight(),
+                            herb.getLength(),
+                            herb.getUserId(),
+                            herb.getPruningDate(),
+                            herb.getUserBaseGrowingDays(),
+                            herb.getActiveCompounds(),
+                            null  // userRootDensity not used for HerbCrop
+                    );
+                });
                 imageBGPanel.add(setCalculatedPruningDateBtn);
+
+
+                setManualPruningDate.setPreferredSize(new Dimension(200, 35));
+                setManualPruningDate.setMaximumSize(new Dimension(200, 35));
+                setManualPruningDate.addActionListener(e -> {
+                    if (!(crop instanceof HerbCrop)) return;
+                    HerbCrop herb = (HerbCrop) crop;
+
+                    String input = JOptionPane.showInputDialog(
+                            CropCardPanel.this,
+                            "Enter pruning date (YYYY-MM-DD):",
+                            herb.getPruningDate() != null ? herb.getPruningDate() : LocalDate.now().toString()
+                    );
+
+                    if (input != null && !input.isBlank()) {
+                        try {
+                            LocalDate.parse(input);  // validate date format
+                            herb.setExplicitPruningDate(input);
+                            pruningDateLabel.setText("Pruning Date: " + herb.getPruningDate());
+
+                            // Persist via controller
+                            CropController.getInstance().updateCrop(
+                                    "HerbCrop",
+                                    herb.getID(),
+                                    herb.getPlantType(),
+                                    herb.getSoilType(),
+                                    herb.getLastFertilized(),
+                                    herb.getDatePlanted(),
+                                    herb.getWidth(),
+                                    herb.getHeight(),
+                                    herb.getLength(),
+                                    herb.getUserId(),
+                                    herb.getPruningDate(),
+                                    herb.getUserBaseGrowingDays(),
+                                    herb.getActiveCompounds(),
+                                    null  // userRootDensity not used for HerbCrop
+                            );
+
+                        } catch (DateTimeParseException ex) {
+                            JOptionPane.showMessageDialog(
+                                    CropCardPanel.this,
+                                    "Invalid date format. Use YYYY-MM-DD",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+                    }
+                });
+                imageBGPanel.add(setManualPruningDate);
+                JButton setActiveCompoundsBtn = UIButtons.createRoundedButton("Edit Active Compounds");
+                setActiveCompoundsBtn.setPreferredSize(new Dimension(200, 35));
+                setActiveCompoundsBtn.setMaximumSize(new Dimension(200, 35));
+                setActiveCompoundsBtn.addActionListener(e -> {
+                    HerbCrop herb = (HerbCrop) crop;
+                    String input = JOptionPane.showInputDialog(
+                            CropCardPanel.this,
+                            "Enter active compounds description:",
+                            herb.getActiveCompounds() != null ? herb.getActiveCompounds() : ""
+                    );
+                    if (input != null) {
+                        herb.setActiveCompounds(input);
+                        activeCompoundsLabel.setText("Active Compounds: " + (input.isBlank() ? "None" : input));
+
+                        // Persist via controller
+                        CropController.getInstance().updateCrop(
+                                "HerbCrop",
+                                herb.getID(),
+                                herb.getPlantType(),
+                                herb.getSoilType(),
+                                herb.getLastFertilized(),
+                                herb.getDatePlanted(),
+                                herb.getWidth(),
+                                herb.getHeight(),
+                                herb.getLength(),
+                                herb.getUserId(),
+                                herb.getPruningDate(),
+                                herb.getUserBaseGrowingDays(),
+                                herb.getActiveCompounds(),
+                                null
+                        );
+                        activeCompoundsLabel.setText("Active Compounds: " + (input.isBlank() ? "None" : input));
+                        activeCompoundsLabel.revalidate();
+                        activeCompoundsLabel.repaint();
+                    }
+                });
+
+                imageBGPanel.add(setActiveCompoundsBtn);
                 break;
             case "LeafCrop":
                 pruningDateLabel.setText("Pruning Date: " + ((LeafCrop)crop).getPruningDate());
                 infoPanel.add(pruningDateLabel);
 
-                setCalculatedPruningDateBtn.addActionListener(e -> ((LeafCrop)crop).setCalculatedPruningDate());
+                setCalculatedPruningDateBtn.addActionListener(e -> {
+                    ((LeafCrop) crop).setCalculatedPruningDate();
+                    pruningDateLabel.setText("Pruning Date: " + ((LeafCrop) crop).getPruningDate());
+
+                    // Persist via controller
+                    LeafCrop leaf = (LeafCrop) crop;
+                    CropController.getInstance().updateCrop(
+                            "LeafCrop",
+                            leaf.getID(),
+                            leaf.getPlantType(),
+                            leaf.getSoilType(),
+                            leaf.getLastFertilized(),
+                            leaf.getDatePlanted(),
+                            leaf.getWidth(),
+                            leaf.getHeight(),
+                            leaf.getLength(),
+                            leaf.getUserId(),
+                            leaf.getPruningDate(),
+                            leaf.getUserBaseGrowingDays(),
+                            null,  // activeCompounds not used for LeafCrop
+                            null   // userRootDensity not used for LeafCrop
+                    );
+                });
                 imageBGPanel.add(setCalculatedPruningDateBtn);
 
-                JButton setManualPruningDate = UIButtons.createRoundedButton("Manual Pruning Date");
                 setManualPruningDate.setPreferredSize(new Dimension(200, 35));
                 setManualPruningDate.setMaximumSize(new Dimension(200, 35));
-                setManualPruningDate.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(null, "Estimated Mass: " + ((RootCrop)crop).estimateMass(), "Estimated Mass", JOptionPane.INFORMATION_MESSAGE);
+                setManualPruningDate.addActionListener(e -> {
+                    LeafCrop leaf = (LeafCrop) crop;
+                    String input = JOptionPane.showInputDialog(
+                            CropCardPanel.this,
+                            "Enter pruning date (YYYY-MM-DD):",
+                            leaf.getPruningDate() != null ? leaf.getPruningDate() : LocalDate.now().toString()
+                    );
+
+                    if (input != null && !input.isBlank()) {
+                        try {
+                            LocalDate.parse(input);  // Validate format
+                            leaf.setExplicitPruningDate(input);
+                            pruningDateLabel.setText("Pruning Date: " + leaf.getPruningDate());
+
+                            // Persist via controller
+                            CropController.getInstance().updateCrop(
+                                    "LeafCrop",
+                                    leaf.getID(),
+                                    leaf.getPlantType(),
+                                    leaf.getSoilType(),
+                                    leaf.getLastFertilized(),
+                                    leaf.getDatePlanted(),
+                                    leaf.getWidth(),
+                                    leaf.getHeight(),
+                                    leaf.getLength(),
+                                    leaf.getUserId(),
+                                    leaf.getPruningDate(),
+                                    leaf.getUserBaseGrowingDays(),
+                                    null,  // activeCompounds not used for LeafCrop
+                                    null   // userRootDensity not used for LeafCrop
+                            );
+
+                        } catch (DateTimeParseException ex) {
+                            JOptionPane.showMessageDialog(
+                                    CropCardPanel.this,
+                                    "Invalid date format. Use YYYY-MM-DD",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
                     }
                 });
                 imageBGPanel.add(setManualPruningDate);
@@ -336,12 +521,21 @@ public class CropCardPanel extends JPanel {
                 JButton getEstimatedMassBtn = UIButtons.createRoundedButton("Estimated Mass");
                 getEstimatedMassBtn.setPreferredSize(new Dimension(200, 35));
                 getEstimatedMassBtn.setMaximumSize(new Dimension(200, 35));
-                getEstimatedMassBtn.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(null, "Estimated Mass: " + ((RootCrop)crop).estimateMass(), "Estimated Mass", JOptionPane.INFORMATION_MESSAGE);
+                getEstimatedMassBtn.addActionListener(e -> {
+                    if (crop instanceof RootCrop rootCrop) {
+                        double mass = rootCrop.estimateMass();
+                        JOptionPane.showMessageDialog(CropCardPanel.this,
+                                "Estimated Mass: " + mass + " kg",
+                                "Estimated Mass",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(CropCardPanel.this,
+                                "This crop is not a RootCrop!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 });
+
                 imageBGPanel.add(getEstimatedMassBtn);
                 break;
             default:
@@ -349,6 +543,33 @@ public class CropCardPanel extends JPanel {
         }
 
         imageBGPanel.add(viewLogsBtn);
+        JButton deleteBtn = UIButtons.createRoundedButton("Delete Crop");
+        deleteBtn.setPreferredSize(new Dimension(200, 35));
+        deleteBtn.setMaximumSize(new Dimension(200, 35));
+        deleteBtn.addActionListener(e -> {
+            if (crop == null) return;
+
+            try {
+                boolean success = CropController.getInstance().delete(crop.getID());
+                if (success) {
+                    Container parent = CropCardPanel.this.getParent();
+                    if (parent != null) {
+                        parent.remove(CropCardPanel.this);
+                        parent.revalidate();
+                        parent.repaint();
+                    }
+                } else {
+                    System.err.println("Failed to delete crop with ID: " + crop.getID());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+
+// Add the delete button to your imageBGPanel along with other buttons
+        imageBGPanel.add(deleteBtn);
+
         imageBGPanel.setOpaque(false);
         imageBGPanel.setPreferredSize(new Dimension(300, 168));
 
@@ -414,7 +635,7 @@ public class CropCardPanel extends JPanel {
 
                 g2.dispose();
             }
-       
+            // Paint the children (The "View Logs" button)
             super.paintComponent(g);
         }
     }
@@ -457,8 +678,9 @@ public class CropCardPanel extends JPanel {
     public class CustomComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            setText(value.toString()); 
+            setText(value.toString()); // Set the text of the item
             setFont(UIFont.lexend(Font.PLAIN, 14));
+            // Apply custom styling based on state or value
             if (isSelected) {
                 setForeground(UIColors.TEXT_COLOR);
                 setBackground(UIColors.BG_COLOR_GENERAL);
@@ -467,7 +689,7 @@ public class CropCardPanel extends JPanel {
                 setForeground(UIColors.TEXT_DARK);
             }
 
-            setOpaque(true);
+            setOpaque(true); // Must be true for background to be visible
             return this;
         }
     }
