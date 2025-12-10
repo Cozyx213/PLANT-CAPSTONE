@@ -33,7 +33,7 @@ public class Main {
             } catch (Exception ignored) {}
             MainWindow mainWindow = new MainWindow();
             UserController userController = UserController.getInstance();
-            User testUser = userController.getUser("64b49616-0515-41af-8080-9fe86d85336c");
+            User testUser = userController.getUser("2b2e58b5-ff21-4ba3-83d2-1f1bc7d5442c");
 
             mainWindow.getNavigator().showHome(testUser);
 

@@ -109,7 +109,6 @@ public class CropCardPanel extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(new EmptyBorder(0, 15, 0, 0));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
         switchToDisplayMode(crop);
     }
@@ -118,11 +117,6 @@ public class CropCardPanel extends JPanel {
         removeAll(); // Clear previous components
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // --- Input Field ---
-//        cropNameField = new JTextField();
-//        cropNameField.setFont(UIFont.lexend(Font.BOLD, 18));
-//        cropNameField.setText("Enter Crop Name");
-//        cropNameField.setForeground(UIColors.TEXT_DARK);
         // Add a prompt/border style here if desired
 
 
@@ -213,11 +207,17 @@ public class CropCardPanel extends JPanel {
                     activeCompounds,
                     userRootDensity
             );
-            onSave.run(); // Tell Controller we are done editing
-            switchToDisplayMode(newCrop);
-//                showMessageDialog(this, "All field must be filled", "ALERT", JOptionPane.INFORMATION_MESSAGE);
-            // alert that all fields must be filled
+            CropCardPanel displayCard = new CropCardPanel(newCrop, onNavigate);
 
+            // Replace the input card in the container
+            Container parent = CropCardPanel.this.getParent();
+            int index = Arrays.asList(parent.getComponents()).indexOf(CropCardPanel.this);
+
+            parent.remove(CropCardPanel.this);
+            parent.add(displayCard, index);
+            parent.revalidate();
+            parent.repaint();
+            onSave.run();
         });
 
         JButton cancelBtn = UIButtons.createTextButton("Cancel");
@@ -318,6 +318,13 @@ public class CropCardPanel extends JPanel {
                 pruningDateLabel.setText("Pruning Date: " + ((HerbCrop)crop).getPruningDate());
                 infoPanel.add(pruningDateLabel);
 
+                JLabel activeCompoundsLabel = new JLabel();
+                activeCompoundsLabel.setFont(UIFont.lexend(Font.PLAIN, 16));
+                activeCompoundsLabel.setForeground(UIColors.BUTTON_COLOR);
+                activeCompoundsLabel.setText("Active Compounds: " +
+                        (((HerbCrop) crop).getActiveCompounds() != null ? ((HerbCrop) crop).getActiveCompounds() : "None"));
+                infoPanel.add(activeCompoundsLabel);
+
                 setCalculatedPruningDateBtn.addActionListener(e -> {
                     if (!(crop instanceof HerbCrop)) return;
                     HerbCrop herb = (HerbCrop) crop;
@@ -395,8 +402,45 @@ public class CropCardPanel extends JPanel {
                         }
                     }
                 });
-
                 imageBGPanel.add(setManualPruningDate);
+                JButton setActiveCompoundsBtn = UIButtons.createRoundedButton("Edit Active Compounds");
+                setActiveCompoundsBtn.setPreferredSize(new Dimension(200, 35));
+                setActiveCompoundsBtn.setMaximumSize(new Dimension(200, 35));
+                setActiveCompoundsBtn.addActionListener(e -> {
+                    HerbCrop herb = (HerbCrop) crop;
+                    String input = JOptionPane.showInputDialog(
+                            CropCardPanel.this,
+                            "Enter active compounds description:",
+                            herb.getActiveCompounds() != null ? herb.getActiveCompounds() : ""
+                    );
+                    if (input != null) {
+                        herb.setActiveCompounds(input);
+                        activeCompoundsLabel.setText("Active Compounds: " + (input.isBlank() ? "None" : input));
+
+                        // Persist via controller
+                        CropController.getInstance().updateCrop(
+                                "HerbCrop",
+                                herb.getID(),
+                                herb.getPlantType(),
+                                herb.getSoilType(),
+                                herb.getLastFertilized(),
+                                herb.getDatePlanted(),
+                                herb.getWidth(),
+                                herb.getHeight(),
+                                herb.getLength(),
+                                herb.getUserId(),
+                                herb.getPruningDate(),
+                                herb.getUserBaseGrowingDays(),
+                                herb.getActiveCompounds(),
+                                null
+                        );
+                        activeCompoundsLabel.setText("Active Compounds: " + (input.isBlank() ? "None" : input));
+                        activeCompoundsLabel.revalidate();
+                        activeCompoundsLabel.repaint();
+                    }
+                });
+
+                imageBGPanel.add(setActiveCompoundsBtn);
                 break;
             case "LeafCrop":
                 pruningDateLabel.setText("Pruning Date: " + ((LeafCrop)crop).getPruningDate());
@@ -477,12 +521,21 @@ public class CropCardPanel extends JPanel {
                 JButton getEstimatedMassBtn = UIButtons.createRoundedButton("Estimated Mass");
                 getEstimatedMassBtn.setPreferredSize(new Dimension(200, 35));
                 getEstimatedMassBtn.setMaximumSize(new Dimension(200, 35));
-                getEstimatedMassBtn.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(null, "Estimated Mass: " + ((RootCrop)crop).estimateMass(), "Estimated Mass", JOptionPane.INFORMATION_MESSAGE);
+                getEstimatedMassBtn.addActionListener(e -> {
+                    if (crop instanceof RootCrop rootCrop) {
+                        double mass = rootCrop.estimateMass();
+                        JOptionPane.showMessageDialog(CropCardPanel.this,
+                                "Estimated Mass: " + mass + " kg",
+                                "Estimated Mass",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(CropCardPanel.this,
+                                "This crop is not a RootCrop!",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 });
+
                 imageBGPanel.add(getEstimatedMassBtn);
                 break;
             default:
@@ -490,6 +543,33 @@ public class CropCardPanel extends JPanel {
         }
 
         imageBGPanel.add(viewLogsBtn);
+        JButton deleteBtn = UIButtons.createRoundedButton("Delete Crop");
+        deleteBtn.setPreferredSize(new Dimension(200, 35));
+        deleteBtn.setMaximumSize(new Dimension(200, 35));
+        deleteBtn.addActionListener(e -> {
+            if (crop == null) return;
+
+            try {
+                boolean success = CropController.getInstance().delete(crop.getID());
+                if (success) {
+                    Container parent = CropCardPanel.this.getParent();
+                    if (parent != null) {
+                        parent.remove(CropCardPanel.this);
+                        parent.revalidate();
+                        parent.repaint();
+                    }
+                } else {
+                    System.err.println("Failed to delete crop with ID: " + crop.getID());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+
+// Add the delete button to your imageBGPanel along with other buttons
+        imageBGPanel.add(deleteBtn);
+
         imageBGPanel.setOpaque(false);
         imageBGPanel.setPreferredSize(new Dimension(300, 168));
 
@@ -608,11 +688,7 @@ public class CropCardPanel extends JPanel {
                 setBackground(list.getBackground());
                 setForeground(UIColors.TEXT_DARK);
             }
-            // Example: Change color for a specific item (e.g., the first item)
-//            if (index == 0) {
-//                setForeground(UIColors.TEXT_COLOR);
-//                setBackground(UIColors.BG_COLOR_GENERAL);
-//            }
+
             setOpaque(true); // Must be true for background to be visible
             return this;
         }
