@@ -1,5 +1,22 @@
 package com.plantfarmlogger.view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
+
 import com.plantfarmlogger.controller.CropController;
 import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
@@ -8,13 +25,6 @@ import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.view.components.BaseDashboardView;
 import com.plantfarmlogger.view.components.CropCardPanel;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class Home extends BaseDashboardView {
     private JPanel cardsContainer;
@@ -27,7 +37,7 @@ public class Home extends BaseDashboardView {
     private Runnable onCancel;
 
     public Home(User user, AppNavigator appNavigator) {
-        super(user,  appNavigator);
+        super(user, appNavigator);
     }
 
     @Override
@@ -47,7 +57,7 @@ public class Home extends BaseDashboardView {
             toggleAddButton(true); // Unlock
         };
         int CropBeds = 0;
-        java.net.URL imageUrl = getClass().getResource("/plant-icon.png");
+        java.net.URL imageUrl = getClass().getResource("/png/plant-icon.png");
         JPanel content = new JPanel(new BorderLayout());
         content.setBackground(UIColors.BG_COLOR);
 
@@ -75,7 +85,7 @@ public class Home extends BaseDashboardView {
             ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
             plantIcon = new JLabel(scaledLogoIcon);
         } else {
-            System.err.println("Error: Image resource not found at /logo.png");
+            System.err.println("Error: Image resource not found at /png/plant-icon.png");
         }
 
         JLabel title = new JLabel("My Farm");
@@ -111,19 +121,20 @@ public class Home extends BaseDashboardView {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         content.add(scrollPane, BorderLayout.CENTER);
 
-        CropController  cropController = CropController.getInstance();
-        ArrayList<Crop> cropsOfUser= cropController.getAllByUserId(user.getId());
-        for(Crop crop : cropsOfUser){
-            CropCardPanel  cardPanel = new CropCardPanel(crop, onNavigate);
+        CropController cropController = CropController.getInstance();
+        ArrayList<Crop> cropsOfUser = cropController.getAllByUserId(user.getId());
+        for (Crop crop : cropsOfUser) {
+            CropCardPanel cardPanel = new CropCardPanel(crop, onNavigate);
             addCardToTop(cardPanel);
         }
-        setAddButtonListener(e->handleAddNewCard());
+        setAddButtonListener(e -> handleAddNewCard());
 
         return content;
     }
 
     private void handleAddNewCard() {
-        if (isCreating) return; // Prevent multiple cards
+        if (isCreating)
+            return; // Prevent multiple cards
 
         // lock the UI
         isCreating = true;

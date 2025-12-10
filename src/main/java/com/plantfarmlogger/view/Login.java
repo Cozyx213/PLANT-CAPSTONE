@@ -43,7 +43,7 @@ public class Login extends JPanel {
     private final JPasswordField passField;
 
     public Login(AppNavigator navigator) {
-        java.net.URL imageUrl = getClass().getResource("/logo_lite.png");
+        java.net.URL imageUrl = getClass().getResource("/png/logo_lite.png");
         this.navigator = navigator;
 
         setLayout(new GridBagLayout());
@@ -63,7 +63,7 @@ public class Login extends JPanel {
             ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
             logoLabel = new JLabel(scaledLogoIcon);
         } else {
-            System.err.println("Error: Image resource not found at /files/logo.png");
+            System.err.println("Error: Image resource not found at /png/logo.png");
             logoLabel.setForeground(UIColors.BG_COLOR);
             logoLabel.setFont(UIFont.lexend(Font.BOLD, 26));
         }

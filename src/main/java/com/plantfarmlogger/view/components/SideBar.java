@@ -1,17 +1,35 @@
 package com.plantfarmlogger.view.components;
 
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.FontUIResource;
-import java.awt.*;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.function.Consumer;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.FontUIResource;
 
 import com.plantfarmlogger.controller.CropController;
 import com.plantfarmlogger.model.Crop;
@@ -20,6 +38,7 @@ import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.view.AppNavigator;
+
 public class SideBar extends JPanel {
     private final JButton addCropBed;
     private final JButton logOut;
@@ -28,7 +47,11 @@ public class SideBar extends JPanel {
     public SideBar(User user, AppNavigator appNavigator, Consumer<Crop> onNavigate) {
         this.onNavigate = onNavigate;
 
-        java.net.URL imageUrl = getClass().getResource("/logo_lite.png");
+        // Load logo from classpath root (resources/png)
+        java.net.URL imageUrl = getClass().getResource("/png/logo_lite.png");
+        if (imageUrl == null) {
+            imageUrl = getClass().getResource("/png/logo.png"); // fallback if lite variant missing
+        }
         System.out.println(System.getProperty("user.dir"));
         System.out.println(new File(".").getAbsolutePath());
 
@@ -57,12 +80,10 @@ public class SideBar extends JPanel {
             ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
             logoLabel = new JLabel(scaledLogoIcon);
         } else {
-            System.err.println("Error: Image resource not found at /files/logo.png");
+            System.err.println("Error: Image resource not found at /png/logo.png");
             logoLabel.setForeground(UIColors.BG_COLOR);
             logoLabel.setFont(UIFont.lexend(Font.BOLD, 26));
         }
-
-
 
         JLabel uName = new JLabel(user.getName());
         uName.setForeground(UIColors.TEXT_COLOR);
@@ -89,8 +110,8 @@ public class SideBar extends JPanel {
         cropBeds.setFont(UIFont.lexend(Font.BOLD, 32));
 
         CropController cropController = CropController.getInstance();
-        ArrayList<Crop> cropsOfUser= cropController.getAllByUserId(user.getId());
-        for(Crop crop : cropsOfUser){
+        ArrayList<Crop> cropsOfUser = cropController.getAllByUserId(user.getId());
+        for (Crop crop : cropsOfUser) {
             JButton cropBedButton = UIButtons.createSettingsButton(crop.getPlantType());
             cropBedButton.addActionListener(e -> {
                 if (this.onNavigate != null) {
@@ -103,7 +124,6 @@ public class SideBar extends JPanel {
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);
         cropBedsList.getViewport().setOpaque(false);
-     
 
         cropBedsList.setMinimumSize(new Dimension(230, 90));
         cropBedsList.setPreferredSize(new Dimension(230, 90));
@@ -120,7 +140,7 @@ public class SideBar extends JPanel {
         JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
         addCropBed = UIButtons.createSettingsButton("Add Crop Bed");
 
-        //buttonWrapper.add(this.addCropBed);
+        // buttonWrapper.add(this.addCropBed);
         buttonWrapper.setOpaque(false);
         addCropBed.setMaximumSize(new Dimension(20, 20));
         cropsTitleRow.add(buttonWrapper);
@@ -131,7 +151,6 @@ public class SideBar extends JPanel {
         cropsPanel.add(Box.createVerticalStrut(10));
         cropsPanel.add(cropBedsList);
         cropsPanel.setOpaque(false);
-
 
         JPanel settingsPanel = new JPanel();
         settingsPanel.setOpaque(false);
@@ -161,7 +180,7 @@ public class SideBar extends JPanel {
 
     }
 
-    public static void setUIFont(FontUIResource f){
+    public static void setUIFont(FontUIResource f) {
         Enumeration<Object> keys = UIManager.getDefaults().keys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();

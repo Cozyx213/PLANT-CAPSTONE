@@ -33,6 +33,7 @@ import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFields;
 import com.plantfarmlogger.util.UIFont;
+
 public class Register extends JPanel {
     private final AppNavigator navigator;
 
@@ -42,7 +43,7 @@ public class Register extends JPanel {
 
     public Register(AppNavigator navigator) {
         this.navigator = navigator;
-        java.net.URL imageUrl = getClass().getResource("/logo_lite.png");
+        java.net.URL imageUrl = getClass().getResource("/png/logo_lite.png");
         setLayout(new GridBagLayout());
         setBackground(UIColors.BG_COLOR_GENERAL);
 
@@ -58,7 +59,7 @@ public class Register extends JPanel {
             ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
             logoLabel = new JLabel(scaledLogoIcon);
         } else {
-            System.err.println("Error: Image resource not found at /files/logo.png");
+            System.err.println("Error: Image resource not found at /png/logo.png");
             logoLabel.setForeground(UIColors.BG_COLOR);
             logoLabel.setFont(UIFont.lexend(Font.BOLD, 26));
         }
@@ -80,7 +81,6 @@ public class Register extends JPanel {
         nameField = addFieldToPanel(leftPanel, "Name");
         usernameField = addFieldToPanel(leftPanel, "Username");
         ageField = addFieldToPanel(leftPanel, "Age");
-        
 
         JPanel rightPanel = createColumnPanel();
         addressField = addFieldToPanel(rightPanel, "Address");
@@ -195,7 +195,7 @@ public class Register extends JPanel {
         String name = nameField.getText().trim();
         String username = usernameField.getText().trim();
         String address = addressField.getText().trim();
-       
+
         String ageText = ageField.getText().trim();
         char[] passChars = passField.getPassword();
         char[] confirmChars = confirmPassField.getPassword();
@@ -231,12 +231,11 @@ public class Register extends JPanel {
         UserController userController = UserController.getInstance();
         boolean res = userController.addUser(name, username, password, address, age);
 
-
         // Clear sensitive char arrays
         java.util.Arrays.fill(passChars, '\0');
         java.util.Arrays.fill(confirmChars, '\0');
 
-        if(!res){
+        if (!res) {
             JOptionPane.showMessageDialog(this, "Failed to create account.", "Error",
                     JOptionPane.INFORMATION_MESSAGE);
             return;
