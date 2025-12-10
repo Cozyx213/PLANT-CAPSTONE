@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.plantfarmlogger.enums.Action;
-import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.CropLog;
 import com.plantfarmlogger.enums.GrowthStatus;
 import com.plantfarmlogger.enums.HealthStatus;

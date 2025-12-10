@@ -80,51 +80,6 @@ public class HerbCrop extends Crop implements Prunable, Medicinal {
         this.pruningDate = date;
     }
 
-    /**
-     * Calculates and sets the next pruning date for this herb crop based on herb-specific
-     * growth and harvest behavior.
-     * <p>
-     * Herb crops follow a different pruning cycle compared to leaf crops:
-     *
-     * <ul>
-     *     <li><b>First pruning:</b> Occurs when the herb reaches approximately
-     *     half of its base maturity period. Culinary herbs (basil, mint, thyme, etc.)
-     *     are typically pruned early to encourage branching.</li>
-     *
-     *     <li><b>Subsequent prunings:</b> After the first prune, herbs regrow at a
-     *     consistent rate defined by a species-specific pruning interval.
-     *     Their full maturity date is no longer relevant.</li>
-     *
-     *     <li><b>No backdated pruning:</b> If the first calculated prune date or a
-     *     subsequent interval prune falls in the past, the method repeatedly adds
-     *     {@code intervalDays} until a future date is reached.</li>
-     * </ul>
-     *
-     * <p>
-     * Behavior depends on whether the crop has been pruned before:
-     * </p>
-     *
-     * <h3>Case 1: {@code pruningDate == null}</h3>
-     * <ul>
-     *     <li>The first possible pruning date is: {@code planted + baseDays / 2}.</li>
-     *     <li>If this date is still in the future, it becomes the next pruning date.</li>
-     *     <li>If this date is in the past, the method begins adding {@code intervalDays}
-     *     until the resulting date is in the future.</li>
-     * </ul>
-     *
-     * <h3>Case 2: {@code pruningDate != null}</h3>
-     * <ul>
-     *     <li>The next pruning date is calculated as:
-     *         {@code LocalDate.parse(pruningDate) + intervalDays}.</li>
-     *     <li>If this date is already in the past, the method continues adding
-     *         {@code intervalDays} until a future date is found.</li>
-     * </ul>
-     *
-     * <p>
-     * Finally, the resulting date is always guaranteed to be strictly ahead of today.
-     * The computed date is stored back into {@code this.pruningDate} as an ISO-8601 string.
-     * </p>
-     */
     @Override
     public void setCalculatedPruningDate() {
         LocalDate planted = LocalDate.parse(getDatePlanted());

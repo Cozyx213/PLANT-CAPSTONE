@@ -1,22 +1,40 @@
 package com.plantfarmlogger.view;
 
-import com.plantfarmlogger.controller.UserController;
-import com.plantfarmlogger.controller.dao.UserDao;
-import com.plantfarmlogger.model.User;
-
-import com.plantfarmlogger.util.UIButtons;
-import com.plantfarmlogger.util.UIColors;
-import com.plantfarmlogger.util.UIFields;
-import com.plantfarmlogger.util.UIFont;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Arrays;
 import java.util.Map;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import com.plantfarmlogger.controller.UserController;
+import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.util.UIButtons;
+import com.plantfarmlogger.util.UIColors;
+import com.plantfarmlogger.util.UIFields;
+import com.plantfarmlogger.util.UIFont;
 
 public class Login extends JPanel {
 
@@ -49,8 +67,8 @@ public class Login extends JPanel {
             logoLabel.setForeground(UIColors.BG_COLOR);
             logoLabel.setFont(UIFont.lexend(Font.BOLD, 26));
         }
-//        logoLabel.setFont(UIFont.lexend(Font.BOLD, 32));
-//        logoLabel.setForeground(Color.WHITE);
+        logoLabel.setFont(UIFont.lexend(Font.BOLD, 32));
+        logoLabel.setForeground(Color.WHITE);
 
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 0, 40, 0);
@@ -153,19 +171,16 @@ public class Login extends JPanel {
         add(linkPanel, gbc);
     }
 
-    //making the background a gradient
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); // Call superclass method to ensure proper painting
+        super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        // Define start and end colors
+
         Color startColor = new Color(76, 139, 63); // Steel Blue
         Color endColor = new Color(102, 177, 75); // Light Blue
 
-        // Create a vertical gradient from top to bottom
         GradientPaint gp = new GradientPaint(0, 0, startColor, 0, getHeight(), endColor);
 
-        // Set the paint and fill the rectangle
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, getWidth(), getHeight());
     }

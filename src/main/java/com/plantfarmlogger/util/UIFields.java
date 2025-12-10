@@ -112,7 +112,7 @@ public class UIFields {
     private static void setupRoundedField(JTextField field) {
         field.setOpaque(false);
         field.setBorder(new EmptyBorder(5, 15, 5, 15));
-        field.setBackground(UIColors.TEXT_FIELD_BG); // Use the variable
+        field.setBackground(UIColors.TEXT_FIELD_BG); 
         field.setForeground(UIColors.TEXT_DARK);
         field.setFont(UIFont.lexend(Font.PLAIN, 16));
         field.setPreferredSize(new Dimension(300, 40));
