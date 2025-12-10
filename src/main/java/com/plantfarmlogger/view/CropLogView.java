@@ -50,6 +50,9 @@ public class CropLogView extends BaseDashboardView {
         titleBlock.setLayout(new BoxLayout(titleBlock, BoxLayout.Y_AXIS));
         titleBlock.setOpaque(false);
 
+        JButton navigateHome = UIButtons.createTextButton("< Back to Home");
+        navigateHome.addActionListener(e -> navigator.showHome(user));
+
         titleLabel = new JLabel("Loading...");
         titleLabel.setFont(UIFont.lexend(Font.BOLD, 36));
         titleLabel.setForeground(UIColors.BUTTON_COLOR);
@@ -58,15 +61,21 @@ public class CropLogView extends BaseDashboardView {
         countLabel.setFont(UIFont.lexend(Font.PLAIN, 14));
         countLabel.setForeground(UIColors.TEXT_DARK);
 
+        titleBlock.add(navigateHome);
+        titleBlock.add(Box.createVerticalStrut(15));
         titleBlock.add(titleLabel);
         titleBlock.add(Box.createVerticalStrut(5));
         titleBlock.add(countLabel);
 
+        JPanel addBtnWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        addBtnWrapper.setOpaque(false);
         addBtn = UIButtons.createRoundedButton("Add Log");
         addBtn.setPreferredSize(new Dimension(140, 40));
+        addBtn.setMaximumSize(new Dimension(140, 40));
+        addBtnWrapper.add(addBtn);
 
         header.add(titleBlock, BorderLayout.WEST);
-        header.add(addBtn, BorderLayout.EAST);
+        header.add(addBtnWrapper, BorderLayout.EAST);
         content.add(header, BorderLayout.NORTH);
 
         // container for the list of crop log panels
