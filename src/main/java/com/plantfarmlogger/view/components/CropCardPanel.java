@@ -97,8 +97,7 @@ public class CropCardPanel extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(new EmptyBorder(15, 20, 15, 20));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
-
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         initInputMode();
     }
 
@@ -109,7 +108,7 @@ public class CropCardPanel extends JPanel {
         setLayout(new BorderLayout());
         setOpaque(false);
         setBorder(new EmptyBorder(0, 15, 0, 0));
-
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         switchToDisplayMode(crop);
     }
 
@@ -299,9 +298,8 @@ public class CropCardPanel extends JPanel {
         viewLogsBtn.addActionListener(e -> onNavigate.accept(crop));
 
         RoundedRightImagePanel imageBGPanel = new RoundedRightImagePanel("/farm_1.png", 20);
-        imageBGPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        imageBGPanel.setLayout(new BoxLayout(imageBGPanel, BoxLayout.Y_AXIS));
         imageBGPanel.setBorder(new EmptyBorder(20, 20, 15, 20));
-        //imageBGPanel.add(Box.createVerticalStrut(40));
 
         // switch case depending if root, leaf, herb
         JButton setCalculatedPruningDateBtn = UIButtons.createRoundedButton("Auto-Pruning Date");
@@ -354,8 +352,7 @@ public class CropCardPanel extends JPanel {
                     );
                 });
                 imageBGPanel.add(setCalculatedPruningDateBtn);
-
-
+                imageBGPanel.add(Box.createVerticalStrut(8));
                 setManualPruningDate.setPreferredSize(new Dimension(200, 35));
                 setManualPruningDate.setMaximumSize(new Dimension(200, 35));
                 setManualPruningDate.addActionListener(e -> {
@@ -403,7 +400,7 @@ public class CropCardPanel extends JPanel {
                     }
                 });
                 imageBGPanel.add(setManualPruningDate);
-                JButton setActiveCompoundsBtn = UIButtons.createRoundedButton("Edit Active Compounds");
+                imageBGPanel.add(Box.createVerticalStrut(8));                JButton setActiveCompoundsBtn = UIButtons.createRoundedButton("Edit Active Compounds");
                 setActiveCompoundsBtn.setPreferredSize(new Dimension(200, 35));
                 setActiveCompoundsBtn.setMaximumSize(new Dimension(200, 35));
                 setActiveCompoundsBtn.addActionListener(e -> {
@@ -441,7 +438,7 @@ public class CropCardPanel extends JPanel {
                 });
 
                 imageBGPanel.add(setActiveCompoundsBtn);
-                break;
+                imageBGPanel.add(Box.createVerticalStrut(8));                break;
             case "LeafCrop":
                 pruningDateLabel.setText("Pruning Date: " + ((LeafCrop)crop).getPruningDate());
                 infoPanel.add(pruningDateLabel);
@@ -470,7 +467,7 @@ public class CropCardPanel extends JPanel {
                     );
                 });
                 imageBGPanel.add(setCalculatedPruningDateBtn);
-
+                imageBGPanel.add(Box.createVerticalStrut(8));
                 setManualPruningDate.setPreferredSize(new Dimension(200, 35));
                 setManualPruningDate.setMaximumSize(new Dimension(200, 35));
                 setManualPruningDate.addActionListener(e -> {
@@ -516,6 +513,7 @@ public class CropCardPanel extends JPanel {
                     }
                 });
                 imageBGPanel.add(setManualPruningDate);
+                imageBGPanel.add(Box.createVerticalStrut(8));
                 break;
             case "RootCrop":
                 JButton getEstimatedMassBtn = UIButtons.createRoundedButton("Estimated Mass");
@@ -537,12 +535,14 @@ public class CropCardPanel extends JPanel {
                 });
 
                 imageBGPanel.add(getEstimatedMassBtn);
+                imageBGPanel.add(Box.createVerticalStrut(8));
                 break;
             default:
                 break;
         }
 
         imageBGPanel.add(viewLogsBtn);
+        imageBGPanel.add(Box.createVerticalStrut(8));
         JButton deleteBtn = UIButtons.createRoundedButton("Delete Crop");
         deleteBtn.setPreferredSize(new Dimension(200, 35));
         deleteBtn.setMaximumSize(new Dimension(200, 35));
@@ -571,8 +571,7 @@ public class CropCardPanel extends JPanel {
         imageBGPanel.add(deleteBtn);
 
         imageBGPanel.setOpaque(false);
-        imageBGPanel.setPreferredSize(new Dimension(300, 168));
-
+        imageBGPanel.setMaximumSize(new Dimension(300, Integer.MAX_VALUE));
         infoPanel.add(Box.createVerticalStrut(10));
         add(infoPanel, BorderLayout.CENTER);
         add(imageBGPanel, BorderLayout.EAST);
