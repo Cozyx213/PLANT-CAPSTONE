@@ -125,11 +125,16 @@ public class CropCardPanel extends JPanel {
 //        cropNameField.setForeground(UIColors.TEXT_DARK);
         // Add a prompt/border style here if desired
 
+
         subclassCropField = new JComboBox<>(subclassTypes);
         subclassCropField.setSelectedIndex(0);
         subclassCropField.addActionListener(subclassCropField);
+        subclassCropField.setRenderer(new CustomComboBoxRenderer());
+        subclassCropField.setToolTipText("Choose a crop type!");
 
         plantTypeField = new JComboBox<>(herbTypes);
+        plantTypeField.setRenderer(new CustomComboBoxRenderer());
+        plantTypeField.setToolTipText("Choose a plant type!!");
 
         soilTypeField = new JTextField();
         soilTypeField.setFont(UIFont.lexend(Font.BOLD, 18));
@@ -221,9 +226,11 @@ public class CropCardPanel extends JPanel {
         buttons.add(cancelBtn);
         buttons.add(saveBtn);
 
-
-        add(plantTypeField);
+        add(Box.createVerticalStrut(15));
         add(subclassCropField);
+        add(Box.createVerticalStrut(10));
+        add(plantTypeField);
+        add(Box.createVerticalStrut(10));
         add(labeled("Width (m)", widthSpinner));
         add(labeled("Height (m)", heightSpinner));
         add(labeled("Length (m)", lengthSpinner));
@@ -237,8 +244,10 @@ public class CropCardPanel extends JPanel {
         cropSpecificPanel.add(leafPanel, "LeafCrop");
         cropSpecificPanel.add(rootPanel, "RootCrop");
 
-        add(buttons, BorderLayout.EAST);
+        add(Box.createVerticalStrut(15));
         add(cropSpecificPanel);
+        add(Box.createVerticalStrut(15));
+        add(buttons, BorderLayout.EAST);
 
         revalidate();
         repaint();
@@ -449,5 +458,28 @@ public class CropCardPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         UIRenderer.paintRoundedPanel(g, this, 20, UIColors.CARD_COLOR);
         super.paintComponent(g);
+    }
+
+    public class CustomComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            setText(value.toString()); // Set the text of the item
+            setFont(UIFont.lexend(Font.PLAIN, 14));
+            // Apply custom styling based on state or value
+            if (isSelected) {
+                setForeground(UIColors.TEXT_COLOR);
+                setBackground(UIColors.BG_COLOR_GENERAL);
+            } else {
+                setBackground(list.getBackground());
+                setForeground(UIColors.TEXT_DARK);
+            }
+            // Example: Change color for a specific item (e.g., the first item)
+//            if (index == 0) {
+//                setForeground(UIColors.TEXT_COLOR);
+//                setBackground(UIColors.BG_COLOR_GENERAL);
+//            }
+            setOpaque(true); // Must be true for background to be visible
+            return this;
+        }
     }
 }
