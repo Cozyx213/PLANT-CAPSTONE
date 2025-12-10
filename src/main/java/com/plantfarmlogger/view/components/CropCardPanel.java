@@ -298,7 +298,15 @@ public class CropCardPanel extends JPanel {
         viewLogsBtn.setMaximumSize(new Dimension(200, 35));
         viewLogsBtn.addActionListener(e -> onNavigate.accept(crop));
 
-        RoundedRightImagePanel imageBGPanel = new RoundedRightImagePanel("/farm_1.png", 20);
+
+        RoundedRightImagePanel imageBGPanel;
+        imageBGPanel = new RoundedRightImagePanel("/farm_1.png", 20);
+        if (crop instanceof RootCrop){
+            imageBGPanel = new RoundedRightImagePanel("/root_farm.png", 20);
+        } else if (crop instanceof LeafCrop){
+            imageBGPanel = new RoundedRightImagePanel("/leaf_farm.png", 20);
+        }
+
         imageBGPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         imageBGPanel.setBorder(new EmptyBorder(20, 20, 15, 20));
         //imageBGPanel.add(Box.createVerticalStrut(40));
