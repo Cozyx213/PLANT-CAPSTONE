@@ -1,10 +1,10 @@
 package com.plantfarmlogger.enums;
 
 public enum Action {
-    FERTILIZE("fertilize"),
-    WATER("water"),
-    AERATE("aerate"),
-    CUT("cut");
+    FERTILIZE("FERTILIZE"),
+    WATER("WATER"),
+    AERATE("AERATE"),
+    CUT("CUT");
 
     private final String value;
 
