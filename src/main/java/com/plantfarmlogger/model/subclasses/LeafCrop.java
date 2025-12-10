@@ -26,7 +26,7 @@ public class LeafCrop extends Crop implements Prunable {
     private String pruningDate;
     private Integer userBaseGrowingDays;
 
-    // used for creation of new HerbCrop
+
     public LeafCrop(String plantType, String soilType, double width,
                     double height, double length, String userId,
                     Integer userBaseGrowingDays) {
@@ -44,71 +44,16 @@ public class LeafCrop extends Crop implements Prunable {
         this.userBaseGrowingDays = userBaseGrowingDays;
     }
 
-    /**
-     * Sets an explicit pruning date for this leaf crop.
-     * <p>
-     * Overrides any automatically calculated pruning date. The date should
-     * be provided in ISO-8601 format (yyyy-MM-dd).
-     *
-     * @param date the explicit pruning date to assign to this crop
-     */
+  
     @Override
     public void setExplicitPruningDate(String date) {
         this.pruningDate = date;
     }
 
-    /**
-     * Calculates and sets the next pruning date for this leaf crop.
-     * <p>
-     * This method determines the upcoming pruning date based on the following
-     * rules:
-     * <ol>
-     * <li>If the crop has never been pruned (i.e., {@link #pruningDate} is
-     * {@code null}),
-     * the next pruning date is calculated as the planting date plus the base
-     * growing days:
-     * 
-     * <pre>
-     * nextPrune = datePlanted + baseGrowingDays
-     * </pre>
-     * 
-     * </li>
-     * <li>If the crop has already been pruned (i.e., {@link #pruningDate} is not
-     * {@code null}),
-     * the next pruning date is calculated relative to the last pruning date.
-     * The method repeatedly adds the base growing days until the resulting date is
-     * after the current date ({@link java.time.LocalDate#now()}), ensuring that
-     * the next prune is always in the future.</li>
-     * <li>The {@code baseDays} used for calculation is determined in the following
-     * order of precedence:
-     * <ol type="a">
-     * <li>{@link #userBaseGrowingDays} — if the user has set a custom number of
-     * base growing days.</li>
-     * <li>{@link #LEAFCROP_BASE_GROWING_DAYS} — the species-specific default for
-     * the crop type.</li>
-     * <li>{@link #DEFAULT_BASE_GROWING_DAYS} — a fallback value if the crop type is
-     * not in the species-specific map.</li>
-     * </ol>
-     * </li>
-     * </ol>
-     * <p>
-     * The calculated next pruning date is stored in {@link #pruningDate} in
-     * ISO-8601 format (yyyy-MM-dd).
-     * <p>
-     * This implementation ensures that the pruning schedule always points to the
-     * upcoming
-     * pruning date relative to today, even if previous prunes were missed.
-     *
-     * @see #pruningDate
-     * @see #userBaseGrowingDays
-     * @see #LEAFCROP_BASE_GROWING_DAYS
-     * @see #DEFAULT_BASE_GROWING_DAYS
-     * @see java.time.LocalDate
-     */
+   
     @Override
     public void setCalculatedPruningDate() {
-        LocalDate planted = LocalDate.parse(getDatePlanted());
-        LocalDate now = LocalDate.now();
+
         int baseDays;
         if (userBaseGrowingDays != null) {
             baseDays = userBaseGrowingDays;

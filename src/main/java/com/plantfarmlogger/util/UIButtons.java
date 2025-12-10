@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-
 public class UIButtons {
 
     public static JButton createPrimaryButton(String text) {

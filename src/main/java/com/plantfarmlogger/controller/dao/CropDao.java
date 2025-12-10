@@ -206,14 +206,5 @@ public class CropDao implements CropDaoInter {
         }
     }
 
-    private int parseIntOrDefault(String value, int defaultValue) {
-        if (value == null || value.trim().equalsIgnoreCase("null") || value.trim().isEmpty()) {
-            return defaultValue;
-        }
-        try {
-            return Integer.parseInt(value.trim());
-        } catch (NumberFormatException e) {
-            return defaultValue;
-        }
-    }
+   
 }
