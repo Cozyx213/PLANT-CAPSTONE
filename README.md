@@ -57,13 +57,24 @@ The **Plant Farm Logger** program is a powerful tool designed to help farmers ke
 ## How the Program Fulfills the Criteria (for Sir Jay Vince Serato)
 Inheritance 
 -   Crop has 3 subclasses, namely HerbCrop, RootCrop, and LeafCrop
+
 Abstraction
 -   Interfaces are used for these different Crop Types, such as Prunable, Medicinal, and Subterranean
+  
 Encapsulation 
 -   Already given
+  
 Polymorphism 
 -   Used when creating/updating a crop through the cropfactory
 -   Loading all existing crops from the .csv file
+
+File Handling
+-   Used when loading users, crop beds, and crop logs into the program
+-   These are stored in .csv files in /resources/csv
+
+Design Patterns
+-   Singleton -- Utilized in the CropController
+-   Factory -- Utilized in the CropFactory when updating/creating new crops
 
 ## Quick Start
 
