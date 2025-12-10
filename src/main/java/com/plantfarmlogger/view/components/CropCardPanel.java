@@ -312,28 +312,163 @@ public class CropCardPanel extends JPanel {
         pruningDateLabel.setForeground(UIColors.BUTTON_COLOR);
 
         String cropType = crop.getClass().getSimpleName();
+        JButton setManualPruningDate = UIButtons.createRoundedButton("Manual Pruning Date");
         switch (cropType) {
             case "HerbCrop":
                 pruningDateLabel.setText("Pruning Date: " + ((HerbCrop)crop).getPruningDate());
                 infoPanel.add(pruningDateLabel);
 
-                setCalculatedPruningDateBtn.addActionListener(e -> ((HerbCrop)crop).setCalculatedPruningDate());
+                setCalculatedPruningDateBtn.addActionListener(e -> {
+                    if (!(crop instanceof HerbCrop)) return;
+                    HerbCrop herb = (HerbCrop) crop;
+
+                    // Calculate pruning date
+                    herb.setCalculatedPruningDate();
+
+                    // Update label
+                    pruningDateLabel.setText("Pruning Date: " + herb.getPruningDate());
+
+                    // Persist via controller
+                    CropController.getInstance().updateCrop(
+                            "HerbCrop",
+                            herb.getID(),
+                            herb.getPlantType(),
+                            herb.getSoilType(),
+                            herb.getLastFertilized(),
+                            herb.getDatePlanted(),
+                            herb.getWidth(),
+                            herb.getHeight(),
+                            herb.getLength(),
+                            herb.getUserId(),
+                            herb.getPruningDate(),
+                            herb.getUserBaseGrowingDays(),
+                            herb.getActiveCompounds(),
+                            null  // userRootDensity not used for HerbCrop
+                    );
+                });
                 imageBGPanel.add(setCalculatedPruningDateBtn);
+
+
+                setManualPruningDate.setPreferredSize(new Dimension(200, 35));
+                setManualPruningDate.setMaximumSize(new Dimension(200, 35));
+                setManualPruningDate.addActionListener(e -> {
+                    if (!(crop instanceof HerbCrop)) return;
+                    HerbCrop herb = (HerbCrop) crop;
+
+                    String input = JOptionPane.showInputDialog(
+                            CropCardPanel.this,
+                            "Enter pruning date (YYYY-MM-DD):",
+                            herb.getPruningDate() != null ? herb.getPruningDate() : LocalDate.now().toString()
+                    );
+
+                    if (input != null && !input.isBlank()) {
+                        try {
+                            LocalDate.parse(input);  // validate date format
+                            herb.setExplicitPruningDate(input);
+                            pruningDateLabel.setText("Pruning Date: " + herb.getPruningDate());
+
+                            // Persist via controller
+                            CropController.getInstance().updateCrop(
+                                    "HerbCrop",
+                                    herb.getID(),
+                                    herb.getPlantType(),
+                                    herb.getSoilType(),
+                                    herb.getLastFertilized(),
+                                    herb.getDatePlanted(),
+                                    herb.getWidth(),
+                                    herb.getHeight(),
+                                    herb.getLength(),
+                                    herb.getUserId(),
+                                    herb.getPruningDate(),
+                                    herb.getUserBaseGrowingDays(),
+                                    herb.getActiveCompounds(),
+                                    null  // userRootDensity not used for HerbCrop
+                            );
+
+                        } catch (DateTimeParseException ex) {
+                            JOptionPane.showMessageDialog(
+                                    CropCardPanel.this,
+                                    "Invalid date format. Use YYYY-MM-DD",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
+                    }
+                });
+
+                imageBGPanel.add(setManualPruningDate);
                 break;
             case "LeafCrop":
                 pruningDateLabel.setText("Pruning Date: " + ((LeafCrop)crop).getPruningDate());
                 infoPanel.add(pruningDateLabel);
 
-                setCalculatedPruningDateBtn.addActionListener(e -> ((LeafCrop)crop).setCalculatedPruningDate());
+                setCalculatedPruningDateBtn.addActionListener(e -> {
+                    ((LeafCrop) crop).setCalculatedPruningDate();
+                    pruningDateLabel.setText("Pruning Date: " + ((LeafCrop) crop).getPruningDate());
+
+                    // Persist via controller
+                    LeafCrop leaf = (LeafCrop) crop;
+                    CropController.getInstance().updateCrop(
+                            "LeafCrop",
+                            leaf.getID(),
+                            leaf.getPlantType(),
+                            leaf.getSoilType(),
+                            leaf.getLastFertilized(),
+                            leaf.getDatePlanted(),
+                            leaf.getWidth(),
+                            leaf.getHeight(),
+                            leaf.getLength(),
+                            leaf.getUserId(),
+                            leaf.getPruningDate(),
+                            leaf.getUserBaseGrowingDays(),
+                            null,  // activeCompounds not used for LeafCrop
+                            null   // userRootDensity not used for LeafCrop
+                    );
+                });
                 imageBGPanel.add(setCalculatedPruningDateBtn);
 
-                JButton setManualPruningDate = UIButtons.createRoundedButton("Manual Pruning Date");
                 setManualPruningDate.setPreferredSize(new Dimension(200, 35));
                 setManualPruningDate.setMaximumSize(new Dimension(200, 35));
-                setManualPruningDate.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        JOptionPane.showMessageDialog(null, "Estimated Mass: " + ((RootCrop)crop).estimateMass(), "Estimated Mass", JOptionPane.INFORMATION_MESSAGE);
+                setManualPruningDate.addActionListener(e -> {
+                    LeafCrop leaf = (LeafCrop) crop;
+                    String input = JOptionPane.showInputDialog(
+                            CropCardPanel.this,
+                            "Enter pruning date (YYYY-MM-DD):",
+                            leaf.getPruningDate() != null ? leaf.getPruningDate() : LocalDate.now().toString()
+                    );
+
+                    if (input != null && !input.isBlank()) {
+                        try {
+                            LocalDate.parse(input);  // Validate format
+                            leaf.setExplicitPruningDate(input);
+                            pruningDateLabel.setText("Pruning Date: " + leaf.getPruningDate());
+
+                            // Persist via controller
+                            CropController.getInstance().updateCrop(
+                                    "LeafCrop",
+                                    leaf.getID(),
+                                    leaf.getPlantType(),
+                                    leaf.getSoilType(),
+                                    leaf.getLastFertilized(),
+                                    leaf.getDatePlanted(),
+                                    leaf.getWidth(),
+                                    leaf.getHeight(),
+                                    leaf.getLength(),
+                                    leaf.getUserId(),
+                                    leaf.getPruningDate(),
+                                    leaf.getUserBaseGrowingDays(),
+                                    null,  // activeCompounds not used for LeafCrop
+                                    null   // userRootDensity not used for LeafCrop
+                            );
+
+                        } catch (DateTimeParseException ex) {
+                            JOptionPane.showMessageDialog(
+                                    CropCardPanel.this,
+                                    "Invalid date format. Use YYYY-MM-DD",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+                        }
                     }
                 });
                 imageBGPanel.add(setManualPruningDate);

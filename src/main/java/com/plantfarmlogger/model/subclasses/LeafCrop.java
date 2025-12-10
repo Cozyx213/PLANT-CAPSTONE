@@ -63,8 +63,7 @@ public class LeafCrop extends Crop implements Prunable {
                     DEFAULT_BASE_GROWING_DAYS);
         }
         LocalDate calculatedPruneDate;
-        if (pruningDate == null) {
-            calculatedPruneDate = LocalDate.parse(getDatePlanted()).plusDays(baseDays);
+        if (pruningDate == null || pruningDate.equals("null") || pruningDate.isBlank()) {            calculatedPruneDate = LocalDate.parse(getDatePlanted()).plusDays(baseDays);
         } else {
             LocalDate nextPrune = LocalDate.parse(pruningDate);
             while (!nextPrune.isAfter(LocalDate.now())) {
