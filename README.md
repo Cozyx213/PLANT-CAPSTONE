@@ -54,28 +54,6 @@ By the end of the season, the farmer will have a complete record of activities a
 
 The **Plant Farm Logger** program is a powerful tool designed to help farmers keep detailed records of their farming activities. By simplifying the process of logging and tracking plant-related tasks, it enables farmers to make informed decisions.
 
-## How the Program Fulfills the Criteria (for Sir Jay Vince Serato)
-Inheritance 
--   Crop has 3 subclasses, namely HerbCrop, RootCrop, and LeafCrop
-
-Abstraction
--   Interfaces are used for these different Crop Types, such as Prunable, Medicinal, and Subterranean
-  
-Encapsulation 
--   Already given
-  
-Polymorphism 
--   Used when creating/updating a crop through the cropfactory
--   Loading all existing crops from the .csv file
-
-File Handling
--   Used when loading users, crop beds, and crop logs into the program
--   These are stored in .csv files in /resources/csv
-
-Design Patterns
--   Singleton -- Utilized in the CropController
--   Factory -- Utilized in the CropFactory when updating/creating new crops
-
 ## Quick Start
 
 Follow these steps to build and run the project using the included scripts.
@@ -94,3 +72,50 @@ powershell -ExecutionPolicy ByPass -File ".\build_and_run.ps1"
 
 it Compiles all Java sources into `out/`:
 and Runs the program (runs `com.plantfarmlogger.Main`):
+
+## How the Program Fulfills the Criteria
+
+### Classes and Objects (25%)
+
+-   Core domain: `Crop` base class with subclasses `HerbCrop`, `LeafCrop`, `RootCrop`.
+-   Data access: `CropDao`, `CropLogDao`, `UserDao` manage in-memory lists and CSV persistence.
+-   Controllers: e.g., `CropController`, `UserController` orchestrate between views and DAOs.
+-   Views: Swing panels/windows (`Login`, `Register`, `Home`, `SideBar`, `CropCardPanel`, `LogCardPanel`, etc.).
+
+### Class Diagram (15%)
+
+-   Recommended inclusions (aligns with current code):
+    -   `Crop` ← `HerbCrop` | `LeafCrop` | `RootCrop`
+    -   Interfaces: `Prunable`, `Medicinal`, `Subterranean`, `CropDaoInter`, `UserDaoInter`
+    -   DAOs: `CropDao`, `CropLogDao`, `UserDao`
+    -   Controllers: `CropController`, `UserController`
+    -   Views: `MainWindow`, `Home`, `Login`, `Register`, `SideBar`, `CropCardPanel`, `LogCardPanel`
+
+### Four OOP Principles (30%)
+
+-   **Inheritance:** `HerbCrop`, `LeafCrop`, `RootCrop` extend `Crop` to reuse shared dimensions and planting metadata.
+-   **Abstraction:** Interfaces (`Prunable`, `Medicinal`, `Subterranean`, `CropDaoInter`, `UserDaoInter`) define required behaviors without exposing implementation.
+-   **Encapsulation:** Fields in models/DAOs are private with getters/setters (e.g., `User`, `Crop`, `UserDao`’s list); access controlled through methods.
+-   **Polymorphism:** Collections of `Crop` hold subclass instances; DAOs/controllers and UI components operate on `Crop` references and dispatch behavior based on runtime type.
+
+### Exception Handling (10%)
+
+-   CSV loading/writing wrapped in try/catch in DAOs (`CropDao`, `CropLogDao`, `UserDao`), with user-facing error prints.
+-   Parsing helpers (e.g., `parseIntOrDefault`) guard against malformed numeric fields.
+
+### File Handling (5% + bonus 5%)
+
+-   Data persisted to CSV under `src/main/resources/csv` (`users.csv`, `crops.csv`, `cropbeds.csv`, `croplogs.csv`).
+-   On startup, `Main` ensures the CSV directory/files exist and copies resources to `out/` so runtime has access.
+
+### Graphical User Interface (15%)
+
+-   Swing-based UI with custom styling (`UIColors`, `UIFont`, `UIButtons`, `UIFields`).
+-   Screens: `Login`, `Register`, `Home` dashboard with crop cards and sidebar navigation, log views.
+-   Gradient backgrounds, rounded inputs/buttons, and logo/plant icons from `resources/png`.
+
+### Design Pattern (bonus 5%)
+
+-   **Singleton:** Controllers (e.g., `UserController`, `CropController`) expose a `getInstance()` to share state across views.
+-   **Factory (planned/extendable):** A `CropFactory` can be used to centralize `Crop` creation based on type strings from CSV/input (add here if implemented in codebase).
+
