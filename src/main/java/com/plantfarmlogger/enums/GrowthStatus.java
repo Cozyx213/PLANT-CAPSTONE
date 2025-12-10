@@ -1,11 +1,11 @@
 package com.plantfarmlogger.enums;
 
 public enum GrowthStatus {
-    GERMINATION("Germination"),
-    SEEDLING("Seedling"),
-    VEGETATIVE("Vegetative"),
-    REPRODUCTIVE("Reproductive"),
-    MATURE("Mature");
+    GERMINATION("GERMINATION"),
+    SEEDLING("SEEDLING"),
+    VEGETATIVE("VEGETATIVE"),
+    REPRODUCTIVE("REPRODUCTIVE"),
+    MATURE("MATURE");
 
     private final String value;
 
