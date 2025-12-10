@@ -3,6 +3,9 @@ package com.plantfarmlogger.view.components;
 import com.plantfarmlogger.controller.CropController;
 import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
+import com.plantfarmlogger.model.subclasses.HerbCrop;
+import com.plantfarmlogger.model.subclasses.LeafCrop;
+import com.plantfarmlogger.model.subclasses.RootCrop;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.*;
 
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -279,21 +283,73 @@ public class CropCardPanel extends JPanel {
         infoPanel.add(soilTypeLabel);
         infoPanel.add(sizeLabel);
         infoPanel.add(lastFertilizedLabel);
-        infoPanel.add(Box.createVerticalStrut(10));
 
         JButton viewLogsBtn = UIButtons.createRoundedButton("View Logs");
-        viewLogsBtn.setPreferredSize(new Dimension(120, 35));
-        viewLogsBtn.setMaximumSize(new Dimension(120, 35));
+        viewLogsBtn.setPreferredSize(new Dimension(200, 35));
+        viewLogsBtn.setMaximumSize(new Dimension(200, 35));
         viewLogsBtn.addActionListener(e -> onNavigate.accept(crop));
 
         RoundedRightImagePanel imageBGPanel = new RoundedRightImagePanel("/farm_1.png", 20);
-        imageBGPanel.setLayout(new BorderLayout(10, 30));
-        imageBGPanel.setBorder(new EmptyBorder(0, 20, 15, 20));
+        imageBGPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        imageBGPanel.setBorder(new EmptyBorder(20, 20, 15, 20));
         //imageBGPanel.add(Box.createVerticalStrut(40));
-        imageBGPanel.add(viewLogsBtn, BorderLayout.SOUTH);
+
+        // switch case depending if root, leaf, herb
+        JButton setCalculatedPruningDateBtn = UIButtons.createRoundedButton("Auto-Pruning Date");
+        setCalculatedPruningDateBtn.setPreferredSize(new Dimension(200, 35));
+        setCalculatedPruningDateBtn.setMaximumSize(new Dimension(200, 35));
+        JLabel pruningDateLabel = new JLabel();
+        pruningDateLabel.setFont(UIFont.lexend(Font.PLAIN, 16));
+        pruningDateLabel.setForeground(UIColors.BUTTON_COLOR);
+
+        String cropType = crop.getClass().getSimpleName();
+        switch (cropType) {
+            case "HerbCrop":
+                pruningDateLabel.setText("Pruning Date: " + ((HerbCrop)crop).getPruningDate());
+                infoPanel.add(pruningDateLabel);
+
+                setCalculatedPruningDateBtn.addActionListener(e -> ((HerbCrop)crop).setCalculatedPruningDate());
+                imageBGPanel.add(setCalculatedPruningDateBtn);
+                break;
+            case "LeafCrop":
+                pruningDateLabel.setText("Pruning Date: " + ((LeafCrop)crop).getPruningDate());
+                infoPanel.add(pruningDateLabel);
+
+                setCalculatedPruningDateBtn.addActionListener(e -> ((LeafCrop)crop).setCalculatedPruningDate());
+                imageBGPanel.add(setCalculatedPruningDateBtn);
+
+                JButton setManualPruningDate = UIButtons.createRoundedButton("Manual Pruning Date");
+                setManualPruningDate.setPreferredSize(new Dimension(200, 35));
+                setManualPruningDate.setMaximumSize(new Dimension(200, 35));
+                setManualPruningDate.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog(null, "Estimated Mass: " + ((RootCrop)crop).estimateMass(), "Estimated Mass", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                });
+                imageBGPanel.add(setManualPruningDate);
+                break;
+            case "RootCrop":
+                JButton getEstimatedMassBtn = UIButtons.createRoundedButton("Estimated Mass");
+                getEstimatedMassBtn.setPreferredSize(new Dimension(200, 35));
+                getEstimatedMassBtn.setMaximumSize(new Dimension(200, 35));
+                getEstimatedMassBtn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JOptionPane.showMessageDialog(null, "Estimated Mass: " + ((RootCrop)crop).estimateMass(), "Estimated Mass", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                });
+                imageBGPanel.add(getEstimatedMassBtn);
+                break;
+            default:
+                break;
+        }
+
+        imageBGPanel.add(viewLogsBtn);
         imageBGPanel.setOpaque(false);
         imageBGPanel.setPreferredSize(new Dimension(300, 168));
 
+        infoPanel.add(Box.createVerticalStrut(10));
         add(infoPanel, BorderLayout.CENTER);
         add(imageBGPanel, BorderLayout.EAST);
 
