@@ -3,6 +3,7 @@ package com.plantfarmlogger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -16,6 +17,7 @@ public class Main {
         System.out.println("Farm Logger start");
 
         ensureCsvResources();
+        copyResourcesToOut();
 
         SwingUtilities.invokeLater(() -> {
             try {
@@ -52,6 +54,35 @@ public class Main {
             }
         } catch (IOException e) {
             System.err.println("Failed to prepare CSV resources: " + e.getMessage());
+        }
+    }
+
+    private static void copyResourcesToOut() {
+        Path resourcesDir = Path.of("src", "main", "resources");
+        Path outDir = Path.of("out");
+
+        try {
+            if (Files.notExists(resourcesDir)) {
+                return; // nothing to copy
+            }
+
+            Files.createDirectories(outDir);
+
+            Files.walk(resourcesDir).forEach(source -> {
+                try {
+                    Path target = outDir.resolve(resourcesDir.relativize(source));
+                    if (Files.isDirectory(source)) {
+                        Files.createDirectories(target);
+                    } else {
+                        Files.createDirectories(target.getParent());
+                        Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (IOException e) {
+                    System.err.println("Failed copying resource " + source + ": " + e.getMessage());
+                }
+            });
+        } catch (IOException e) {
+            System.err.println("Failed to copy resources: " + e.getMessage());
         }
     }
 }
