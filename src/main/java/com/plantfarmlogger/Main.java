@@ -32,9 +32,10 @@ public class Main {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignored) {}
             MainWindow mainWindow = new MainWindow();
+            UserController userController = UserController.getInstance();
+            User testUser = userController.getUser("64b49616-0515-41af-8080-9fe86d85336c");
 
-
-            mainWindow.getNavigator().showLogin();
+            mainWindow.getNavigator().showHome(testUser);
 
             mainWindow.setVisible(true);
         });
