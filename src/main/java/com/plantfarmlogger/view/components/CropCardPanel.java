@@ -15,28 +15,22 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
-import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Arrays;
 import java.util.function.Consumer;
 
-import static javax.swing.JOptionPane.showMessageDialog;
 
 public class CropCardPanel extends JPanel {
 
-    private String cropName, plantType, soilType, size;
-    private LocalDate datePlanted, lastFertilized;
 
     private JPanel cropSpecificPanel;
     private JPanel herbPanel;
     private JPanel leafPanel;
     private JPanel rootPanel;
     private JTextField soilTypeField;
-    private JComboBox<String> subclassCropField, plantTypeField, soilCombo;
+    private JComboBox<String> subclassCropField, plantTypeField;
     private JSpinner widthSpinner,  heightSpinner, lengthSpinner;
     private JSpinner herbBaseGrowingDaysSpinner;
     private JTextField herbActiveCompoundsField;
@@ -84,9 +78,9 @@ public class CropCardPanel extends JPanel {
             "onion",
             "garlic"};
 
-    private final Runnable onSave;   // Callback to unlock Home "Add" button
-    private final Consumer<Crop> onNavigate; // Callback to switch screens
-    private final Runnable onCancel;         // Callback to remove card if cancelled
+    private final Runnable onSave;   
+    private final Consumer<Crop> onNavigate; 
+    private final Runnable onCancel;         
 
     public CropCardPanel(User user, Runnable onSave, Consumer<Crop> onNavigate, Runnable onCancel) {
         this.currentUser = user;
@@ -115,15 +109,8 @@ public class CropCardPanel extends JPanel {
     }
 
     private void initInputMode() {
-        removeAll(); // Clear previous components
+        removeAll(); 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        // --- Input Field ---
-//        cropNameField = new JTextField();
-//        cropNameField.setFont(UIFont.lexend(Font.BOLD, 18));
-//        cropNameField.setText("Enter Crop Name");
-//        cropNameField.setForeground(UIColors.TEXT_DARK);
-        // Add a prompt/border style here if desired
 
 
         subclassCropField = new JComboBox<>(subclassTypes);
@@ -159,7 +146,7 @@ public class CropCardPanel extends JPanel {
                 CardLayout cl = (CardLayout) cropSpecificPanel.getLayout();
                 cl.show(cropSpecificPanel, selectedCategory);
 
-                // Update plantTypeField list
+          
                 String[] newItems;
                 switch (selectedCategory) {
                     case "HerbCrop" -> newItems = herbTypes;
@@ -169,7 +156,7 @@ public class CropCardPanel extends JPanel {
                 plantTypeField.setModel(new DefaultComboBoxModel<>(newItems));
             }
         });
-        // --- Buttons (Save / Cancel) ---
+
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttons.setOpaque(false);
 
@@ -208,15 +195,14 @@ public class CropCardPanel extends JPanel {
                     height,
                     length,
                     currentUser.getId(),
-                    LocalDate.now().toString(),  // pruningDate, can be null for Root
+                    LocalDate.now().toString(),  
                     userBaseDays,
                     activeCompounds,
                     userRootDensity
             );
-            onSave.run(); // Tell Controller we are done editing
+            onSave.run(); 
             switchToDisplayMode(newCrop);
-//                showMessageDialog(this, "All field must be filled", "ALERT", JOptionPane.INFORMATION_MESSAGE);
-            // alert that all fields must be filled
+
 
         });
 
@@ -428,7 +414,7 @@ public class CropCardPanel extends JPanel {
 
                 g2.dispose();
             }
-            // Paint the children (The "View Logs" button)
+       
             super.paintComponent(g);
         }
     }
@@ -471,9 +457,8 @@ public class CropCardPanel extends JPanel {
     public class CustomComboBoxRenderer extends JLabel implements ListCellRenderer<Object> {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            setText(value.toString()); // Set the text of the item
+            setText(value.toString()); 
             setFont(UIFont.lexend(Font.PLAIN, 14));
-            // Apply custom styling based on state or value
             if (isSelected) {
                 setForeground(UIColors.TEXT_COLOR);
                 setBackground(UIColors.BG_COLOR_GENERAL);
@@ -481,12 +466,8 @@ public class CropCardPanel extends JPanel {
                 setBackground(list.getBackground());
                 setForeground(UIColors.TEXT_DARK);
             }
-            // Example: Change color for a specific item (e.g., the first item)
-//            if (index == 0) {
-//                setForeground(UIColors.TEXT_COLOR);
-//                setBackground(UIColors.BG_COLOR_GENERAL);
-//            }
-            setOpaque(true); // Must be true for background to be visible
+
+            setOpaque(true);
             return this;
         }
     }

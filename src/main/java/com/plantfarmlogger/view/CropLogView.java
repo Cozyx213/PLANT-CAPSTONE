@@ -1,6 +1,4 @@
 package com.plantfarmlogger.view;
-
-import com.plantfarmlogger.controller.CropLogController;
 import com.plantfarmlogger.enums.Action;
 import com.plantfarmlogger.enums.GrowthStatus;
 import com.plantfarmlogger.enums.HealthStatus;
@@ -12,7 +10,6 @@ import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.view.components.BaseDashboardView;
 import com.plantfarmlogger.view.components.LogCardPanel;
-//import com.plantfarmlogger.view.croplog.CropLogModel.CropLogEntry; // Import the DTO
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

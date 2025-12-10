@@ -33,7 +33,6 @@ import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFields;
 import com.plantfarmlogger.util.UIFont;
-import com.plantfarmlogger.controller.dao.UserDao;
 public class Register extends JPanel {
     private final AppNavigator navigator;
 

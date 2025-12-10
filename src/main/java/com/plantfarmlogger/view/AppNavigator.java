@@ -1,6 +1,4 @@
 package com.plantfarmlogger.view;
-
-import com.plantfarmlogger.controller.dao.CropDao;
 import com.plantfarmlogger.model.Crop;
 import com.plantfarmlogger.model.User;
 

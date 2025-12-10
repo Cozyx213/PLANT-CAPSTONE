@@ -1,59 +1,57 @@
 package com.plantfarmlogger.controller;
 
-import com.plantfarmlogger.controller.dao.CropDao;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.plantfarmlogger.controller.dao.CropLogDao;
-import com.plantfarmlogger.controller.dao.UserDao;
 import com.plantfarmlogger.enums.Action;
 import com.plantfarmlogger.enums.GrowthStatus;
 import com.plantfarmlogger.enums.HealthStatus;
 import com.plantfarmlogger.model.CropLog;
-import com.plantfarmlogger.model.User;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
 
 public class CropLogController {
     private static CropLogController instance = null;
     private final CropLogDao cropLogDao;
+
     public CropLogController() {
         this.cropLogDao = CropLogDao.getInstance();
     }
-    public static CropLogController getInstance() {return instance == null ? instance = new CropLogController(): instance;}
+
+    public static CropLogController getInstance() {
+        return instance == null ? instance = new CropLogController() : instance;
+    }
+
     private static final ArrayList<HealthStatus> healthStatusMap = new ArrayList<>(Arrays.asList(
             HealthStatus.DEAD,
             HealthStatus.HEALTHY,
             HealthStatus.INFECTED,
             HealthStatus.DEFICIENT,
-            HealthStatus.PEST_INFESTED
-    ));
+            HealthStatus.PEST_INFESTED));
     private static final ArrayList<GrowthStatus> growthStatusMap = new ArrayList<>(Arrays.asList(
             GrowthStatus.MATURE,
             GrowthStatus.GERMINATION,
             GrowthStatus.SEEDLING,
             GrowthStatus.REPRODUCTIVE,
-            GrowthStatus.VEGETATIVE
-    ));
+            GrowthStatus.VEGETATIVE));
     private static final ArrayList<Action> actionsMap = new ArrayList<>(Arrays.asList(
             Action.CUT,
             Action.AERATE,
             Action.WATER,
-            Action.FERTILIZE
-    ));
+            Action.FERTILIZE));
+
     public boolean addCropLog(String notes, String healthStatus, String growthStatus,
-                              String[] actions, String userId, String cropId){
+            String[] actions, String userId, String cropId) {
 
         validateCropLog(notes, healthStatus, growthStatus, actions);
         HealthStatus hs = HealthStatus.valueOf(healthStatus.toUpperCase());
         GrowthStatus gs = GrowthStatus.valueOf(growthStatus.toUpperCase());
         ArrayList<Action> actionsList = new ArrayList<>();
-        for(String action : actions){
+        for (String action : actions) {
             actionsList.add(Action.valueOf(action.toUpperCase()));
         }
         CropLog newCropLog = new CropLog(notes, hs, gs, actionsList, userId, cropId);
         boolean success = cropLogDao.createCropLog(newCropLog);
-        if(success) {
+        if (success) {
             System.out.println("[CropLogController] Crop log created successfully");
             return true;
         }
@@ -61,11 +59,11 @@ public class CropLogController {
         return false;
     }
 
-    public ArrayList<CropLog> getCropLogsByCropId(String cropId){
+    public ArrayList<CropLog> getCropLogsByCropId(String cropId) {
         return cropLogDao.getAllByCropId(cropId);
     }
 
-    public ArrayList<CropLog> getCropLogsByUserId(String userId){
+    public ArrayList<CropLog> getCropLogsByUserId(String userId) {
         return cropLogDao.getAllByUserId(userId);
     }
 
@@ -88,7 +86,7 @@ public class CropLogController {
     }
 
     private void validateCropLog(String notes, String healthStatus, String growthStatus,
-                                 String[] actions){
+            String[] actions) {
         HealthStatus hs;
         GrowthStatus gs;
         try {

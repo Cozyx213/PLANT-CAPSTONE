@@ -20,16 +20,8 @@ import com.plantfarmlogger.util.UIButtons;
 import com.plantfarmlogger.util.UIColors;
 import com.plantfarmlogger.util.UIFont;
 import com.plantfarmlogger.view.AppNavigator;
-import com.plantfarmlogger.view.Home;
-import com.plantfarmlogger.view.MainWindow;
-import com.plantfarmlogger.view.components.BaseDashboardView;
-
-// Change from 'extends JFrame' to 'extends JPanel'
 public class SideBar extends JPanel {
     private final JButton addCropBed;
-    //    private final JButton changeName;
-//    private final JButton changeAddress;
-//    private final JButton changePass;
     private final JButton logOut;
     private final Consumer<Crop> onNavigate;
 
@@ -40,8 +32,6 @@ public class SideBar extends JPanel {
         System.out.println(System.getProperty("user.dir"));
         System.out.println(new File(".").getAbsolutePath());
 
-        // The contentPane setup is now the setup for the SideBar JPanel itself
-        // (this) refers to the SideBar JPanel
         setLayout(new GridBagLayout());
         setBackground(UIColors.BG_COLOR_GENERAL);
         setMaximumSize(new Dimension(400, 720));
@@ -72,8 +62,7 @@ public class SideBar extends JPanel {
             logoLabel.setFont(UIFont.lexend(Font.BOLD, 26));
         }
 
-//        JLabel logoLabel = new JLabel("ANICore LITE");
-//        logoLabel.setForeground(TEXT_COLOR);
+
 
         JLabel uName = new JLabel(user.getName());
         uName.setForeground(UIColors.TEXT_COLOR);
@@ -114,8 +103,8 @@ public class SideBar extends JPanel {
         JScrollPane cropBedsList = new JScrollPane(cropBeds);
         cropBedsList.setOpaque(false);
         cropBedsList.getViewport().setOpaque(false);
-        // Setting the preferred size of the scroll pane itself controls its visible
-        // area
+     
+
         cropBedsList.setMinimumSize(new Dimension(230, 90));
         cropBedsList.setPreferredSize(new Dimension(230, 90));
         cropBedsList.setBorder(BorderFactory.createEmptyBorder());
@@ -143,15 +132,11 @@ public class SideBar extends JPanel {
         cropsPanel.add(cropBedsList);
         cropsPanel.setOpaque(false);
 
-        // SETTINGS PANEL
-//        this.changeName = UIButtons.createSettingsButton("Change Name");
-//        this.changePass = UIButtons.createSettingsButton("Change Password");
-//        this.changeAddress = UIButtons.createSettingsButton("Change Address");
 
         JPanel settingsPanel = new JPanel();
         settingsPanel.setOpaque(false);
         settingsPanel.setSize(200, 500);
-        JLabel settingsLabel = new JLabel("Settings");
+
         settingsPanel.add(Box.createVerticalStrut(180));
 
         logOut = UIButtons.createSettingsButton("Log Out");
